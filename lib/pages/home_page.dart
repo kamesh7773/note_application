@@ -94,25 +94,8 @@ class _HomePageState extends State<HomePage> {
                 debugPrint("TIme : $timeStamp");
               }
             }
-            return Column(
-              children: [
-                const SizedBox(height: 80),
-                ElevatedButton(
-                  onPressed: () {},
-                  child: const Text('Create Note'),
-                ),
-                const SizedBox(height: 80),
-                ElevatedButton(
-                  onPressed: () {},
-                  child: const Text('Update Note'),
-                ),
-                const SizedBox(height: 80),
-                ElevatedButton(
-                  onPressed: () {},
-                  child: const Text('Delete Note'),
-                ),
-                const SizedBox(height: 80),
-              ],
+            return const Center(
+              child: Text("F I R E B A S E  C U R D"),
             );
           },
         ),
