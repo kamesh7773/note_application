@@ -69,13 +69,13 @@ class _HomePageState extends State<HomePage> {
           stream: read(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              // Storing Document into List
-              List<QueryDocumentSnapshot> noteList = snapshot.data!.docs;
-              debugPrint(noteList.toString());
+              // Storeing List of Document from Collection 
+              List<QueryDocumentSnapshot> listOfDocs = snapshot.data!.docs;  // Here data == Collection & docs == List of Document
+              debugPrint(listOfDocs.toString());
 
-              for (var i = 0; i < noteList.length; i++) {
+              for (var i = 0; i < listOfDocs.length; i++) {
                 // geting indivisual document from List of Document's
-                DocumentSnapshot document = noteList[i];
+                DocumentSnapshot document = listOfDocs[i];
                 // getting indivsual document ID
                 String docID = document.id;
 
