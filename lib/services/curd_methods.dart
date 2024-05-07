@@ -6,7 +6,7 @@ class FireStoreCurdMethods {
       FirebaseFirestore.instance.collection("notes");
 
   // CREATE: create a new "Note" at FireStore
-  Future<void> create(String title, String note) {
+  Future<void> addNote({String? title, String? note}) {
     return notes.add(
       {
         "title": title,
@@ -17,7 +17,7 @@ class FireStoreCurdMethods {
   }
 
   // UPDATE: updating "Note" at FireStore
-  Future<void> update(String docID, String title, String note) {
+  Future<void> updateNote({String? docID, String? title, String? note}) {
     return notes.doc(docID).update({
       "title": title,
       "note": note,
@@ -32,7 +32,7 @@ class FireStoreCurdMethods {
   }
 
   // DELETE: deleting "Note" at FireStore
-  Future<void> deleteNote(String docID) {
+  Future<void> deleteNote({String? docID}) {
     return notes.doc(docID).delete();
   }
 }

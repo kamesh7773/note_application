@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:note_application/pages/add_note_page.dart';
+import 'package:note_application/pages/update_note_page.dart';
 import 'package:note_application/services/curd_methods.dart';
 
 class HomePage extends StatefulWidget {
@@ -50,11 +52,18 @@ class _HomePageState extends State<HomePage> {
                 // retiveing Data Map<String,Dynamic>
                 String title = data['title'];
                 String note = data['note'];
-                Timestamp timeStamp = data['timestamp'];
 
                 return GestureDetector(
                   onTap: () {
-                    Navigator.of(context).pushNamed("/NotePage");
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) {
+                        return UpdateNotePage(
+                          docID: docID,
+                          title: title,
+                          note: note,
+                        );
+                      },
+                    ));
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -102,8 +111,13 @@ class _HomePageState extends State<HomePage> {
         },
       ),
       floatingActionButton: FloatingActionButton(
+        tooltip: "ADD NOTE",
         onPressed: () {
-          // firestoreservice.create("Kamesh singh", "Hello");
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) {
+              return const AddNotePage(docID: null);
+            },
+          ));
         },
         child: const Icon(
           Icons.add,
