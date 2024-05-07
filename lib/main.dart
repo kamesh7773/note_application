@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:note_application/pages/home_page.dart';
+import 'package:note_application/pages/note_page.dart';
 import 'package:note_application/services/firebase_options.dart';
 import 'package:note_application/theme/dark_mode.dart';
 import 'package:note_application/theme/light_mode.dart';
@@ -18,6 +19,10 @@ class NoteApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      routes: {
+        "/HomePage" :(context) => const HomePage(),
+        "/NotePage" :(context) => const NotePage(),
+      },
       theme: lightMode,
       darkTheme: darkMode,
       debugShowCheckedModeBanner: false,

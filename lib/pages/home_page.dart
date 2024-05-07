@@ -53,7 +53,9 @@ class _HomePageState extends State<HomePage> {
                 Timestamp timeStamp = data['timestamp'];
 
                 return GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).pushNamed("/NotePage");
+                  },
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.black),
