@@ -30,7 +30,7 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
   // Method for removing Note
   void deletingNote() {
     firestoreservice.deleteNote(docID: widget.docID);
-    Navigator.of(context).pushNamedAndRemoveUntil("/MainPage", (route) => true);
+    Navigator.of(context).popAndPushNamed("/HomePage");
   }
 
   @override

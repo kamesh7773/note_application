@@ -29,65 +29,65 @@ class _AddNotePageState extends State<AddNotePage> {
   // Method for removing Note
   void deletingNote() {
     firestoreservice.deleteNote(docID: widget.docID);
-    Navigator.of(context).pushNamedAndRemoveUntil("/MainPage", (route) => true);
+    Navigator.of(context).popAndPushNamed("/HomePage");
   }
 
   @override
   Widget build(BuildContext context) {
     return PopScope(
       // Add the Note when user Press Back Navigation button of Android
-      onPopInvoked: (didPop) async {
-        // If Note Empty
-        if (textEditingController1.text.isEmpty &&
-            textEditingController2.text.isEmpty) {
-          showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                actionsPadding: const EdgeInsets.all(0),
-                content: const Text("Do you want to add empty note ?"),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      firestoreservice.addNote(
-                        title: textEditingController1.text,
-                        note: textEditingController2.text,
-                      );
+      onPopInvoked: (didPop)  {
+        // // If Note Empty
+        // if (textEditingController1.text.isEmpty &&
+        //     textEditingController2.text.isEmpty) {
+        //   showDialog(
+        //     context: context,
+        //     builder: (context) {
+        //       return AlertDialog(
+        //         actionsPadding: const EdgeInsets.all(0),
+        //         content: const Text("Do you want to add empty note ?"),
+        //         actions: [
+        //           TextButton(
+        //             onPressed: () {
+        //               firestoreservice.addNote(
+        //                 title: textEditingController1.text,
+        //                 note: textEditingController2.text,
+        //               );
 
-                      // pushing user to HomePage
-                      Navigator.of(context).pop();
-                      Navigator.of(context).pop();
-                    },
-                    child: Text(
-                      "yes",
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      // pushing user to HomePage
-                      Navigator.of(context).pop();
-                    },
-                    child: Text(
-                      "no",
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                  )
-                ],
-              );
-            },
-          );
-        }
-        // If Note is not Empty
-        else {
-          firestoreservice.addNote(
-            title: textEditingController1.text,
-            note: textEditingController2.text,
-          );
+        //               // pushing user to HomePage
+        //               Navigator.of(context).pop();
+        //               Navigator.of(context).pop();
+        //             },
+        //             child: Text(
+        //               "yes",
+        //               style: Theme.of(context).textTheme.bodyMedium,
+        //             ),
+        //           ),
+        //           TextButton(
+        //             onPressed: () {
+        //               // pushing user to HomePage
+        //               Navigator.of(context).pop();
+        //             },
+        //             child: Text(
+        //               "no",
+        //               style: Theme.of(context).textTheme.bodyMedium,
+        //             ),
+        //           )
+        //         ],
+        //       );
+        //     },
+        //   );
+        // }
+        // // If Note is not Empty
+        // else {
+        //   firestoreservice.addNote(
+        //     title: textEditingController1.text,
+        //     note: textEditingController2.text,
+        //   );
 
-          // pushing user to HomePage
-          Navigator.of(context).pop();
-        }
+        //   // pushing user to HomePage
+        //   Navigator.of(context).pop();
+        // }
       },
       canPop: true,
       child: Scaffold(
