@@ -1,5 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:note_application/services/curd_methods.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -9,73 +10,36 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // Geting FireStore Collection
-  final CollectionReference notes =
-      FirebaseFirestore.instance.collection("notes");
-
-  // -----------------------------------
-  // Method for Create Note at FireStore
-  // -----------------------------------
-  Future<void> create(String title, String note) {
-    return notes.add(
-      {
-        "title": title,
-        "note": note,
-        "timestamp": Timestamp.now(),
-      },
-    );
-  }
-
-  // -----------------------------------
-  // Method for Update Note at FireStore
-  // -----------------------------------
-  Future<void> update(String docID, String title, String note) {
-    return notes.doc(docID).update({
-      "title": title,
-      "note": note,
-      "timestamp": Timestamp.now(),
-    });
-  }
-
-  // -----------------------------------
-  // Method for Read Note from FireStore
-  // -----------------------------------
-  Stream<QuerySnapshot> read() {
-    final notesStream = notes.snapshots();
-    return notesStream;
-  }
-
-  // ------------------------------------
-  // Method for Delete Note fromFireStore
-  // ------------------------------------
-  Future<void> deleteNote(String? docID) {
-    return notes.doc(docID).delete();
-  }
+  // Creating the Instance of Curd Operation class
+  FireStoreCurdMethods firestoreservice = FireStoreCurdMethods();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.deepPurple[200],
-        title: const Text(
-          "N  O  T  E  S",
-          style: TextStyle(fontWeight: FontWeight.w400),
-        ),
-        centerTitle: true,
+        title: const Text("N O T E S"),
       ),
-      body: SizedBox(
-        width: double.infinity,
-        child: StreamBuilder(
-          stream: read(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              // Storeing List of Document from Collection 
-              List<QueryDocumentSnapshot> listOfDocs = snapshot.data!.docs;  // Here data == Collection & docs == List of Document
-              debugPrint(listOfDocs.toString());
+      body: StreamBuilder(
+        stream: firestoreservice.read(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            // Storeing List of Document from Collection
+            // Here "snapshot.data!.docs" -> data == Collection & docs == List of Document
+            List listOfDocs = snapshot.data!.docs;
 
-              for (var i = 0; i < listOfDocs.length; i++) {
+            return GridView.builder(
+              itemCount: listOfDocs.length,
+              padding: const EdgeInsets.all(10),
+              physics: const BouncingScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+              ),
+              itemBuilder: (context, index) {
                 // geting indivisual document from List of Document's
-                DocumentSnapshot document = listOfDocs[i];
+                DocumentSnapshot document = listOfDocs[index];
+
                 // getting indivsual document ID
                 String docID = document.id;
 
@@ -86,18 +50,62 @@ class _HomePageState extends State<HomePage> {
                 // retiveing Data Map<String,Dynamic>
                 String title = data['title'];
                 String note = data['note'];
-                var timeStamp = data['timestamp'];
+                Timestamp timeStamp = data['timestamp'];
 
-                debugPrint("Doc ID : $docID");
-                debugPrint("Title : $title");
-                debugPrint("Note : $note");
-                debugPrint("TIme : $timeStamp");
-              }
-            }
-            return const Center(
-              child: Text("F I R E B A S E  C U R D"),
+                return GestureDetector(
+                  onTap: () {},
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            title,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Text(note),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
             );
-          },
+          }
+
+          // while snapshot fetching Data showing Loading Indicator
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const LinearProgressIndicator();
+          }
+
+          // if there is no Data then return no Notes
+          if (snapshot.hasError) {
+            return const Center(
+              child: Text("No Notes..."),
+            );
+          } else {
+            return const Center(
+              child: Text("else Condition"),
+            );
+          }
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // firestoreservice.create("Kamesh singh", "Hello");
+        },
+        child: const Icon(
+          Icons.add,
+          color: Colors.black,
         ),
       ),
     );

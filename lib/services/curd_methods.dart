@@ -6,8 +6,19 @@ class FireStoreCurdMethods {
       FirebaseFirestore.instance.collection("notes");
 
   // CREATE: create a new "Note" at FireStore
-  Future<void> addNote({String? title, String? note}) {
-    return notes.add({
+  Future<void> create(String title, String note) {
+    return notes.add(
+      {
+        "title": title,
+        "note": note,
+        "timestamp": Timestamp.now(),
+      },
+    );
+  }
+
+  // UPDATE: updating "Note" at FireStore
+  Future<void> update(String docID, String title, String note) {
+    return notes.doc(docID).update({
       "title": title,
       "note": note,
       "timestamp": Timestamp.now(),
@@ -15,12 +26,13 @@ class FireStoreCurdMethods {
   }
 
   // READ: get notes from FireStore
-  Stream<QuerySnapshot> getNotesStream() {
+  Stream<QuerySnapshot> read() {
     final notesStream = notes.snapshots();
     return notesStream;
   }
 
-  // UPDATE: updating "Note" at FireStore
-
   // DELETE: deleting "Note" at FireStore
+  Future<void> deleteNote(String docID) {
+    return notes.doc(docID).delete();
+  }
 }
