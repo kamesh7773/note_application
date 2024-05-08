@@ -26,128 +26,148 @@ class _AddNotePageState extends State<AddNotePage> {
     super.dispose();
   }
 
+  // ------------------------------------------------------------
+  // Method for adding Note when user clickback button of Android
+  // ------------------------------------------------------------
+  void addingNote1(didPop) async {
+    // if TextEditing Controllar's are not empty
+    if (!didPop &&
+        textEditingController1.text.isNotEmpty &&
+        textEditingController2.text.isNotEmpty) {
+      Future<bool> fuction() async {
+        firestoreservice.addNote(
+          title: textEditingController1.text,
+          note: textEditingController2.text,
+        );
+
+        return true;
+      }
+
+      final result = await fuction();
+      if (result && mounted) {
+        Navigator.of(context).pop();
+      }
+    }
+
+    // if Textediting Controllor's are empty
+    if (!didPop &&
+        textEditingController1.text.isEmpty &&
+        textEditingController2.text.isEmpty) {
+      final result = await showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: const Text("Do you add empty note ?"),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  firestoreservice.addNote(
+                    title: textEditingController1.text,
+                    note: textEditingController2.text,
+                  );
+                  Navigator.of(context).pop(true);
+                },
+                child: const Text("yes", style: TextStyle(color: Colors.black)),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(true);
+                },
+                child: const Text("no", style: TextStyle(color: Colors.black)),
+              ),
+            ],
+          );
+        },
+      );
+      if (result && mounted) {
+        Navigator.of(context).pop();
+      }
+    }
+  }
+
+  // --------------------------------------------------------------------
+  // Method for adding Note when user click arrow back button of AppBar()
+  // --------------------------------------------------------------------
+  void addingNote2() {
+    // If Note Empty
+    if (textEditingController1.text.isEmpty &&
+        textEditingController2.text.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            titlePadding: const EdgeInsets.all(0),
+            title: const Text(""),
+            content: const Text(
+              "Do you want to add empty note ?",
+              style: TextStyle(fontSize: 15),
+            ),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    firestoreservice.addNote(
+                      title: textEditingController1.text,
+                      note: textEditingController2.text,
+                    );
+
+                    // pushing user to HomePage
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    "yes",
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  )),
+              TextButton(
+                onPressed: () {
+                  // pushing user to HomePage
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                },
+                child: Text(
+                  "no",
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              )
+            ],
+          );
+        },
+      );
+    }
+    // If Note is not Empty
+    else {
+      firestoreservice.addNote(
+        title: textEditingController1.text,
+        note: textEditingController2.text,
+      );
+
+      // pushing user to HomePage
+      Navigator.of(context).pop();
+    }
+  }
+
+  // ------------------------
   // Method for removing Note
+  // ------------------------
   void deletingNote() {
     firestoreservice.deleteNote(docID: widget.docID);
-    Navigator.of(context).popAndPushNamed("/HomePage");
+    Navigator.of(context).pop();
   }
 
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      // Add the Note when user Press Back Navigation button of Android
-      onPopInvoked: (didPop)  {
-        // // If Note Empty
-        // if (textEditingController1.text.isEmpty &&
-        //     textEditingController2.text.isEmpty) {
-        //   showDialog(
-        //     context: context,
-        //     builder: (context) {
-        //       return AlertDialog(
-        //         actionsPadding: const EdgeInsets.all(0),
-        //         content: const Text("Do you want to add empty note ?"),
-        //         actions: [
-        //           TextButton(
-        //             onPressed: () {
-        //               firestoreservice.addNote(
-        //                 title: textEditingController1.text,
-        //                 note: textEditingController2.text,
-        //               );
-
-        //               // pushing user to HomePage
-        //               Navigator.of(context).pop();
-        //               Navigator.of(context).pop();
-        //             },
-        //             child: Text(
-        //               "yes",
-        //               style: Theme.of(context).textTheme.bodyMedium,
-        //             ),
-        //           ),
-        //           TextButton(
-        //             onPressed: () {
-        //               // pushing user to HomePage
-        //               Navigator.of(context).pop();
-        //             },
-        //             child: Text(
-        //               "no",
-        //               style: Theme.of(context).textTheme.bodyMedium,
-        //             ),
-        //           )
-        //         ],
-        //       );
-        //     },
-        //   );
-        // }
-        // // If Note is not Empty
-        // else {
-        //   firestoreservice.addNote(
-        //     title: textEditingController1.text,
-        //     note: textEditingController2.text,
-        //   );
-
-        //   // pushing user to HomePage
-        //   Navigator.of(context).pop();
-        // }
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        addingNote1(didPop);
       },
-      canPop: true,
       child: Scaffold(
         appBar: AppBar(
           title: const Text("A D D  P A G E"),
           centerTitle: true,
-          // Add the Note when user Press Back arrow button of AppBar()
           leading: IconButton(
-            onPressed: () {
-              // If Note Empty
-              if (textEditingController1.text.isEmpty &&
-                  textEditingController2.text.isEmpty) {
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      actionsPadding: const EdgeInsets.all(0),
-                      content: const Text("Do you want to add empty note ?"),
-                      actions: [
-                        TextButton(
-                            onPressed: () {
-                              firestoreservice.addNote(
-                                title: textEditingController1.text,
-                                note: textEditingController2.text,
-                              );
-
-                              // pushing user to HomePage
-                              Navigator.of(context).pushNamedAndRemoveUntil(
-                                  "/MainPage", (route) => true);
-                            },
-                            child: Text(
-                              "yes",
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            )),
-                        TextButton(
-                          onPressed: () {
-                            // pushing user to HomePage
-                            Navigator.of(context).pop();
-                          },
-                          child: Text(
-                            "no",
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                        )
-                      ],
-                    );
-                  },
-                );
-              }
-              // If Note is not Empty
-              else {
-                firestoreservice.addNote(
-                  title: textEditingController1.text,
-                  note: textEditingController2.text,
-                );
-
-                // pushing user to HomePage
-                Navigator.of(context).pop();
-              }
-            },
+            // Method for adding note
+            onPressed: addingNote2,
             icon: const Icon(Icons.arrow_back),
           ),
           actions: [

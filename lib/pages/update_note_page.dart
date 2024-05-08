@@ -30,7 +30,7 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
   // Method for removing Note
   void deletingNote() {
     firestoreservice.deleteNote(docID: widget.docID);
-    Navigator.of(context).popAndPushNamed("/HomePage");
+    Navigator.of(context).pop();
   }
 
   @override
@@ -41,11 +41,11 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
     return PopScope(
       // Add the Note when user Press Back Navigation button of Android
       onPopInvoked: (didPop) {
-        firestoreservice.updateNote(
-          docID: widget.docID,
-          title: textEditingController1.text,
-          note: textEditingController2.text,
-        );
+        // firestoreservice.updateNote(
+        //   docID: widget.docID,
+        //   title: textEditingController1.text,
+        //   note: textEditingController2.text,
+        // );
       },
       canPop: true,
       child: Scaffold(
