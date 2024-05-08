@@ -87,7 +87,7 @@ class _HomePageState extends State<HomePage> {
                             Text(
                               title,
                               style: const TextStyle(
-                                fontSize: 22,
+                                fontSize: 19,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -95,7 +95,7 @@ class _HomePageState extends State<HomePage> {
                             Text(
                               note,
                               style: const TextStyle(
-                                fontSize: 16,
+                                fontSize: 15,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
