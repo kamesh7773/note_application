@@ -13,7 +13,7 @@ ThemeData darkMode = ThemeData(
     primary: Colors.grey.shade800,
     secondary: Colors.grey.shade700,
     inversePrimary: Colors.grey.shade300,
-    outline: Colors.yellow,
+    outline: const Color.fromARGB(255, 121, 205, 191),
   ),
   // textTheme Theme
   textTheme: ThemeData.dark().textTheme.apply(
