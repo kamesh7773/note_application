@@ -52,7 +52,8 @@ class _AddNotePageState extends State<AddNotePage> {
     // if Textediting Controllor's are empty
     if (!didPop &&
         textEditingController1.text.isEmpty &&
-        textEditingController2.text.isEmpty) {
+        textEditingController2.text.isEmpty &&
+        mounted) {
       final result = await showDialog(
         context: context,
         builder: (context) {
