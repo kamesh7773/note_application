@@ -27,7 +27,37 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
     super.dispose();
   }
 
+  // ------------------------------------------------------------
+  // Method for adding Note when user clickback button of Android
+  // ------------------------------------------------------------
+  void updatingNote1(didPop) async {
+    if (!didPop) {
+      firestoreservice.updateNote(
+        docID: widget.docID,
+        title: textEditingController1.text,
+        note: textEditingController2.text,
+      );
+
+      Navigator.of(context).pop();
+    }
+  }
+
+  // --------------------------------------------------------------------
+  // Method for adding Note when user click arrow back button of AppBar()
+  // --------------------------------------------------------------------
+  void updatingNote2() {
+    firestoreservice.updateNote(
+      docID: widget.docID,
+      title: textEditingController1.text,
+      note: textEditingController2.text,
+    );
+
+    Navigator.of(context).pop();
+  }
+
+  // ------------------------
   // Method for removing Note
+  // ------------------------
   void deletingNote() {
     firestoreservice.deleteNote(docID: widget.docID);
     Navigator.of(context).pop();
@@ -39,34 +69,21 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
     textEditingController2.text = widget.note!;
 
     return PopScope(
-      // Add the Note when user Press Back Navigation button of Android
+      canPop: false,
       onPopInvoked: (didPop) {
-        // firestoreservice.updateNote(
-        //   docID: widget.docID,
-        //   title: textEditingController1.text,
-        //   note: textEditingController2.text,
-        // );
+        // Updating Note By PopScope()
+        updatingNote1(didPop);
       },
-      canPop: true,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("U P D A T E  P A G E"),
-          centerTitle: true,
           // Add the Note when user Press Back arrow button of AppBar()
           leading: IconButton(
-            onPressed: () {
-              firestoreservice.updateNote(
-                docID: widget.docID,
-                title: textEditingController1.text,
-                note: textEditingController2.text,
-              );
-
-              Navigator.of(context).pop();
-            },
+            onPressed: updatingNote2,
             icon: const Icon(Icons.arrow_back),
           ),
           actions: [
             IconButton(
+              // Updating Note By AppBar() Arrow back button
               onPressed: deletingNote,
               icon: Icon(
                 Icons.delete,
@@ -119,3 +136,16 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
     );
   }
 }
+
+
+
+/* 
+ firestoreservice.updateNote(
+                docID: widget.docID,
+                title: textEditingController1.text,
+                note: textEditingController2.text,
+              );
+
+              Navigator.of(context).pop();
+
+ */
