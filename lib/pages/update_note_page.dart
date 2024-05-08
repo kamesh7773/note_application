@@ -56,11 +56,20 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
   }
 
   // ------------------------
-  // Method for removing Note
+  // Method for deleting Note
   // ------------------------
   void deletingNote() {
     firestoreservice.deleteNote(docID: widget.docID);
     Navigator.of(context).pop();
+    // Showing SnackBar
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        duration: Duration(milliseconds: 800),
+        content: Text(
+          "Note deleted",
+        ),
+      ),
+    );
   }
 
   @override
@@ -100,10 +109,9 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
                 controller: textEditingController1,
                 style: const TextStyle(
                   fontSize: 22,
-                  color: Colors.black,
                   fontWeight: FontWeight.bold,
                 ),
-                cursorColor: Colors.black,
+                cursorColor: Theme.of(context).colorScheme.inversePrimary,
                 decoration: const InputDecoration(
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.symmetric(horizontal: 16),
@@ -116,11 +124,10 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
                   controller: textEditingController2,
                   style: const TextStyle(
                     fontSize: 18,
-                    color: Colors.black,
                   ),
                   maxLines: 100,
                   autofocus: true,
-                  cursorColor: Colors.black,
+                  cursorColor: Theme.of(context).colorScheme.inversePrimary,
                   decoration: const InputDecoration(
                     border: InputBorder.none,
                     contentPadding: EdgeInsets.symmetric(horizontal: 18),
@@ -136,16 +143,3 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
     );
   }
 }
-
-
-
-/* 
- firestoreservice.updateNote(
-                docID: widget.docID,
-                title: textEditingController1.text,
-                note: textEditingController2.text,
-              );
-
-              Navigator.of(context).pop();
-
- */

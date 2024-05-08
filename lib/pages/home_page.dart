@@ -19,7 +19,12 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("N O T E S"),
+        title: const Text(
+          "N  O  T  E  S",
+          style: TextStyle(
+            fontSize: 22,
+          ),
+        ),
       ),
       body: StreamBuilder(
         stream: firestoreservice.read(),
@@ -67,7 +72,9 @@ class _HomePageState extends State<HomePage> {
                   },
                   child: Container(
                     decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black),
+                      border: Border.all(
+                        color: Theme.of(context).colorScheme.outline,
+                      ),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Padding(
@@ -78,12 +85,18 @@ class _HomePageState extends State<HomePage> {
                           Text(
                             title,
                             style: const TextStyle(
-                              fontSize: 16,
+                              fontSize: 22,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           const SizedBox(height: 10),
-                          Text(note),
+                          Text(
+                            note,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -119,9 +132,9 @@ class _HomePageState extends State<HomePage> {
             },
           ));
         },
-        child: const Icon(
+        child: Icon(
           Icons.add,
-          color: Colors.black,
+          color: Theme.of(context).iconTheme.color,
         ),
       ),
     );

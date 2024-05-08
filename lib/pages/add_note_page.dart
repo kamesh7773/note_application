@@ -31,7 +31,25 @@ class _AddNotePageState extends State<AddNotePage> {
   // ------------------------------------------------------------
   void addingNote1(didPop) {
     // if TextFeild's are not empty
-    if (!didPop && textEditingController1.text.isNotEmpty) {
+    if (!didPop &&
+        textEditingController1.text.isNotEmpty &&
+        textEditingController2.text.isNotEmpty) {
+      firestoreservice.addNote(
+        title: textEditingController1.text,
+        note: textEditingController2.text,
+      );
+      Navigator.of(context).pop();
+    }
+    // if TextFeild 1 is Not Empty
+    else if (!didPop && textEditingController1.text.isNotEmpty) {
+      firestoreservice.addNote(
+        title: textEditingController1.text,
+        note: textEditingController2.text,
+      );
+      Navigator.of(context).pop();
+    }
+    // if TextFeild 2 is Not Empty
+    else if (!didPop && textEditingController2.text.isNotEmpty) {
       firestoreservice.addNote(
         title: textEditingController1.text,
         note: textEditingController2.text,
@@ -39,16 +57,7 @@ class _AddNotePageState extends State<AddNotePage> {
       Navigator.of(context).pop();
     }
 
-    // if TextFeild's are not empty
-    if (!didPop && textEditingController2.text.isNotEmpty) {
-      firestoreservice.addNote(
-        title: textEditingController1.text,
-        note: textEditingController2.text,
-      );
-      Navigator.of(context).pop();
-    }
-
-    // if TextFeild's are empty
+    // if TextFeild 1 & TextFeild 2 are empty
     if (!didPop &&
         textEditingController1.text.isEmpty &&
         textEditingController2.text.isEmpty) {
@@ -62,7 +71,9 @@ class _AddNotePageState extends State<AddNotePage> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           duration: Duration(milliseconds: 800),
-          content: Text("Empty note discarded"),
+          content: Text(
+            "Empty note discarded",
+          ),
         ),
       );
     }
@@ -102,11 +113,20 @@ class _AddNotePageState extends State<AddNotePage> {
   }
 
   // ------------------------
-  // Method for removing Note
+  // Method for deleting Note
   // ------------------------
   void deletingNote() {
     firestoreservice.deleteNote(docID: widget.docID);
     Navigator.of(context).pop();
+    // Showing SnackBar
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        duration: Duration(milliseconds: 800),
+        content: Text(
+          "Note deleted",
+        ),
+      ),
+    );
   }
 
   @override
@@ -141,10 +161,9 @@ class _AddNotePageState extends State<AddNotePage> {
                 controller: textEditingController1,
                 style: const TextStyle(
                   fontSize: 22,
-                  color: Colors.black,
                   fontWeight: FontWeight.bold,
                 ),
-                cursorColor: Colors.black,
+                cursorColor: Theme.of(context).colorScheme.inversePrimary,
                 decoration: const InputDecoration(
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.symmetric(horizontal: 16),
@@ -157,11 +176,10 @@ class _AddNotePageState extends State<AddNotePage> {
                   controller: textEditingController2,
                   style: const TextStyle(
                     fontSize: 18,
-                    color: Colors.black,
                   ),
                   maxLines: 100,
                   autofocus: true,
-                  cursorColor: Colors.black,
+                  cursorColor: Theme.of(context).colorScheme.inversePrimary,
                   decoration: const InputDecoration(
                     border: InputBorder.none,
                     contentPadding: EdgeInsets.symmetric(horizontal: 18),
