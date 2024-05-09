@@ -35,6 +35,7 @@ class _HomePageState extends State<HomePage> {
             // Here "snapshot.data!.docs" -> data == Collection & docs == List of Document
             List listOfDocs = snapshot.data!.docs;
 
+            // flutter_staggered_grid_view
             return MasonryGridView.builder(
               itemCount: listOfDocs.length,
               padding: const EdgeInsets.all(8),

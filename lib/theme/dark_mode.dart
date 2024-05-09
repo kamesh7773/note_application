@@ -3,17 +3,15 @@ import 'package:flutter/material.dart';
 ThemeData darkMode = ThemeData(
   brightness: Brightness.dark,
   // Appbar Theme
-  appBarTheme: AppBarTheme(
-    backgroundColor: Colors.grey.shade800,
+  appBarTheme: const AppBarTheme(
+    backgroundColor: Color.fromARGB(255, 26, 26, 26),
     centerTitle: true,
   ),
   // ColorScheme Theme
   colorScheme: ColorScheme.dark(
-    background: Colors.grey.shade800,
-    primary: Colors.grey.shade800,
-    secondary: Colors.grey.shade700,
+    background: const Color.fromARGB(255, 26, 26, 26),
     inversePrimary: Colors.grey.shade300,
-    outline: const Color.fromARGB(255, 121, 205, 191),
+    outline: const Color.fromARGB(255, 116, 117, 117),
   ),
   // textTheme Theme
   textTheme: ThemeData.dark().textTheme.apply(
@@ -26,15 +24,15 @@ ThemeData darkMode = ThemeData(
   ),
   // floatingActionButton Theme
   floatingActionButtonTheme: FloatingActionButtonThemeData(
-    backgroundColor: Colors.grey.shade700,
+    backgroundColor: Colors.grey.shade800,
     elevation: 20,
   ),
   // Icon Theme
   iconTheme: const IconThemeData(color: Colors.white),
   // SnackBar Theme
-  snackBarTheme: SnackBarThemeData(
-    contentTextStyle: const TextStyle(color: Colors.white),
-    backgroundColor: Colors.grey.shade700,
+  snackBarTheme: const SnackBarThemeData(
+    contentTextStyle: TextStyle(color: Colors.white),
+    backgroundColor: Color.fromARGB(255, 40, 40, 40),
   ),
   // progressIndicator Theme
   progressIndicatorTheme: const ProgressIndicatorThemeData(
