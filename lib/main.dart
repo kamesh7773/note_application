@@ -31,11 +31,12 @@ void main() async {
   // checking user is previously login or not.
   bool isLogin = await UserLoginStatus.isUserLogin();
 
-  runApp(const NoteApp());
+  runApp(NoteApp(isLogin: isLogin,));
 }
 
 class NoteApp extends StatelessWidget {
-  const NoteApp({super.key});
+  final bool isLogin;
+  const NoteApp({super.key, required this.isLogin});
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +52,7 @@ class NoteApp extends StatelessWidget {
         theme: lightMode,
         darkTheme: darkMode,
         debugShowCheckedModeBanner: false,
-        home: const LoginPage(),
+        home: isLogin ? const HomePage() : const LoginPage(),
       ),
     );
   }
