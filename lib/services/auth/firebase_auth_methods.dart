@@ -126,14 +126,12 @@ class FirebaseAuthMethod {
               "A network error (such as timeout, interrupted connection or unreachable host) has occurred." &&
           context.mounted) {
         // Navigator.pop(context);
-        Navigator.popUntil(
-            context, ModalRoute.withName("/SignUpPage"));
+        Navigator.popUntil(context, ModalRoute.withName("/SignUpPage"));
         SnackBars.normalSnackBar(context, "Please turn on your Internet");
       } else {
         if (context.mounted) {
           // Navigator.pop(context);
-          Navigator.popUntil(
-              context, ModalRoute.withName("/SignUpPage"));
+          Navigator.popUntil(context, ModalRoute.withName("/SignUpPage"));
           SnackBars.normalSnackBar(context, error.message!);
         }
       }
@@ -200,14 +198,12 @@ class FirebaseAuthMethod {
                   "A network error (such as timeout, interrupted connection or unreachable host) has occurred." &&
               context.mounted) {
             // Navigator.pop(context);
-            Navigator.popUntil(
-                context, ModalRoute.withName("/SignUpPage"));
+            Navigator.popUntil(context, ModalRoute.withName("/SignUpPage"));
             SnackBars.normalSnackBar(context, "Please turn on your Internet");
           } else {
             if (context.mounted) {
               // Navigator.pop(context);
-              Navigator.popUntil(
-                  context, ModalRoute.withName("/SignUpPage"));
+              Navigator.popUntil(context, ModalRoute.withName("/SignUpPage"));
               SnackBars.normalSnackBar(context, error.message!);
             }
           }
@@ -495,6 +491,8 @@ class FirebaseAuthMethod {
         //* 1st this code pop the google signIn/signUp interface/UI like showing google id that is loged in user's devices
         final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
+        ProgressIndicators.showProgressIndicator(context);
+
         //* 2nd When user clicks on the Pop Google Account then this code retirve the GoogleSignInTokenData (accesToken/IdToken)
         final GoogleSignInAuthentication? googleAuth =
             await googleUser?.authentication;
@@ -575,12 +573,13 @@ class FirebaseAuthMethod {
 
           //* 8th After succresfully SingIn redirecting user to HomePage
           if (context.mounted) {
+            ProgressIndicators.showProgressIndicator(context);
             Navigator.of(context).popAndPushNamed("/HomePage");
           }
 
-          // if "userCredential.additionalUserInfo!.isNewUser" is "isNewUser" it's mean user account is not presented on our firebase signin
-          // console it mean's user is being SingIn/SingUp with Google for fisrt time so we can store the information in fireStore "users" collection.
-          // This code used to detected when user login with Google Provider for first time and we can run some kind of logic on in.
+          //? if "userCredential.additionalUserInfo!.isNewUser" is "isNewUser" it's mean user account is not presented on our firebase signin
+          //? console it mean's user is being SingIn/SingUp with Google for fisrt time so we can store the information in fireStore "users" collection.
+          //? This code used to detected when user login with Google Provider for first time and we can run some kind of logic on in.
 
           // if (userCredential.additionalUserInfo!.isNewUser) {}
         }
