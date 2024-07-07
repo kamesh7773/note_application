@@ -5,90 +5,19 @@ import 'package:note_application/helper/internet_checker.dart';
 import 'package:note_application/providers/timer_and_checkmark_provider.dart';
 import 'package:note_application/services/auth/firebase_auth_methods.dart';
 import 'package:note_application/widgets/textformfeild_widget.dart';
-import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
-
-// --------------------------------------------------------------------------------
-// varification page that display to User when their email is verifeid successfully
-// --------------------------------------------------------------------------------
-
-class VerficationCompleted extends StatelessWidget {
-  const VerficationCompleted({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return PopScope(
-      canPop: false,
-      child: Scaffold(
-        body: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Lottie.asset(
-                  'assets/animation/varification_complete.json',
-                  repeat: false,
-                  width: 300,
-                  height: 300,
-                ),
-                const Text(
-                  "Verification Completed\n",
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.center,
-                ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Text(
-                    "Your email verification was successful, your account has been created, and now you can login using your new account.",
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                const SizedBox(height: 80),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context)
-                        .popAndPushNamed("/loginWithEmailPassword");
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 50, vertical: 14),
-                    backgroundColor: const Color.fromARGB(255, 71, 140, 219),
-                    foregroundColor: Colors.black,
-                    elevation: 5,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  child: const Text(
-                    "Continue login",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                )
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-// ---------------------------------
-// Page for forgeting Email password
-// ---------------------------------
-
-// Global Texediting controller for Forgot Password Textfeild so it can also be used by ForgotPasswordHoldPage
-late TextEditingController _forgotPasswordController;
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
 
   @override
-  State<ForgotPasswordPage> createState() =>
-      _ForgotPasswordPageState();
+  State<ForgotPasswordPage> createState() => _ForgotPasswordPageState();
 }
 
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
+  // declaring forgot password controllar
+  TextEditingController _forgotPasswordController = TextEditingController();
+
   // Creating Key for forgot password FormTextFeild()
   final GlobalKey<FormState> forgotpasswordKey = GlobalKey<FormState>();
 

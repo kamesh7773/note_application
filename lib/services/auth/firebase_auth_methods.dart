@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:async';
 import 'package:email_otp_auth/email_otp_auth.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:note_application/pages/auth%20pages/otp_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -91,10 +92,10 @@ class FirebaseAuthMethod {
           }
 
           //* 3rd after sending OTP we redirect the user to the Email OTP PAGE.
-          //*     (we are also sending the fname, lname, userName & password to the OTP Page so when the verifyOTP method gets called then we pass these values to the verifyOTP method because 
-          //*      the verifyOTP Method is also responsible for storing userForm Data in FireStore DB. You will be wondering why we are passing this information to the OTP page then we again 
-          //*      pass this info to verify the OTP method why taking too much hustle? why don't we simply store userForm info into some variable and use them? because we cannot do this when 
-          //*      the verfy otp method gets called from the OTP page FirebaseAUthMethod reinitlized and when we try to store user form data into variables and when we use these variables then 
+          //*     (we are also sending the fname, lname, userName & password to the OTP Page so when the verifyOTP method gets called then we pass these values to the verifyOTP method because
+          //*      the verifyOTP Method is also responsible for storing userForm Data in FireStore DB. You will be wondering why we are passing this information to the OTP page then we again
+          //*      pass this info to verify the OTP method why taking too much hustle? why don't we simply store userForm info into some variable and use them? because we cannot do this when
+          //*      the verfy otp method gets called from the OTP page FirebaseAUthMethod reinitlized and when we try to store user form data into variables and when we use these variables then
           //*      this variable only contains null values.)
           // storeing interent state in veriable
           bool isInternet = await InternetChecker.checkInternet();
@@ -126,13 +127,13 @@ class FirebaseAuthMethod {
           context.mounted) {
         // Navigator.pop(context);
         Navigator.popUntil(
-            context, ModalRoute.withName("/signUpWithEmailPassword"));
+            context, ModalRoute.withName("/SignUpPage"));
         SnackBars.normalSnackBar(context, "Please turn on your Internet");
       } else {
         if (context.mounted) {
           // Navigator.pop(context);
           Navigator.popUntil(
-              context, ModalRoute.withName("/signUpWithEmailPassword"));
+              context, ModalRoute.withName("/SignUpPage"));
           SnackBars.normalSnackBar(context, error.message!);
         }
       }
@@ -187,7 +188,9 @@ class FirebaseAuthMethod {
 
           //* 5th Redircting user to Verification completed Screen.
           if (context.mounted) {
-            Navigator.of(context).pushNamed("/VerficationCompleted");
+            SnackBars.normalSnackBar(
+                context, "Your email account has been created successfully!");
+            Navigator.of(context).popAndPushNamed("/HomePage");
           }
         }
 
@@ -198,13 +201,13 @@ class FirebaseAuthMethod {
               context.mounted) {
             // Navigator.pop(context);
             Navigator.popUntil(
-                context, ModalRoute.withName("/signUpWithEmailPassword"));
+                context, ModalRoute.withName("/SignUpPage"));
             SnackBars.normalSnackBar(context, "Please turn on your Internet");
           } else {
             if (context.mounted) {
               // Navigator.pop(context);
               Navigator.popUntil(
-                  context, ModalRoute.withName("/signUpWithEmailPassword"));
+                  context, ModalRoute.withName("/SignUpPage"));
               SnackBars.normalSnackBar(context, error.message!);
             }
           }
@@ -448,7 +451,7 @@ class FirebaseAuthMethod {
           // creating instace of Shared Preferences.
           final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-          //* 
+          //*
           await prefs.setString("name", userData!["name"]);
           await prefs.setString("userName", userData["userName"]);
           await prefs.setString("email", userData["email"]);
@@ -476,7 +479,7 @@ class FirebaseAuthMethod {
 
         //* 7th After succresfully SingIn redirecting user to HomePage
         if (context.mounted) {
-          Navigator.of(context).pushNamed("/HomePage");
+          Navigator.of(context).popAndPushNamed("/HomePage");
         }
 
         // if "userCredential.additionalUserInfo!.isNewUser" is "isNewUser" it's mean user account is not presented on our firebase signin
@@ -572,7 +575,7 @@ class FirebaseAuthMethod {
 
           //* 8th After succresfully SingIn redirecting user to HomePage
           if (context.mounted) {
-            Navigator.of(context).pushNamed("/HomePage");
+            Navigator.of(context).popAndPushNamed("/HomePage");
           }
 
           // if "userCredential.additionalUserInfo!.isNewUser" is "isNewUser" it's mean user account is not presented on our firebase signin
@@ -599,6 +602,111 @@ class FirebaseAuthMethod {
     }
   }
 
+  // ----------------------------
+  // Method related FaceBook Auth
+  // ----------------------------
+
+  //! Method for Facebook SingIn/SignUp
+  static Future<void> signInwithFacebook(
+      {required BuildContext context}) async {
+    try {
+      //* 1st this code pop the Facebook signIn/signUp page in browser On Android
+      //* and if we are web app then open Pop-Up Facebook signIn/signUp interface/UI In web browser
+      final LoginResult loginResult = await FacebookAuth.instance.login();
+
+      //* 2nd When user get login after entering their login password then this code retirve the FacebookTokenData.
+      final OAuthCredential facebookAuthCredential =
+          FacebookAuthProvider.credential(loginResult.accessToken!.tokenString);
+
+      // if accessToken or idToken null the return nothing.
+      if (loginResult.accessToken == null) {
+        return;
+      }
+      // if accessToken and idToken is not null only then we process to login
+      else {
+        //* 3rd this method singIn the user with credetial
+        final UserCredential userCredentail =
+            await _auth.signInWithCredential(facebookAuthCredential);
+
+        //* 4th stroing user info inside the FireStore "users" collection.
+        // ? Try & catch block for storing user info at Firestore in "users" collections
+        try {
+          // creating "users" collection so we can store user specific user data
+          await _db.collection("users").doc(_auth.currentUser!.uid).set({
+            "name": userCredentail.additionalUserInfo!.profile!["name"],
+            "userName": "empty",
+            "email": userCredentail.additionalUserInfo!.profile!["email"],
+            "phoneNumber": "empty",
+            "imageUrl": userCredentail.additionalUserInfo!.profile!["picture"]
+                ["data"]["url"],
+            "provider": "Facebook",
+            "userID": _auth.currentUser!.uid,
+          }).then((value) {
+            debugPrint("User data saved in Firestore users collection");
+          }).catchError((error) {
+            debugPrint("User data not saved!");
+          });
+
+          // fetching current userId info from "users" collection.
+          final currentUserInfo =
+              await _db.collection("users").doc(_auth.currentUser!.uid).get();
+
+          final userData = currentUserInfo.data();
+
+          // creating instace of Shared Preferences.
+          final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+          //* 5th writing current User info data to SharedPreferences.
+          await prefs.setString("name", userData!["name"]);
+          await prefs.setString("userName", userData["userName"]);
+          await prefs.setString("email", userData["email"]);
+          await prefs.setString("phoneNumber", userData["phoneNumber"]);
+          await prefs.setString("imageUrl", userData["imageUrl"]);
+          await prefs.setString("provider", userData["provider"]);
+          await prefs.setString("userID", userData["userID"]);
+
+          //* 6th setting isLogin to "true"
+          await prefs.setBool('isLogin', true);
+        }
+
+        //? Handling Excetion for Storing user info at FireStore DB.
+        on FirebaseAuthException catch (error) {
+          if (error.message ==
+                  "A network error (such as timeout, interrupted connection or unreachable host) has occurred." &&
+              context.mounted) {
+            SnackBars.normalSnackBar(context, "Please turn on your Internet");
+          } else {
+            if (context.mounted) {
+              SnackBars.normalSnackBar(context, error.message!);
+            }
+          }
+        }
+
+        //* 7th After succresfully SingIn redirecting user to HomePage
+        if (context.mounted) {
+          Navigator.of(context).popAndPushNamed("/HomePage");
+        }
+      }
+    }
+
+    //? Handling Error Related Facebook SignIn/SignUp.
+    on FirebaseAuthException catch (error) {
+      if (error.message ==
+              "A network error (such as timeout, interrupted connection or unreachable host) has occurred." &&
+          context.mounted) {
+        SnackBars.normalSnackBar(context, "Please turn on your Internet");
+      } else if (error.message ==
+              "[firebase_auth/account-exists-with-different-credential] An account already exists with the same email address but different sign-in credentials. Sign in using a provider associated with this email address." &&
+          context.mounted) {
+        SnackBars.normalSnackBar(
+            context, "The email address is already in use by another account.");
+      } else {
+        if (context.mounted) {
+          SnackBars.normalSnackBar(context, error.message!);
+        }
+      }
+    }
+  }
   // ------------------------------------
   // Method related Firebase Auth SingOut
   // ------------------------------------

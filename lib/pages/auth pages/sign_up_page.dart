@@ -269,7 +269,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         const Text("Already have an account? "),
                         GestureDetector(
                           onTap: () {
-                            Navigator.of(context).pushNamed("/LoginPage");
+                            Navigator.of(context).popAndPushNamed("/LoginPage");
                           },
                           child: const Text(
                             "Login Here",

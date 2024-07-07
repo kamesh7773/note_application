@@ -190,17 +190,20 @@ class _LoginPageState extends State<LoginPage> {
                         },
                         child: Card(
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6),
+                            borderRadius: BorderRadius.circular(7),
                           ),
                           elevation: 8,
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(6),
+                            borderRadius: BorderRadius.circular(7),
                             child: BackdropFilter(
                               filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
                               child: Padding(
-                                padding: const EdgeInsets.all(6),
+                                padding: const EdgeInsets.all(7),
                                 child: Image.asset(
-                                    "assets/images/Google_logo.png"),
+                                  "assets/images/Google_logo.png",
+                                  height: 40,
+                                  width: 40,
+                                ),
                               ),
                             ),
                           ),
@@ -209,7 +212,9 @@ class _LoginPageState extends State<LoginPage> {
                       const SizedBox(width: 20),
                       GestureDetector(
                         onTap: () {
-                          FirebaseAuthMethod.signInWithGoogle(context: context);
+                          FirebaseAuthMethod.signInwithFacebook(
+                            context: context,
+                          );
                         },
                         child: Card(
                           shape: RoundedRectangleBorder(
@@ -224,8 +229,8 @@ class _LoginPageState extends State<LoginPage> {
                                 padding: const EdgeInsets.all(8),
                                 child: Image.asset(
                                   "assets/images/Facebook_logo.png",
-                                  height: 45,
-                                  width: 45,
+                                  height: 40,
+                                  width: 40,
                                 ),
                               ),
                             ),
