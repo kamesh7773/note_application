@@ -9,7 +9,7 @@ ThemeData lightMode = ThemeData(
   ),
   // ColorScheme Theme
   colorScheme: ColorScheme.light(
-      background: Colors.grey.shade300,
+      surface: Colors.grey.shade300,
       primary: Colors.grey.shade200,
       secondary: Colors.grey.shade400,
       inversePrimary: Colors.grey.shade800,
@@ -21,6 +21,7 @@ ThemeData lightMode = ThemeData(
       ),
   // TextSelection Theme
   textSelectionTheme: const TextSelectionThemeData(
+    cursorColor: Colors.black,
     selectionColor: Color.fromARGB(255, 166, 213, 235),
   ),
   // floatingActionButton Theme

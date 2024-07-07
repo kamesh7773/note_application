@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:note_application/services/curd_methods.dart';
+import 'package:note_application/services/database/curd_methods.dart';
 
 class UpdateNotePage extends StatefulWidget {
   final String? docID;

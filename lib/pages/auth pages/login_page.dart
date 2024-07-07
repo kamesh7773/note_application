@@ -1,0 +1,267 @@
+import 'dart:ui';
+import 'package:flutter/material.dart';
+import 'package:note_application/helper/form_validators.dart';
+import 'package:note_application/providers/timer_and_checkmark_provider.dart';
+import 'package:note_application/services/auth/firebase_auth_methods.dart';
+import 'package:note_application/widgets/button_widget.dart';
+import 'package:note_application/widgets/textformfeild_widget.dart';
+import 'package:provider/provider.dart';
+
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  // Creating Key for From Widget
+  final GlobalKey<FormState> _loginFormKey = GlobalKey<FormState>();
+
+  // Creating TextEditing Controller's
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  // disposing TextEditingController's
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  // Method for login user
+  void loginUser() {
+    FirebaseAuthMethod.singInWithEmail(
+      email: _emailController.text.trim(),
+      password: _passwordController.text.trim(),
+      context: context,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.surface,
+      ),
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Center(
+          child: SingleChildScrollView(
+            child: Form(
+              key: _loginFormKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Logo
+                  Image.asset(
+                    "assets/images/Notes_logo.png",
+                    height: 80,
+                    width: 100,
+                  ),
+
+                  const SizedBox(height: 60),
+
+                  // app name
+                  const Text(
+                    "Welcome back you've been missed!",
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+
+                  const SizedBox(height: 30),
+
+                  // email textfeild
+                  TextFormFeildWidget(
+                    hintText: "Email",
+                    obscureText: false,
+                    validator: FormValidator.emailValidator,
+                    textEditingController: _emailController,
+                  ),
+
+                  const SizedBox(height: 10),
+
+                  // password textfeild
+                  //! Provider Selector is used
+                  Selector<TimerAndRadioButtonProvider, bool>(
+                    selector: (context, password) => password.showPassword,
+                    builder: (context, value, child) {
+                      return TextFormFeildWidget(
+                        hintText: "Password",
+                        obscureText: value,
+                        suffixIcon: IconButton(
+                          color: Colors.black,
+                          icon: Icon(
+                              value ? Icons.visibility_off : Icons.visibility),
+                          onPressed: () {
+                            context
+                                .read<TimerAndRadioButtonProvider>()
+                                .showPasswordMethod();
+                          },
+                        ),
+                        validator: FormValidator.passwordValidator,
+                        textEditingController: _passwordController,
+                      );
+                    },
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  // forgot password
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          // Sizebox is used to set the alignment of checkbox
+                          SizedBox(
+                            width: 26,
+                            height: 24,
+                            child:
+                                //! Provider Selector is used
+                                Selector<TimerAndRadioButtonProvider, bool>(
+                              selector: (context, raidoValue) =>
+                                  raidoValue.isChecked,
+                              builder:
+                                  (BuildContext context, value, Widget? child) {
+                                return Checkbox(
+                                  value: value,
+                                  onChanged: (value) {
+                                    context
+                                        .read<TimerAndRadioButtonProvider>()
+                                        .isCheckedMethod();
+                                  },
+                                );
+                              },
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          const Text(
+                            "Remember me",
+                            style: TextStyle(fontWeight: FontWeight.w500),
+                          ),
+                        ],
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context)
+                              .pushNamed("/ForgotPasswordPage");
+                        },
+                        child: const Text(
+                          "Forgot Password ?",
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 25),
+
+                  // sign in button
+                  ButtonWidget(
+                    onTap: () {
+                      // Method that call all textfiled validator method
+                      _loginFormKey.currentState!.validate();
+                      // If Form Validation get completed only then call the Login() method
+                      if (_loginFormKey.currentState!.validate()) {
+                        loginUser();
+                      }
+                    },
+                    color: Colors.black,
+                    text: "Sign In",
+                  ),
+
+                  const SizedBox(height: 40),
+
+                  const Text("Or continue with"),
+
+                  const SizedBox(height: 40),
+
+                  // continue with Google or fackbook
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          FirebaseAuthMethod.signInWithGoogle(context: context);
+                        },
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          elevation: 8,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(6),
+                            child: BackdropFilter(
+                              filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+                              child: Padding(
+                                padding: const EdgeInsets.all(6),
+                                child: Image.asset(
+                                    "assets/images/Google_logo.png"),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 20),
+                      GestureDetector(
+                        onTap: () {
+                          FirebaseAuthMethod.signInWithGoogle(context: context);
+                        },
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          elevation: 8,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: BackdropFilter(
+                              filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8),
+                                child: Image.asset(
+                                  "assets/images/Facebook_logo.png",
+                                  height: 45,
+                                  width: 45,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 50),
+
+                  // don't have an account ? Register here
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text("You don't have an account? "),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).popAndPushNamed("/SignUpPage");
+                        },
+                        child: const Text(
+                          "Register Here",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blue,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

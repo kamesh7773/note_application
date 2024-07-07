@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:note_application/pages/add_note_page.dart';
-import 'package:note_application/pages/update_note_page.dart';
-import 'package:note_application/services/curd_methods.dart';
+import 'package:note_application/pages/notes%20pages/add_note_page.dart';
+import 'package:note_application/pages/notes%20pages/update_note_page.dart';
+import 'package:note_application/services/database/curd_methods.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

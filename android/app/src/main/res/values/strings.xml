@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <!-- This file is related to Facebook signIn -->
+   <string name="app_name">note_application</string>
+   <string name="facebook_app_id">974432697808622</string>
+   <string name="fb_login_protocol_scheme">fb974432697808622</string>
+   <string name="facebook_client_token">5200a896ebf2314a795e8041bb873c8c</string>
+</resources>
