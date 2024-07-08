@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:note_application/helper/firebase_auth_error_snackbar.dart';
+import 'package:note_application/helper/snackBar.dart';
 import 'package:note_application/helper/form_validators.dart';
 import 'package:note_application/helper/internet_checker.dart';
 import 'package:note_application/providers/timer_and_checkmark_provider.dart';

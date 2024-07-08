@@ -6,6 +6,7 @@ import 'package:note_application/services/auth/firebase_auth_methods.dart';
 import 'package:note_application/widgets/button_widget.dart';
 import 'package:note_application/widgets/textformfeild_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:color_log/color_log.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -22,6 +23,9 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  // Remember me variable
+  bool remeberMe = false;
+
   // disposing TextEditingController's
   @override
   void dispose() {
@@ -35,6 +39,7 @@ class _LoginPageState extends State<LoginPage> {
     FirebaseAuthMethod.singInWithEmail(
       email: _emailController.text.trim(),
       password: _passwordController.text.trim(),
+      rememberMe: remeberMe,
       context: context,
     );
   }
@@ -129,8 +134,12 @@ class _LoginPageState extends State<LoginPage> {
                               builder:
                                   (BuildContext context, value, Widget? child) {
                                 return Checkbox(
+                                  activeColor: Colors.black,
                                   value: value,
                                   onChanged: (value) {
+                                    //! Remember me varible initlization
+                                    remeberMe = value ?? false;
+
                                     context
                                         .read<TimerAndRadioButtonProvider>()
                                         .isCheckedMethod();

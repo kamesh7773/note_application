@@ -20,6 +20,9 @@
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
   <meta name="description" content="A new Flutter project.">
 
+  <!-- Code for Google SingIn/SignUp & we are pasting the Web client ID (auto created by Google Service) -->
+  <meta name="google-signin-client_id" content="967223384987-pq4fupf3kjcmj7e0gijltgl8be7drdrc.apps.googleusercontent.com">
+
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -31,34 +34,13 @@
 
   <title>note_application</title>
   <link rel="manifest" href="manifest.json">
-
-  <script>
-    // The value below is injected by flutter build, do not touch.
-    const serviceWorkerVersion = null;
-  </script>
-  <!-- This script adds the flutter initialization JS code -->
-  <script src="flutter.js" defer></script>
 </head>
 <body>
-  <script>
-    window.addEventListener('load', function(ev) {
-      // Download main.dart.js
-      _flutter.loader.loadEntrypoint({
-        serviceWorker: {
-          serviceWorkerVersion: serviceWorkerVersion,
-        },
-        onEntrypointLoaded: function(engineInitializer) {
-          engineInitializer.initializeEngine().then(function(appRunner) {
-            appRunner.runApp();
-          });
-        }
-      });
-    });
-  </script>
-
   <!-- Script for fixing the error when we fetch the User Profile Image from our Firestore DB -->
   <script>
     window.flutterWebRenderer = "html";
   </script>
+
+  <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>

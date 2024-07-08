@@ -10,7 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:note_application/helper/internet_checker.dart';
 import 'package:note_application/helper/progress_indicator.dart';
-import 'package:note_application/helper/firebase_auth_error_snackbar.dart';
+import 'package:note_application/helper/snackBar.dart';
 
 class FirebaseAuthMethod {
   // varible related Firebase instance related
@@ -184,6 +184,27 @@ class FirebaseAuthMethod {
             debugPrint("User data not saved!");
           });
 
+          // fetching current userId info from "users" collection.
+          final currentUserInfo =
+              await _db.collection("users").doc(_auth.currentUser!.uid).get();
+
+          final userData = currentUserInfo.data();
+
+          // creating instance of Shared Preferences.
+          final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+          // writing current User info data to SharedPreferences.
+          await prefs.setString("name", userData!["name"]);
+          await prefs.setString("userName", userData["userName"]);
+          await prefs.setString("email", userData["email"]);
+          await prefs.setString("phoneNumber", userData["phoneNumber"]);
+          await prefs.setString("imageUrl", userData["imageUrl"]);
+          await prefs.setString("provider", userData["provider"]);
+          await prefs.setString("userID", userData["userID"]);
+
+          // setting isLogin to "true"
+          await prefs.setBool('isLogin', true);
+
           //* 5th Redircting user to Verification completed Screen.
           if (context.mounted) {
             SnackBars.normalSnackBar(
@@ -264,6 +285,7 @@ class FirebaseAuthMethod {
   static Future<void> singInWithEmail({
     required String email,
     required String password,
+    required bool rememberMe,
     required BuildContext context,
   }) async {
     try {
@@ -292,7 +314,7 @@ class FirebaseAuthMethod {
       await prefs.setString("userID", userData["userID"]);
 
       // setting isLogin to "true"
-      await prefs.setBool('isLogin', true);
+      await prefs.setBool('isLogin', rememberMe);
 
       // After login successfully redirecting user to HomePage
       if (context.mounted) {
@@ -420,6 +442,10 @@ class FirebaseAuthMethod {
         final UserCredential userCredential =
             await _auth.signInWithPopup(googleProvider);
 
+        if (context.mounted) {
+          ProgressIndicators.showProgressIndicator(context);
+        }
+
         //* 4th storing user info inside the FireStore "users" collection.
         // ? Try & catch block for storing user info at Firestore in "users" collections
         try {
@@ -475,6 +501,7 @@ class FirebaseAuthMethod {
 
         //* 7th After succresfully SingIn redirecting user to HomePage
         if (context.mounted) {
+          Navigator.of(context).pop();
           Navigator.of(context).popAndPushNamed("/HomePage");
         }
 
@@ -491,7 +518,9 @@ class FirebaseAuthMethod {
         //* 1st this code pop the google signIn/signUp interface/UI like showing google id that is loged in user's devices
         final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
-        ProgressIndicators.showProgressIndicator(context);
+        if (context.mounted) {
+          ProgressIndicators.showProgressIndicator(context);
+        }
 
         //* 2nd When user clicks on the Pop Google Account then this code retirve the GoogleSignInTokenData (accesToken/IdToken)
         final GoogleSignInAuthentication? googleAuth =
@@ -573,7 +602,7 @@ class FirebaseAuthMethod {
 
           //* 8th After succresfully SingIn redirecting user to HomePage
           if (context.mounted) {
-            ProgressIndicators.showProgressIndicator(context);
+            Navigator.of(context).pop();
             Navigator.of(context).popAndPushNamed("/HomePage");
           }
 
@@ -612,6 +641,8 @@ class FirebaseAuthMethod {
       //* 1st this code pop the Facebook signIn/signUp page in browser On Android
       //* and if we are web app then open Pop-Up Facebook signIn/signUp interface/UI In web browser
       final LoginResult loginResult = await FacebookAuth.instance.login();
+
+      ProgressIndicators.showProgressIndicator(context);
 
       //* 2nd When user get login after entering their login password then this code retirve the FacebookTokenData.
       final OAuthCredential facebookAuthCredential =
@@ -683,6 +714,7 @@ class FirebaseAuthMethod {
 
         //* 7th After succresfully SingIn redirecting user to HomePage
         if (context.mounted) {
+          Navigator.of(context).pop();
           Navigator.of(context).popAndPushNamed("/HomePage");
         }
       }
