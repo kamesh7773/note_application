@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:note_application/pages/auth%20pages/login_page.dart';
+import 'package:note_application/pages/drawer%20pages/drawer.dart';
 import 'package:note_application/pages/notes%20pages/add_note_page.dart';
 import 'package:note_application/pages/notes%20pages/update_note_page.dart';
 import 'package:note_application/services/auth/firebase_auth_methods.dart';
 import 'package:note_application/services/database/curd_methods.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -18,9 +20,20 @@ class _HomePageState extends State<HomePage> {
   // Creating the Instance of Curd Operation class
   FireStoreCurdMethods firestoreservice = FireStoreCurdMethods();
 
+  //! varibles for file data.
+  String? imageUrl;
+
+  //! Method for fetching current Provider user Data
+  Future<void> getUserData() async {
+    // creating instace of Shared Preferences.
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    imageUrl = prefs.getString('imageUrl');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //? AppBar() widget
       appBar: AppBar(
         title: const Text(
           "N  O  T  E  S",
@@ -29,12 +42,35 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         actions: [
+          FutureBuilder(
+            future: getUserData(),
+            builder: (context, snapshot) {
+              // snapshot begin loading
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              // If snapshot has Data
+              else {
+                return GestureDetector(
+                  onTap: () {
+                    Scaffold.of(context).openDrawer();
+                  },
+                  child: CircleAvatar(
+                    radius: 16.0,
+                    backgroundImage: NetworkImage(imageUrl!),
+                  ),
+                );
+              }
+            },
+          ),
           IconButton(
             onPressed: () {
               //! Logout the user from any Logined Firebase Provider.
               FirebaseAuthMethod.singOut(context: context);
 
-              //! pushing user to login Screen of the application.
+              //! pushing user to login Screen of the application.s
               Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(
                   builder: (context) {
@@ -45,9 +81,14 @@ class _HomePageState extends State<HomePage> {
               );
             },
             icon: const Icon(Icons.logout),
-          )
+          ),
         ],
       ),
+      //? Drawer() widget
+      drawer: const Drawer(
+        child: DrawerWidget(),
+      ),
+      //? Body() of App
       body: StreamBuilder(
         stream: firestoreservice.read(),
         builder: (context, snapshot) {

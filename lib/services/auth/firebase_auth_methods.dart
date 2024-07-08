@@ -175,7 +175,7 @@ class FirebaseAuthMethod {
             "email": email,
             "phoneNumber": "empty",
             "imageUrl":
-                "https://img.freepik.com/vektoren-premium/maenner-symbol-trendiger-avatar-charakter-froehliche-glueckliche-menschen-flachbild-vector-illustration-runder-rahmen-maennerportraits-gruppe-team-entzueckende-jungs-isoliert-auf-weissem-hintergrund_275421-281.jpg",
+                "https://p7.hiclipart.com/preview/782/114/405/5bbc3519d674c.jpg",
             "provider": "Email & Password",
             "userID": _auth.currentUser!.uid,
           }).then((value) {

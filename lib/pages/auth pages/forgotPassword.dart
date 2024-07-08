@@ -56,6 +56,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     return PopScope(
       canPop: true,
       child: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.surface,
         body: SafeArea(
           child: Form(
             key: forgotpasswordKey,
@@ -67,7 +68,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   padding: EdgeInsets.all(16.0),
                   child: Text(
                     "Forgot Password",
-                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
                   ),
                 ),
                 const Padding(
@@ -130,8 +135,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                               backgroundColor: context
                                       .read<TimerAndRadioButtonProvider>()
                                       .forgotLinkBtbEnable
-                                  ? Colors.blue
-                                  : const Color.fromARGB(255, 184, 181, 181),
+                                  ? Colors.black
+                                  : const Color.fromARGB(255, 166, 165, 165),
                               foregroundColor: Colors.black,
                               elevation: 5,
                               shape: RoundedRectangleBorder(
