@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:colored_print/colored_print.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -31,6 +34,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
         future: getUserData(),
         builder: (context, snapshot) {
           return ListView(
+            //! Drawer Header
+            padding: EdgeInsets.zero,
             children: [
               UserAccountsDrawerHeader(
                 accountName: Text(
@@ -46,13 +51,53 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 ),
                 decoration: BoxDecoration(
                   color: Colors.grey.shade300,
-                  image: const DecorationImage(
-                    fit: BoxFit.fitWidth,
-                    image: AssetImage("assets/images/Note_background.jpg"),
-                  ),
                 ),
                 currentAccountPictureSize: const Size.fromRadius(30),
-              )
+              ),
+              //! Drawer Menu Item List
+              SizedBox(
+                height: MediaQuery.sizeOf(context).height * 0.8,
+                child: ListView(
+                  //? Used to remove Unwanted Padding from TOP
+                  padding: EdgeInsets.zero,
+                  children: [
+                    Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: -15, sigmaY: -15),
+                        child: GestureDetector(
+                          onTap: () {},
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            child: ListTile(
+                              selected: true,
+                              selectedColor: Colors.blue,
+                              hoverColor: Colors.amber,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              leading: Transform.rotate(
+                                angle: -372.2,
+                                child: const Icon(
+                                  Icons.edit,
+                                  size: 22,
+                                ),
+                              ),
+                              title: const Text(
+                                "Notes",
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           );
         },
@@ -60,3 +105,28 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     );
   }
 }
+
+/* 
+
+ListTile(
+                              selected: true,
+                              selectedColor: Colors.blue,
+                              hoverColor: Colors.amber,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              leading: Transform.rotate(
+                                angle: -372.2,
+                                child: const Icon(
+                                  Icons.edit,
+                                  size: 22,
+                                ),
+                              ),
+                              title: const Text(
+                                "Notes",
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            
+                             */

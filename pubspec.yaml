@@ -48,6 +48,7 @@ dependencies:
   shared_preferences: ^2.2.3
   pinput: ^5.0.0
   email_otp_auth: ^0.0.6
+  colored_print: ^1.0.0
 
   
 
