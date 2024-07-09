@@ -1,12 +1,11 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:note_application/helper/form_validators.dart';
-import 'package:note_application/providers/timer_and_checkmark_provider.dart';
+import 'package:note_application/providers/comman_provider.dart';
 import 'package:note_application/services/auth/firebase_auth_methods.dart';
 import 'package:note_application/widgets/button_widget.dart';
 import 'package:note_application/widgets/textformfeild_widget.dart';
 import 'package:provider/provider.dart';
-import 'package:color_log/color_log.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

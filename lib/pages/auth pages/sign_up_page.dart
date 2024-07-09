@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:note_application/helper/snackBar.dart';
 import 'package:note_application/helper/form_validators.dart';
 import 'package:note_application/pages/auth%20pages/login_page.dart';
-import 'package:note_application/providers/timer_and_checkmark_provider.dart';
+import 'package:note_application/providers/comman_provider.dart';
 import 'package:note_application/services/auth/firebase_auth_methods.dart';
 import 'package:note_application/widgets/button_widget.dart';
 import 'package:note_application/widgets/textformfeild_widget.dart';

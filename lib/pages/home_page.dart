@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:note_application/pages/auth%20pages/login_page.dart';
 import 'package:note_application/pages/drawer%20pages/drawer.dart';
 import 'package:note_application/pages/notes%20pages/add_note_page.dart';
 import 'package:note_application/pages/notes%20pages/update_note_page.dart';
-import 'package:note_application/services/auth/firebase_auth_methods.dart';
 import 'package:note_application/services/database/curd_methods.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -42,6 +40,10 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         actions: [
+          IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.grid_view_rounded),
+          ),
           FutureBuilder(
             future: getUserData(),
             builder: (context, snapshot) {
@@ -57,30 +59,16 @@ class _HomePageState extends State<HomePage> {
                   onTap: () {
                     Scaffold.of(context).openDrawer();
                   },
-                  child: CircleAvatar(
-                    radius: 16.0,
-                    backgroundImage: NetworkImage(imageUrl!),
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 10, bottom: 4),
+                    child: CircleAvatar(
+                      radius: 16.0,
+                      backgroundImage: NetworkImage(imageUrl!),
+                    ),
                   ),
                 );
               }
             },
-          ),
-          IconButton(
-            onPressed: () {
-              //! Logout the user from any Logined Firebase Provider.
-              FirebaseAuthMethod.singOut(context: context);
-
-              //! pushing user to login Screen of the application.s
-              Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(
-                  builder: (context) {
-                    return const LoginPage();
-                  },
-                ),
-                (Route<dynamic> route) => false,
-              );
-            },
-            icon: const Icon(Icons.logout),
           ),
         ],
       ),

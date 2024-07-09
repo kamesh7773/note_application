@@ -6,7 +6,7 @@ import 'package:note_application/pages/auth%20pages/forgotPassword.dart';
 import 'package:note_application/pages/auth%20pages/login_page.dart';
 import 'package:note_application/pages/auth%20pages/sign_up_page.dart';
 import 'package:note_application/pages/home_page.dart';
-import 'package:note_application/providers/timer_and_checkmark_provider.dart';
+import 'package:note_application/providers/comman_provider.dart';
 import 'package:note_application/services/auth/firebase_auth_methods.dart';
 import 'package:note_application/services/firebase/firebase_options.dart';
 import 'package:note_application/theme/dark_mode.dart';

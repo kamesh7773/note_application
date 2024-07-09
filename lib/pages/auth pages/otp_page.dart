@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:note_application/helper/snackBar.dart';
 import 'package:note_application/helper/internet_checker.dart';
-import 'package:note_application/providers/timer_and_checkmark_provider.dart';
+import 'package:note_application/providers/comman_provider.dart';
 import 'package:note_application/services/auth/firebase_auth_methods.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pinput/pinput.dart';
