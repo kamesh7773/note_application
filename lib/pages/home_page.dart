@@ -60,7 +60,8 @@ class _HomePageState extends State<HomePage> {
                     Scaffold.of(context).openDrawer();
                   },
                   child: Padding(
-                    padding: const EdgeInsets.only(right: 10, bottom: 4),
+                    padding:
+                        const EdgeInsets.only(right: 10, left: 4, bottom: 5),
                     child: CircleAvatar(
                       radius: 16.0,
                       backgroundImage: NetworkImage(imageUrl!),
