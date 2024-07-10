@@ -2,8 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:note_application/pages/drawer%20pages/drawer.dart';
+import 'package:note_application/pages/drawer%20page/drawer.dart';
 import 'package:note_application/pages/notes%20pages/add_note_page.dart';
 import 'package:note_application/pages/notes%20pages/update_note_page.dart';
 import 'package:note_application/providers/layout_change_provider.dart';
@@ -53,16 +52,28 @@ class _HomePageState extends State<HomePage> {
                   context.read<LayoutChangeProvider>().changeLayout();
                 },
                 icon: value
-                    ? Transform.rotate(
-                        angle: 20.4,
-                        child: const FaIcon(
-                          FontAwesomeIcons.pause,
-                          size: 26,
+                    ? Padding(
+                        padding: const EdgeInsets.only(top: 2),
+                        child: Transform.rotate(
+                          angle: 20.42,
+                          child: Image.asset(
+                            "assets/images/ListView_logo.png",
+                            fit: BoxFit.contain,
+                            isAntiAlias: true,
+                            width: 28,
+                            cacheWidth: 100,
+                          ),
                         ),
                       )
-                    : const Icon(
-                        Icons.grid_view_rounded,
-                        size: 26,
+                    : Padding(
+                        padding: const EdgeInsets.only(top: 2),
+                        child: Image.asset(
+                          "assets/images/GridView_logo.png",
+                          fit: BoxFit.contain,
+                          isAntiAlias: true,
+                          width: 28,
+                          cacheWidth: 100,
+                        ),
                       ),
               );
             },
@@ -108,7 +119,9 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       //? Drawer() widget
-      drawer: const DrawerWidget(),
+      drawer: const DrawerWidget(
+        iconNumber: 1,
+      ),
       //? Body() of App
       body: StreamBuilder(
         stream: firestoreservice.read(),
