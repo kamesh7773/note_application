@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:note_application/pages/auth%20pages/login_page.dart';
 import 'package:note_application/services/auth/firebase_auth_methods.dart';
@@ -16,7 +17,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   String? name;
   String? email;
   String? imageUrl;
-  int? currentindex;
+  int currentindex = 0;
 
   //! Method for fetching current Provider user Data
   Future<void> getUserData() async {
@@ -51,27 +52,59 @@ class _DrawerWidgetState extends State<DrawerWidget> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          //! Drawer Header
           FutureBuilder(
             future: getUserData(),
             builder: (context, snapshot) {
-              return UserAccountsDrawerHeader(
-                margin: EdgeInsets.zero,
-                accountName: Text(
-                  name ?? "",
-                  style: const TextStyle(fontSize: 20),
+              //! Drawer Header
+              return Container(
+                width: double.infinity,
+                color: Colors.grey.shade300,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 22),
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(left: 18, bottom: 16, top: 20),
+                      child: SizedBox(
+                        width: 70,
+                        height: 70,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(50),
+                          // User Image saction
+                          child: CachedNetworkImage(
+                            imageUrl: imageUrl ??
+                                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQq6gaTf6N93kzolH98ominWZELW881HqCgw&s",
+                            placeholder: (context, url) =>
+                                const CircularProgressIndicator(),
+                            errorWidget: (context, url, error) =>
+                                const Icon(Icons.error),
+                          ),
+                        ),
+                      ),
+                    ),
+                    // User Name
+                    Padding(
+                      padding: const EdgeInsets.only(left: 18, bottom: 0),
+                      child: Text(
+                        name ?? "",
+                        style:
+                            const TextStyle(fontSize: 19, color: Colors.black),
+                      ),
+                    ),
+                    // User Email
+                    Padding(
+                      padding: const EdgeInsets.only(left: 18, bottom: 12),
+                      child: Text(
+                        email ?? "",
+                        style: const TextStyle(fontSize: 15),
+                      ),
+                    ),
+                    const Divider(
+                      height: 0,
+                    )
+                  ],
                 ),
-                accountEmail: Text(email ?? ""),
-                currentAccountPicture: CircleAvatar(
-                  backgroundImage: NetworkImage(
-                    imageUrl ??
-                        "https://www.pikpng.com/pngl/m/80-805068_my-profile-icon-blank-profile-picture-circle-clipart.png",
-                  ),
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade300,
-                ),
-                currentAccountPictureSize: const Size.fromRadius(30),
               );
             },
           ),
@@ -95,10 +128,24 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                       setState(() {
                         currentindex = index;
                       });
+
+                      if (currentindex == 0) {
+                        Navigator.of(context).pop();
+                      }
+                      if (currentindex == 1) {
+                        Navigator.of(context).pushNamed("/TrashPage");
+                      }
+                      if (currentindex == 2) {
+                        Navigator.of(context).pushNamed("/SettingsPage");
+                      }
+                      if (currentindex == 3) {
+                        Navigator.of(context).pushNamed("/HelpAndFeedbackPage");
+                      }
                     },
                     child: ListTile(
-                      selected: currentindex == index ? true : false,
-                      selectedTileColor: Colors.grey.shade300,
+                      tileColor: currentindex == index
+                          ? Colors.grey.shade300
+                          : Colors.white,
                       hoverColor: Colors.grey.shade300,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
@@ -141,17 +188,25 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   (Route<dynamic> route) => false,
                 );
               },
-              child: const Padding(
-                padding: const EdgeInsets.only(left: 20, bottom: 15, top: 15),
-                child: Row(
-                  children: [
-                    Text(
-                      "Logout",
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    SizedBox(width: 20),
-                    Icon(Icons.logout),
-                  ],
+              child: ListTile(
+                selectedTileColor: Colors.grey.shade300,
+                selected: false,
+                hoverColor: Colors.grey.shade300,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                leading: const Icon(
+                  Icons.logout,
+                  size: 24,
+                  color: Colors.black,
+                ),
+                title: const Text(
+                  "Logout",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
                 ),
               ),
             ),

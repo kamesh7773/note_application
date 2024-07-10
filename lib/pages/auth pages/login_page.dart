@@ -1,7 +1,8 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:note_application/helper/form_validators.dart';
-import 'package:note_application/providers/comman_provider.dart';
+import 'package:note_application/providers/otp_timer_provider.dart';
+import 'package:note_application/providers/toggle_provider.dart';
 import 'package:note_application/services/auth/firebase_auth_methods.dart';
 import 'package:note_application/widgets/button_widget.dart';
 import 'package:note_application/widgets/textformfeild_widget.dart';
@@ -91,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
 
                   // password textfeild
                   //! Provider Selector is used
-                  Selector<TimerAndRadioButtonProvider, bool>(
+                  Selector<ToggleProvider, bool>(
                     selector: (context, password) => password.showPassword,
                     builder: (context, value, child) {
                       return TextFormFeildWidget(
@@ -102,9 +103,7 @@ class _LoginPageState extends State<LoginPage> {
                           icon: Icon(
                               value ? Icons.visibility_off : Icons.visibility),
                           onPressed: () {
-                            context
-                                .read<TimerAndRadioButtonProvider>()
-                                .showPasswordMethod();
+                            context.read<ToggleProvider>().showPasswordMethod();
                           },
                         ),
                         validator: FormValidator.passwordValidator,
@@ -127,7 +126,7 @@ class _LoginPageState extends State<LoginPage> {
                             height: 24,
                             child:
                                 //! Provider Selector is used
-                                Selector<TimerAndRadioButtonProvider, bool>(
+                                Selector<ToggleProvider, bool>(
                               selector: (context, raidoValue) =>
                                   raidoValue.isChecked,
                               builder:
@@ -140,7 +139,7 @@ class _LoginPageState extends State<LoginPage> {
                                     remeberMe = value ?? false;
 
                                     context
-                                        .read<TimerAndRadioButtonProvider>()
+                                        .read<ToggleProvider>()
                                         .isCheckedMethod();
                                   },
                                 );

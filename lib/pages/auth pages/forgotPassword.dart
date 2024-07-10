@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:note_application/helper/snackBar.dart';
 import 'package:note_application/helper/form_validators.dart';
 import 'package:note_application/helper/internet_checker.dart';
-import 'package:note_application/providers/comman_provider.dart';
+import 'package:note_application/providers/otp_timer_provider.dart';
 import 'package:note_application/services/auth/firebase_auth_methods.dart';
 import 'package:note_application/widgets/textformfeild_widget.dart';
 import 'package:provider/provider.dart';
@@ -35,8 +35,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     if (result) {
       // Restarting the TImer again & and disabling the OTP resent btn
       if (mounted) {
-        context.read<TimerAndRadioButtonProvider>().startTimer();
-        context.read<TimerAndRadioButtonProvider>().changeForgotLinkBtnValue =
+        context.read<OtpTimerProvider>().startTimer();
+        context.read<OtpTimerProvider>().changeForgotLinkBtnValue =
             false;
       }
     } else {
@@ -56,6 +56,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     return PopScope(
       canPop: true,
       child: Scaffold(
+        appBar: AppBar(),
         backgroundColor: Theme.of(context).colorScheme.surface,
         body: SafeArea(
           child: Form(
@@ -63,7 +64,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 50),
                 const Padding(
                   padding: EdgeInsets.all(16.0),
                   child: Text(
@@ -97,7 +97,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       //! Provider Selector is used
-                      child: Selector<TimerAndRadioButtonProvider, bool>(
+                      child: Selector<OtpTimerProvider, bool>(
                         selector: (context, emailForgotLinkBtn) =>
                             emailForgotLinkBtn.forgotLinkBtbEnable,
                         builder: (context, value, child) {
@@ -119,7 +119,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                 // if Internet connection is avaible
                                 else if (!isInternet && context.mounted) {
                                   if (context
-                                      .read<TimerAndRadioButtonProvider>()
+                                      .read<OtpTimerProvider>()
                                       .forgotLinkBtbEnable) {
                                     resentOTP();
                                   }
@@ -133,7 +133,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                             style: ElevatedButton.styleFrom(
                               minimumSize: const Size(double.infinity, 50),
                               backgroundColor: context
-                                      .read<TimerAndRadioButtonProvider>()
+                                      .read<OtpTimerProvider>()
                                       .forgotLinkBtbEnable
                                   ? Colors.black
                                   : const Color.fromARGB(255, 166, 165, 165),
@@ -147,7 +147,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                               btnText,
                               style: TextStyle(
                                 color: context
-                                        .read<TimerAndRadioButtonProvider>()
+                                        .read<OtpTimerProvider>()
                                         .forgotLinkBtbEnable
                                     ? Colors.white
                                     : Colors.black,
@@ -166,7 +166,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       children: [
                         const Text("Send OTP again in"),
                         //! Provider Selector is used
-                        Selector<TimerAndRadioButtonProvider, Duration>(
+                        Selector<OtpTimerProvider, Duration>(
                           selector: (context, otptimer) => otptimer.duration,
                           builder: (context, duration, child) {
                             return Text(

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
 class LayoutChangeProvider extends ChangeNotifier {
-  bool _gridView = true;
+  bool _isGridView = true;
+
+  bool get isGridView => _isGridView;
 
   void changeLayout() {
-    _gridView = !_gridView;
+    _isGridView = !_isGridView;
     notifyListeners();
   }
 }

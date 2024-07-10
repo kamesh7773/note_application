@@ -6,7 +6,12 @@ import 'package:note_application/pages/auth%20pages/forgotPassword.dart';
 import 'package:note_application/pages/auth%20pages/login_page.dart';
 import 'package:note_application/pages/auth%20pages/sign_up_page.dart';
 import 'package:note_application/pages/home_page.dart';
-import 'package:note_application/providers/comman_provider.dart';
+import 'package:note_application/pages/notes%20pages/help_feedback_page.dart';
+import 'package:note_application/pages/notes%20pages/settings_page.dart';
+import 'package:note_application/pages/notes%20pages/trash_page.dart';
+import 'package:note_application/providers/layout_change_provider.dart';
+import 'package:note_application/providers/otp_timer_provider.dart';
+import 'package:note_application/providers/toggle_provider.dart';
 import 'package:note_application/services/auth/firebase_auth_methods.dart';
 import 'package:note_application/services/firebase/firebase_options.dart';
 import 'package:note_application/theme/dark_mode.dart';
@@ -42,11 +47,24 @@ class NoteApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<TimerAndRadioButtonProvider>(
-      create: (context) => TimerAndRadioButtonProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => OtpTimerProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ToggleProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => LayoutChangeProvider(),
+        ),
+      ],
       child: MaterialApp(
         routes: {
           "/HomePage": (context) => const HomePage(),
+          "/TrashPage": (context) => const TrashPage(),
+          "/SettingsPage": (context) => const SettingsPage(),
+          "/HelpAndFeedbackPage": (context) => const HelpAndFeedbackPage(),
           "/SignUpPage": (context) => const SignUpPage(),
           "/LoginPage": (context) => const LoginPage(),
           "/ForgotPasswordPage": (context) => const ForgotPasswordPage(),

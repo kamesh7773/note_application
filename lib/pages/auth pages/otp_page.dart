@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:note_application/helper/snackBar.dart';
 import 'package:note_application/helper/internet_checker.dart';
-import 'package:note_application/providers/comman_provider.dart';
+import 'package:note_application/providers/otp_timer_provider.dart';
 import 'package:note_application/services/auth/firebase_auth_methods.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pinput/pinput.dart';
@@ -55,8 +55,8 @@ class EmailOtpPageOtpPageState extends State<EmailOtpPage> {
   // resent OTP Method
   void resentOTP() {
     // Restarting the TImer again & and disabling the OTP resent btn
-    context.read<TimerAndRadioButtonProvider>().startTimer();
-    context.read<TimerAndRadioButtonProvider>().changeEmailOtpBtnValue = false;
+    context.read<OtpTimerProvider>().startTimer();
+    context.read<OtpTimerProvider>().changeEmailOtpBtnValue = false;
 
     FirebaseAuthMethod.emailAuthResentOTP(
       email: widget.email,
@@ -67,7 +67,7 @@ class EmailOtpPageOtpPageState extends State<EmailOtpPage> {
   @override
   void initState() {
     super.initState();
-    context.read<TimerAndRadioButtonProvider>().startTimer();
+    context.read<OtpTimerProvider>().startTimer();
   }
 
   @override
@@ -198,7 +198,7 @@ class EmailOtpPageOtpPageState extends State<EmailOtpPage> {
                         children: [
                           const Text("Send OTP again in"),
                           //! Provider Selector is used
-                          Selector<TimerAndRadioButtonProvider, Duration>(
+                          Selector<OtpTimerProvider, Duration>(
                             selector: (context, otptimer) => otptimer.duration,
                             builder: (context, duration, child) {
                               return Text(
@@ -212,7 +212,7 @@ class EmailOtpPageOtpPageState extends State<EmailOtpPage> {
                         ],
                       ),
                       //! Provider Selector is used
-                      Selector<TimerAndRadioButtonProvider, bool>(
+                      Selector<OtpTimerProvider, bool>(
                         selector: (context, otpBtn) =>
                             otpBtn.emailOtpSendBtnEnable,
                         builder: (context, value, child) {

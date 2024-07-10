@@ -50,6 +50,7 @@ dependencies:
   email_otp_auth: ^0.0.6
   colored_print: ^1.0.0
   cached_network_image: ^3.3.1
+  font_awesome_flutter: ^10.7.0
 
 
 dev_dependencies:

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:note_application/helper/snackBar.dart';
 import 'package:note_application/helper/form_validators.dart';
 import 'package:note_application/pages/auth%20pages/login_page.dart';
-import 'package:note_application/providers/comman_provider.dart';
+import 'package:note_application/providers/otp_timer_provider.dart';
+import 'package:note_application/providers/toggle_provider.dart';
 import 'package:note_application/services/auth/firebase_auth_methods.dart';
 import 'package:note_application/widgets/button_widget.dart';
 import 'package:note_application/widgets/textformfeild_widget.dart';
@@ -159,7 +160,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     // password textfeild
                     // ------------------
                     //! Provider Selector is used
-                    Selector<TimerAndRadioButtonProvider, bool>(
+                    Selector<ToggleProvider, bool>(
                       selector: (context, password) => password.showPassword,
                       builder: (context, value, child) {
                         return TextFormFeildWidget(
@@ -173,7 +174,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                     : Icons.visibility),
                             onPressed: () {
                               context
-                                  .read<TimerAndRadioButtonProvider>()
+                                  .read<ToggleProvider>()
                                   .showPasswordMethod();
                             },
                           ),
@@ -192,7 +193,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           width: 26,
                           height: 24,
                           //! Provider Selector is used
-                          child: Selector<TimerAndRadioButtonProvider, bool>(
+                          child: Selector<ToggleProvider, bool>(
                             selector: (context, raidoValue) =>
                                 raidoValue.isChecked,
                             builder:
@@ -202,7 +203,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 value: value,
                                 onChanged: (value) {
                                   context
-                                      .read<TimerAndRadioButtonProvider>()
+                                      .read<ToggleProvider>()
                                       .isCheckedMethod();
                                 },
                               );
@@ -240,9 +241,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
                         // if FormValidation is checked & Privicy Policy checkbox is not checked
                         if (_signUpFormKey.currentState!.validate() &&
-                            !context
-                                .read<TimerAndRadioButtonProvider>()
-                                .isChecked) {
+                            !context.read<ToggleProvider>().isChecked) {
                           SnackBars.normalSnackBar(
                             context,
                             "Please accept the Privicy Policy & Term of use",
@@ -251,9 +250,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
                         // If FormValidation is checked & Privicy Policy checkbox is also checked then only we fire the SignUP method.
                         if (_signUpFormKey.currentState!.validate() &&
-                            context
-                                .read<TimerAndRadioButtonProvider>()
-                                .isChecked) {
+                            context.read<ToggleProvider>().isChecked) {
                           signUpMethod();
                         }
                       },
