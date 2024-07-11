@@ -1,7 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:drag_select_grid_view/drag_select_grid_view.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:multiselect_scope/multiselect_scope.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,134 +11,31 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => GridViewProvider(),
-      child: const MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: HomePage(),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Multiselect Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
+      home: const MyHomePage(),
     );
   }
 }
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  final controller = DragSelectGridViewController();
+class _MyHomePageState extends State<MyHomePage> {
+  //! Controllbar for MultiselectScope widget
+  final MultiselectController _multiselectController = MultiselectController();
 
-  void scheduleRebuild() => setState(() {});
-
-  @override
-  void initState() {
-    super.initState();
-    controller.addListener(scheduleRebuild);
-  }
-
-  @override
-  void dispose() {
-    controller.removeListener(scheduleRebuild);
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final isSelected = controller.value.isSelecting;
-    final text =
-        isSelected ? "${controller.value.amount} Image Selected" : "GRID VIEW";
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(text),
-        centerTitle: true,
-        leading: isSelected
-            ? IconButton(
-                icon: const Icon(Icons.close),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              )
-            : Container(),
-        actions: [
-          isSelected
-              ? IconButton(
-                  icon: const Icon(Icons.delete),
-                  onPressed: () {
-                    var notesQuntity = controller.value.selectedIndexes;
-                    context
-                        .read<GridViewProvider>()
-                        .removeImageUrl(notesQuntity);
-                    Navigator.of(context).pop();
-
-                    if (notesQuntity.length > 1) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text("Notes deleted")));
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text("Note deleted")));
-                    }
-                  })
-              : Container()
-        ],
-      ),
-      body: Selector<GridViewProvider, int>(
-        selector: (context, image) => image.imageUrls.length,
-        builder: (context, value, child) {
-          return DragSelectGridView(
-            gridController: controller,
-            itemCount: value,
-            padding: const EdgeInsets.all(8),
-            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 160,
-            ),
-            itemBuilder: (context, index, selected) {
-              return ContainerWidget(
-                imageUrl: context.read<GridViewProvider>().imageUrls[index],
-                isSelected: selected,
-              );
-            },
-          );
-        },
-      ),
-    );
-  }
-}
-
-class ContainerWidget extends StatelessWidget {
-  final String imageUrl;
-  final bool isSelected;
-  const ContainerWidget({
-    super.key,
-    required this.isSelected,
-    required this.imageUrl,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(2.0),
-      child: Container(
-        decoration: BoxDecoration(
-          border: isSelected
-              ? Border.all(color: Colors.blue, width: 2)
-              : Border.all(),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Center(
-            child: CachedNetworkImage(
-          imageUrl: imageUrl,
-        )),
-      ),
-    );
-  }
-}
-
-class GridViewProvider extends ChangeNotifier {
-  final List<String> imageUrls = [
+  //! List of ImageUrl that we use with GridView
+  List<String> imageUrls = [
     "https://img.icons8.com/?size=48&id=TJX3x8NCUkFN&format=png",
     "https://img.icons8.com/?size=48&id=YCbKhwUNH1pc&format=png",
     "https://img.icons8.com/?size=48&id=PClBimo4GQGJ&format=png",
@@ -155,17 +51,142 @@ class GridViewProvider extends ChangeNotifier {
     "https://img.icons8.com/?size=48&id=qW0hxm9M3J5x&format=png",
   ];
 
-  //! This Method Remove the ImageURL's From List.
-  void removeImageUrl(Set<int> numberOfGridView) {
-    List imageurl = numberOfGridView.toList();
+  //! rebuild the UI Based on item selection.
+  void listener() => setState(() {});
 
-    imageurl.sort((a, b) => b.compareTo(a));
+  @override
+  void initState() {
+    super.initState();
 
-    for (var index in imageurl) {
-      if (index >= 0 && index < imageUrls.length) {
-        imageUrls.removeAt(index);
-        notifyListeners();
-      }
-    }
+    _multiselectController.addListener(listener);
+  }
+
+  @override
+  void dispose() {
+    _multiselectController.addListener(listener);
+    _multiselectController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    //! Getting the value of how many item/items is got selected.
+    final noOfItemSelected = _multiselectController.getSelectedItems();
+
+    return Scaffold(
+      appBar: _multiselectController.selectionAttached
+          ? AppBar(
+              backgroundColor: Colors.deepPurple[200],
+              title: Text("${noOfItemSelected.length} Item is selected"),
+              centerTitle: true,
+              leading: IconButton(
+                  onPressed: () {
+                    _multiselectController.clearSelection();
+                  },
+                  icon: const Icon(Icons.close)),
+              actions: [
+                IconButton(
+                    onPressed: () {
+                      setState(() {
+                        //! This is will return the list of selected Items.
+                        final itemsToRemove = _multiselectController
+                            .getSelectedItems()
+                            .cast<String>();
+
+                        //! This method remove the selected itesm from orignal list and modified the orignal List.
+                        imageUrls = imageUrls
+                            .where(
+                                (element) => !itemsToRemove.contains(element))
+                            .toList();
+
+                        //! This one is just use to clear the selection so when we remove all the items then it will remove the select AppBar() thing.
+                        _multiselectController.clearSelection();
+                      });
+                    },
+                    icon: const Icon(Icons.delete))
+              ],
+            )
+          : AppBar(
+              backgroundColor: Colors.deepPurple[200],
+              title: const Text("MultiSelector"),
+              centerTitle: true,
+              actions: [
+                IconButton(
+                  onPressed: () {
+                    setState(() {});
+                  },
+                  icon: const Icon(Icons.grid_view_rounded),
+                  color: Colors.black,
+                )
+              ],
+            ),
+      body: MultiselectScope<String>(
+        controller: _multiselectController,
+        dataSource: imageUrls,
+        clearSelectionOnPop: true,
+        keepSelectedItemsBetweenUpdates: true,
+        onSelectionChanged: (indexes, items) {
+          debugPrint(
+              'Custom listener invoked! Indexes: $indexes Items: $items');
+          return;
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Expanded(
+                child: GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                  ),
+                  itemCount: imageUrls.length,
+                  itemBuilder: (context, index) {
+                    final controller = MultiselectScope.controllerOf(context);
+
+                    final itemIsSelected = controller.isSelected(index);
+
+                    return GestureDetector(
+                      //! This will select the item when we long press but once item got selected it not work.
+                      onLongPress: () {
+                        if (!controller.selectionAttached) {
+                          controller.select(index);
+                        }
+                      },
+                      //! After one item got selected then onTap method work for select more then 1 items.
+                      onTap: () {
+                        if (controller.selectionAttached) {
+                          controller.select(index);
+                        }
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Padding(
+                          padding: const EdgeInsets.all(2.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: itemIsSelected
+                                  ? Border.all(
+                                      color: Colors.lightBlueAccent, width: 2)
+                                  : Border.all(),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Center(
+                              child: CachedNetworkImage(
+                                imageUrl: imageUrls[index],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
