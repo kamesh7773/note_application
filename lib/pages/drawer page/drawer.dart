@@ -152,13 +152,13 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                       ),
                       leading: const Icon(
                         Icons.edit_outlined,
-                        size: 24,
+                        size: 22,
                         color: Colors.black,
                       ),
                       title: const Text(
                         "Notes",
-                        style: const TextStyle(
-                          fontSize: 20,
+                        style: TextStyle(
+                          fontSize: 19,
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
                         ),
@@ -196,13 +196,13 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                       ),
                       leading: const Icon(
                         Icons.delete_outline,
-                        size: 24,
+                        size: 22,
                         color: Colors.black,
                       ),
                       title: const Text(
                         "Trash",
-                        style: const TextStyle(
-                          fontSize: 20,
+                        style: TextStyle(
+                          fontSize: 19,
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
                         ),
@@ -240,13 +240,13 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                       ),
                       leading: const Icon(
                         Icons.settings_outlined,
-                        size: 24,
+                        size: 22,
                         color: Colors.black,
                       ),
                       title: const Text(
                         "Settings",
-                        style: const TextStyle(
-                          fontSize: 20,
+                        style: TextStyle(
+                          fontSize: 19,
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
                         ),
@@ -284,13 +284,13 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                       ),
                       leading: const Icon(
                         Icons.help_outline_outlined,
-                        size: 24,
+                        size: 22,
                         color: Colors.black,
                       ),
                       title: const Text(
                         "Help & Feedback",
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 19,
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
                         ),
@@ -329,13 +329,13 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 ),
                 leading: const Icon(
                   Icons.logout,
-                  size: 24,
+                  size: 22,
                   color: Colors.black,
                 ),
                 title: const Text(
                   "Logout",
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 19,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
                   ),

@@ -12,9 +12,6 @@ class UpdateNotePage extends StatefulWidget {
 }
 
 class _UpdateNotePageState extends State<UpdateNotePage> {
-  // Creating the Instance of Curd Operation class
-  FireStoreCurdMethods firestoreservice = FireStoreCurdMethods();
-
   // Textfeild Controller's
   TextEditingController textEditingController1 = TextEditingController();
   TextEditingController textEditingController2 = TextEditingController();
@@ -32,7 +29,7 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
   // ------------------------------------------------------------
   void updatingNote1(didPop) async {
     if (!didPop) {
-      firestoreservice.updateNote(
+      FireStoreCurdMethods.updateNote(
         docID: widget.docID,
         title: textEditingController1.text,
         note: textEditingController2.text,
@@ -46,7 +43,7 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
   // Method for adding Note when user click arrow back button of AppBar()
   // --------------------------------------------------------------------
   void updatingNote2() {
-    firestoreservice.updateNote(
+    FireStoreCurdMethods.updateNote(
       docID: widget.docID,
       title: textEditingController1.text,
       note: textEditingController2.text,
@@ -59,7 +56,7 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
   // Method for deleting Note
   // ------------------------
   void deletingNote() {
-    firestoreservice.deleteNote(docID: widget.docID);
+    FireStoreCurdMethods.deleteNote(docID: widget.docID);
     Navigator.of(context).pop();
     // Showing SnackBar
     ScaffoldMessenger.of(context).showSnackBar(

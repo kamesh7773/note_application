@@ -11,9 +11,6 @@ class AddNotePage extends StatefulWidget {
 }
 
 class _AddNotePageState extends State<AddNotePage> {
-  // Creating the Instance of Curd Operation class
-  FireStoreCurdMethods firestoreservice = FireStoreCurdMethods();
-
   // Textfeild Controller's
   TextEditingController textEditingController1 = TextEditingController();
   TextEditingController textEditingController2 = TextEditingController();
@@ -34,7 +31,7 @@ class _AddNotePageState extends State<AddNotePage> {
     if (!didPop &&
         textEditingController1.text.isNotEmpty &&
         textEditingController2.text.isNotEmpty) {
-      firestoreservice.addNote(
+      FireStoreCurdMethods.addNote(
         title: textEditingController1.text,
         note: textEditingController2.text,
       );
@@ -42,7 +39,7 @@ class _AddNotePageState extends State<AddNotePage> {
     }
     // if TextFeild 1 is Not Empty
     else if (!didPop && textEditingController1.text.isNotEmpty) {
-      firestoreservice.addNote(
+      FireStoreCurdMethods.addNote(
         title: textEditingController1.text,
         note: textEditingController2.text,
       );
@@ -50,7 +47,7 @@ class _AddNotePageState extends State<AddNotePage> {
     }
     // if TextFeild 2 is Not Empty
     else if (!didPop && textEditingController2.text.isNotEmpty) {
-      firestoreservice.addNote(
+      FireStoreCurdMethods.addNote(
         title: textEditingController1.text,
         note: textEditingController2.text,
       );
@@ -62,7 +59,7 @@ class _AddNotePageState extends State<AddNotePage> {
         textEditingController1.text.isEmpty &&
         textEditingController2.text.isEmpty) {
       // Deleting Empty Note
-      firestoreservice.deleteNote(docID: widget.docID);
+      FireStoreCurdMethods.deleteNote(docID: widget.docID);
 
       // Poping out from Note Page
       Navigator.of(context).pop();
@@ -86,7 +83,7 @@ class _AddNotePageState extends State<AddNotePage> {
     // if Textfeild's are not empty
     if (textEditingController1.text.isNotEmpty ||
         textEditingController2.text.isNotEmpty) {
-      firestoreservice.addNote(
+      FireStoreCurdMethods.addNote(
         title: textEditingController1.text,
         note: textEditingController2.text,
       );
@@ -97,7 +94,7 @@ class _AddNotePageState extends State<AddNotePage> {
     if (textEditingController1.text.isEmpty &&
         textEditingController2.text.isEmpty) {
       // Deleting Empty Note
-      firestoreservice.deleteNote(docID: widget.docID);
+      FireStoreCurdMethods.deleteNote(docID: widget.docID);
 
       // Poping out from Note Page
       Navigator.of(context).pop();
@@ -116,7 +113,7 @@ class _AddNotePageState extends State<AddNotePage> {
   // Method for deleting Note
   // ------------------------
   void deletingNote() {
-    firestoreservice.deleteNote(docID: widget.docID);
+    FireStoreCurdMethods.deleteNote(docID: widget.docID);
     Navigator.of(context).pop();
     // Showing SnackBar
     ScaffoldMessenger.of(context).showSnackBar(
