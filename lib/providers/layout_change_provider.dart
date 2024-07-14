@@ -3,8 +3,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class LayoutChangeProvider extends ChangeNotifier {
   bool _isGridView = true;
+  final bool _isGridViewForTrash = true;
 
   bool get isGridView => _isGridView;
+  bool get isGridViewForTrash => _isGridViewForTrash;
 
   //! Update the Layout based on User Selection.
   void changeLayout() async {

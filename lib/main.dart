@@ -40,7 +40,7 @@ void main() async {
     isLogin: isLogin,
   ));
 }
-
+  
 class NoteApp extends StatelessWidget {
   final bool isLogin;
   const NoteApp({super.key, required this.isLogin});

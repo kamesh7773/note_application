@@ -101,4 +101,21 @@ class FireStoreCurdMethods {
       throw error.toString();
     }
   }
+
+  //! DELETE: deleting "TrashNote" at FireStore
+  static Future<void> deleteTrashNote({String? docID}) {
+    try {
+      // Reference to a CurrentUserID document in the main collection
+      DocumentReference currentUserID = users.doc(
+        FirebaseAuth.instance.currentUser!.uid.toString(),
+      );
+
+      // Creating Reference of Sub-Collection insdie currentUserID Document.
+      CollectionReference notes = currentUserID.collection('trash');
+
+      return notes.doc(docID).delete();
+    } catch (error) {
+      throw error.toString();
+    }
+  }
 }

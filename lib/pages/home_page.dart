@@ -1,6 +1,3 @@
-import 'dart:convert';
-
-import 'package:colored_print/colored_print.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -30,6 +27,9 @@ class _HomePageState extends State<HomePage> {
   final DragSelectGridViewController controller =
       DragSelectGridViewController();
 
+  //! Create object of SharedPreferences
+  late final SharedPreferences prefs;
+
   //! Set for Notes Document ID's [creating Set because it will be initlized with duplicate same type of document.id's]
   Set<String> documentIdList = {};
 
@@ -46,6 +46,11 @@ class _HomePageState extends State<HomePage> {
     imageUrl = prefs.getString('imageUrl');
   }
 
+  //! ethid for initlized SharedPrefernce Object
+  Future<void> initSharePref() async {
+    prefs = await SharedPreferences.getInstance();
+  }
+
   //! Method that Rebuild the UI Based on the Selection.
   void listener() {
     setState(() {});
@@ -55,6 +60,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     controller.addListener(listener);
+    initSharePref();
   }
 
   @override
@@ -121,8 +127,6 @@ class _HomePageState extends State<HomePage> {
                           } catch (error) {
                             throw error.toString();
                           }
-
-                          ColoredPrint.warning(deletedNotes.toString());
 
                           //! After Moving deleteNotes to Trash we clear our the deletedNotes list[].
                           deletedNotes.clear();
@@ -224,14 +228,15 @@ class _HomePageState extends State<HomePage> {
       body: StreamBuilder(
         stream: FireStoreCurdMethods.read(),
         builder: (context, snapshot) {
+          //! IF SnapShot Has Data.
           if (snapshot.hasData) {
             // Storeing List of Document from Collection
             // Here "snapshot.data!.docs" -> data == Collection & docs == List of Document
             List listOfDocs = snapshot.data!.docs;
 
-            // flutter_staggered_grid_view
             return Selector<LayoutChangeProvider, bool>(
-              selector: (context, isGridView) => isGridView.isGridView,
+              selector: (context, isGridView) =>
+                  prefs.getBool('isGridView') ?? false,
               builder: (context, value, child) {
                 //! If Grid Layout == TRUE (SHOW GRIDVIEW LAYOUT)
                 if (value) {
@@ -380,8 +385,12 @@ class _HomePageState extends State<HomePage> {
                       String title = data['title'];
                       String note = data['note'];
 
+                      //? THIS UNDER CODE IS LOGIC FOR DELETE NOTES WHILE SELECTING MULTIPLE NOTES.
                       //! if Notes are selected then retrive there docID
                       if (controller.value.isSelecting) {
+                        //! It is very imp to clear the documentIdList becuase when we select and again deselecte then deSeleect docID not removed.
+                        documentIdList.clear();
+
                         //! this will return the selected notes number in the form of set() data type.
                         var set = controller.value.selectedIndexes;
 
@@ -390,6 +399,30 @@ class _HomePageState extends State<HomePage> {
                           DocumentSnapshot document = listOfDocs[element];
                           //! Here we are storing selected notes DocId into Declared Set() Data Type. (WE ARE USED SET() DATATYPE BECAUSE THIS METHOD CALLED SEVRAL TIMES AND IF WE USE LIST THEN IT WILL BE FILLED THE LIST WITH DUPLICATE DOCID'S)
                           documentIdList.add(document.id);
+                        }
+                      }
+
+                      // //? THIS UNDER CODE IS LOGIC FOR TRASH NOTES.
+                      if (controller.value.isSelecting) {
+                        //! It is very imp to clear the deletedNotes becuase when we select and again deselecte then deSeleect Notes not removed.
+                        deletedNotes.clear();
+
+                        //! this will return the selected notes number in the form of set() data type.
+                        var list = controller.value.selectedIndexes.toList();
+
+                        for (var element in list) {
+                          DocumentSnapshot document = listOfDocs[element];
+                          // getting Map Data of each Document
+                          Map<String, dynamic> data =
+                              document.data() as Map<String, dynamic>;
+
+                          deletedNotes.add(
+                            {
+                              "title": data['title'],
+                              "note": data['note'],
+                              "timestamp": Timestamp.now().toString(),
+                            },
+                          );
                         }
                       }
 
@@ -455,7 +488,12 @@ class _HomePageState extends State<HomePage> {
 
           // while snapshot fetching Data showing Loading Indicator
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const LinearProgressIndicator();
+            return const LinearProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(
+                  Colors.grey), // Change the color here
+              backgroundColor:
+                  Colors.white, // Optional: Change the background color
+            );
           }
 
           // if there is no Data then return no Notes
