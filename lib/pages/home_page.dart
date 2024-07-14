@@ -235,8 +235,7 @@ class _HomePageState extends State<HomePage> {
             List listOfDocs = snapshot.data!.docs;
 
             return Selector<LayoutChangeProvider, bool>(
-              selector: (context, isGridView) =>
-                  prefs.getBool('isGridView') ?? false,
+              selector: (context, isGridView) => isGridView.isGridView,
               builder: (context, value, child) {
                 //! If Grid Layout == TRUE (SHOW GRIDVIEW LAYOUT)
                 if (value) {
