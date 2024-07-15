@@ -184,9 +184,7 @@ class _LoginPageState extends State<LoginPage> {
                         loginUser();
                       }
                     },
-                    color: Theme.of(context).brightness == Brightness.dark
-                        ? const Color.fromARGB(255, 100, 100, 100)
-                        : Colors.black,
+                    color: Theme.of(context).colorScheme.inversePrimary,
                     text: "Sign In",
                   ),
 

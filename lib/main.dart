@@ -14,8 +14,7 @@ import 'package:note_application/providers/otp_timer_provider.dart';
 import 'package:note_application/providers/toggle_provider.dart';
 import 'package:note_application/services/auth/firebase_auth_methods.dart';
 import 'package:note_application/services/firebase/firebase_options.dart';
-import 'package:note_application/theme/dark_mode.dart';
-import 'package:note_application/theme/light_mode.dart';
+import 'package:note_application/theme/themes.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -70,8 +69,8 @@ class NoteApp extends StatelessWidget {
           "/ForgotPasswordPage": (context) => const ForgotPasswordPage(),
         },
         themeMode: ThemeMode.system,
-        theme: lightMode,
-        darkTheme: darkMode,
+        theme: NoteAppTheme.lightMode,
+        darkTheme: NoteAppTheme.darkMode,
         debugShowCheckedModeBanner: false,
         home: isLogin ? const HomePage() : const LoginPage(),
       ),
