@@ -64,6 +64,9 @@ class _LoginPageState extends State<LoginPage> {
                     "assets/images/Notes_logo.png",
                     height: 80,
                     width: 100,
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black,
                   ),
 
                   const SizedBox(height: 60),
@@ -98,7 +101,9 @@ class _LoginPageState extends State<LoginPage> {
                         hintText: "Password",
                         obscureText: value,
                         suffixIcon: IconButton(
-                          color: Colors.black,
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white
+                              : Colors.black,
                           icon: Icon(
                               value ? Icons.visibility_off : Icons.visibility),
                           onPressed: () {
@@ -131,7 +136,10 @@ class _LoginPageState extends State<LoginPage> {
                               builder:
                                   (BuildContext context, value, Widget? child) {
                                 return Checkbox(
-                                  activeColor: Colors.black,
+                                  activeColor: Theme.of(context).brightness ==
+                                          Brightness.dark
+                                      ? Colors.white
+                                      : Colors.black,
                                   value: value,
                                   onChanged: (value) {
                                     //! Remember me varible initlization
@@ -176,7 +184,9 @@ class _LoginPageState extends State<LoginPage> {
                         loginUser();
                       }
                     },
-                    color: Colors.black,
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? const Color.fromARGB(255, 100, 100, 100)
+                        : Colors.black,
                     text: "Sign In",
                   ),
 
@@ -195,6 +205,9 @@ class _LoginPageState extends State<LoginPage> {
                           FirebaseAuthMethod.signInWithGoogle(context: context);
                         },
                         child: Card(
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? const Color.fromARGB(255, 209, 206, 206)
+                              : Colors.grey.shade300,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(7),
                           ),
@@ -202,7 +215,10 @@ class _LoginPageState extends State<LoginPage> {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(7),
                             child: BackdropFilter(
-                              filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+                              filter: Theme.of(context).brightness ==
+                                      Brightness.dark
+                                  ? ImageFilter.blur(sigmaX: 0, sigmaY: 0)
+                                  : ImageFilter.blur(sigmaX: 15, sigmaY: 15),
                               child: Padding(
                                 padding: const EdgeInsets.all(7),
                                 child: Image.asset(
@@ -223,6 +239,9 @@ class _LoginPageState extends State<LoginPage> {
                           );
                         },
                         child: Card(
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? const Color.fromARGB(255, 209, 206, 206)
+                              : Colors.grey.shade300,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
@@ -230,7 +249,10 @@ class _LoginPageState extends State<LoginPage> {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(8),
                             child: BackdropFilter(
-                              filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+                              filter: Theme.of(context).brightness ==
+                                      Brightness.dark
+                                  ? ImageFilter.blur(sigmaX: 0, sigmaY: 0)
+                                  : ImageFilter.blur(sigmaX: 15, sigmaY: 15),
                               child: Padding(
                                 padding: const EdgeInsets.all(8),
                                 child: Image.asset(

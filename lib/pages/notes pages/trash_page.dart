@@ -7,6 +7,7 @@ import 'package:note_application/pages/home_page.dart';
 import 'package:note_application/providers/layout_change_provider.dart';
 import 'package:note_application/providers/toggle_provider.dart';
 import 'package:note_application/services/database/curd_methods.dart';
+import 'package:note_application/widgets/note_container.dart';
 import 'package:provider/provider.dart';
 
 class TrashPage extends StatefulWidget {
@@ -345,46 +346,10 @@ class _TrashPageState extends State<TrashPage> {
                                   }
                                 }
 
-                                return Padding(
-                                  padding: const EdgeInsets.all(4.0),
-                                  child: Container(
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        width: isSelected ? 2.2 : 1.5,
-                                        color: isSelected
-                                            ? Colors.black
-                                            : Colors.grey.shade800,
-                                      ),
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: SingleChildScrollView(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              title,
-                                              style: const TextStyle(
-                                                fontSize: 19,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            const SizedBox(height: 10),
-                                            Text(
-                                              note,
-                                              style: const TextStyle(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
+                                return NoteContainer(
+                                  isSelected: isSelected,
+                                  title: title,
+                                  note: note,
                                 );
                               },
                             ),
@@ -417,7 +382,7 @@ class _TrashPageState extends State<TrashPage> {
             //! else condition
             else {
               return const Center(
-                child: Text("THis Condition will never execute."),
+                child: Text("This Condition will never execute."),
               );
             }
           },

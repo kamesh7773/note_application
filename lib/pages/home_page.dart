@@ -6,6 +6,7 @@ import 'package:note_application/pages/notes%20pages/add_note_page.dart';
 import 'package:note_application/pages/notes%20pages/update_note_page.dart';
 import 'package:note_application/providers/layout_change_provider.dart';
 import 'package:note_application/services/database/curd_methods.dart';
+import 'package:note_application/widgets/note_container.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -262,15 +263,15 @@ class _HomePageState extends State<HomePage> {
                       String note = data['note'];
 
                       //? THIS UNDER CODE IS LOGIC FOR DELETE NOTES WHILE SELECTING MULTIPLE NOTES.
-                      //! if Notes are selected then retrive there docID
+                      // if Notes are selected then retrive there docID
                       if (controller.value.isSelecting) {
-                        //! It is very imp to clear the documentIdList becuase when we select and again deselecte then deSeleect docID not removed.
+                        // It is very imp to clear the documentIdList becuase when we select and again deselecte then deSeleect docID not removed.
                         documentIdList.clear();
 
-                        //! this will return the selected notes number in the form of set() data type.
+                        // this will return the selected notes number in the form of set() data type.
                         var set = controller.value.selectedIndexes;
 
-                        //! Storing List of Selected Notes docID into Set()
+                        // Storing List of Selected Notes docID into Set()
                         for (var element in set) {
                           DocumentSnapshot document = listOfDocs[element];
                           //! Here we are storing selected notes DocId into Declared Set() Data Type. (WE ARE USED SET() DATATYPE BECAUSE THIS METHOD CALLED SEVRAL TIMES AND IF WE USE LIST THEN IT WILL BE FILLED THE LIST WITH DUPLICATE DOCID'S)
@@ -280,10 +281,10 @@ class _HomePageState extends State<HomePage> {
 
                       // //? THIS UNDER CODE IS LOGIC FOR TRASH NOTES.
                       if (controller.value.isSelecting) {
-                        //! It is very imp to clear the deletedNotes becuase when we select and again deselecte then deSeleect Notes not removed.
+                        // It is very imp to clear the deletedNotes becuase when we select and again deselecte then deSeleect Notes not removed.
                         deletedNotes.clear();
 
-                        //! this will return the selected notes number in the form of set() data type.
+                        // this will return the selected notes number in the form of set() data type.
                         var list = controller.value.selectedIndexes.toList();
 
                         for (var element in list) {
@@ -314,45 +315,10 @@ class _HomePageState extends State<HomePage> {
                             },
                           ));
                         },
-                        child: Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                width: isSelected ? 2.2 : 1.5,
-                                color: isSelected
-                                    ? Colors.black
-                                    : Colors.grey.shade800,
-                              ),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      title,
-                                      style: const TextStyle(
-                                        fontSize: 19,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Text(
-                                      note,
-                                      style: const TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
+                        child: NoteContainer(
+                          isSelected: isSelected,
+                          title: title,
+                          note: note,
                         ),
                       );
                     },
@@ -385,28 +351,28 @@ class _HomePageState extends State<HomePage> {
                       String note = data['note'];
 
                       //? THIS UNDER CODE IS LOGIC FOR DELETE NOTES WHILE SELECTING MULTIPLE NOTES.
-                      //! if Notes are selected then retrive there docID
+                      // if Notes are selected then retrive there docID
                       if (controller.value.isSelecting) {
-                        //! It is very imp to clear the documentIdList becuase when we select and again deselecte then deSeleect docID not removed.
+                        // It is very imp to clear the documentIdList becuase when we select and again deselecte then deSeleect docID not removed.
                         documentIdList.clear();
 
-                        //! this will return the selected notes number in the form of set() data type.
+                        // this will return the selected notes number in the form of set() data type.
                         var set = controller.value.selectedIndexes;
 
-                        //! Storing List of Selected Notes docID into Set()
+                        // Storing List of Selected Notes docID into Set()
                         for (var element in set) {
                           DocumentSnapshot document = listOfDocs[element];
-                          //! Here we are storing selected notes DocId into Declared Set() Data Type. (WE ARE USED SET() DATATYPE BECAUSE THIS METHOD CALLED SEVRAL TIMES AND IF WE USE LIST THEN IT WILL BE FILLED THE LIST WITH DUPLICATE DOCID'S)
+                          // Here we are storing selected notes DocId into Declared Set() Data Type. (WE ARE USED SET() DATATYPE BECAUSE THIS METHOD CALLED SEVRAL TIMES AND IF WE USE LIST THEN IT WILL BE FILLED THE LIST WITH DUPLICATE DOCID'S)
                           documentIdList.add(document.id);
                         }
                       }
 
                       // //? THIS UNDER CODE IS LOGIC FOR TRASH NOTES.
                       if (controller.value.isSelecting) {
-                        //! It is very imp to clear the deletedNotes becuase when we select and again deselecte then deSeleect Notes not removed.
+                        // It is very imp to clear the deletedNotes becuase when we select and again deselecte then deSeleect Notes not removed.
                         deletedNotes.clear();
 
-                        //! this will return the selected notes number in the form of set() data type.
+                        // this will return the selected notes number in the form of set() data type.
                         var list = controller.value.selectedIndexes.toList();
 
                         for (var element in list) {
@@ -437,45 +403,10 @@ class _HomePageState extends State<HomePage> {
                             },
                           ));
                         },
-                        child: Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                width: isSelected ? 2.2 : 1.5,
-                                color: isSelected
-                                    ? Colors.black
-                                    : Colors.grey.shade800,
-                              ),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      title,
-                                      style: const TextStyle(
-                                        fontSize: 19,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Text(
-                                      note,
-                                      style: const TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
+                        child: NoteContainer(
+                          isSelected: isSelected,
+                          title: title,
+                          note: note,
                         ),
                       );
                     },

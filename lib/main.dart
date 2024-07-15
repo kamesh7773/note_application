@@ -40,7 +40,7 @@ void main() async {
     isLogin: isLogin,
   ));
 }
-  
+
 class NoteApp extends StatelessWidget {
   final bool isLogin;
   const NoteApp({super.key, required this.isLogin});
@@ -69,6 +69,7 @@ class NoteApp extends StatelessWidget {
           "/LoginPage": (context) => const LoginPage(),
           "/ForgotPasswordPage": (context) => const ForgotPasswordPage(),
         },
+        themeMode: ThemeMode.system,
         theme: lightMode,
         darkTheme: darkMode,
         debugShowCheckedModeBanner: false,

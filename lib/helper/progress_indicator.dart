@@ -11,7 +11,9 @@ class ProgressIndicators {
           canPop: true, // Please set this to false once you debug your code
           child: Center(
             child: LoadingAnimationWidget.prograssiveDots(
-              color: Colors.black,
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.grey.shade300
+                  : Colors.black,
               size: 50,
             ),
           ),
