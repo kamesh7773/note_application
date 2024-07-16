@@ -5,11 +5,14 @@ class ButtonWidget extends StatelessWidget {
 
   final String text;
   final Color color;
+  final Color? textColor;
+
   const ButtonWidget({
     super.key,
     required this.onTap,
     required this.text,
     required this.color,
+    this.textColor,
   });
 
   @override
@@ -27,8 +30,8 @@ class ButtonWidget extends StatelessWidget {
         child: Center(
           child: Text(
             text,
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: textColor ?? Colors.white,
               fontSize: 17,
             ),
           ),

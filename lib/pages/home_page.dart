@@ -1,11 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/widgets.dart';
 import 'package:note_application/pages/drawer%20page/drawer.dart';
 import 'package:note_application/pages/notes%20pages/add_note_page.dart';
 import 'package:note_application/pages/notes%20pages/update_note_page.dart';
 import 'package:note_application/providers/layout_change_provider.dart';
 import 'package:note_application/services/database/curd_methods.dart';
+import 'package:note_application/theme/Extensions/my_colors.dart';
 import 'package:note_application/widgets/note_container.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,10 +18,10 @@ class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomePage> createState() => Getting();
 }
 
-class _HomePageState extends State<HomePage> {
+class Getting extends State<HomePage> {
   //! Geting FireStore Collection
   final CollectionReference users =
       FirebaseFirestore.instance.collection("users");
@@ -72,6 +74,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    //! Access Theme Extension Colors.
+    final myColors = Theme.of(context).extension<MyColors>();
+
     //! Notes are selected or not Selected.
     final isSelected = controller.value.isSelecting;
     int selectedItems = controller.value.amount;
@@ -167,6 +172,7 @@ class _HomePageState extends State<HomePage> {
                                   isAntiAlias: true,
                                   width: 28,
                                   cacheWidth: 100,
+                                  color: myColors!.commanColor,
                                 ),
                               ),
                             )
@@ -178,6 +184,7 @@ class _HomePageState extends State<HomePage> {
                                 isAntiAlias: true,
                                 width: 28,
                                 cacheWidth: 100,
+                                color: myColors!.commanColor,
                               ),
                             ),
                     );
@@ -188,8 +195,8 @@ class _HomePageState extends State<HomePage> {
                   builder: (context, snapshot) {
                     // snapshot begin loading
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
+                      return Center(
+                        child: Container(),
                       );
                     }
                     // If snapshot has Data

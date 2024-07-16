@@ -6,6 +6,7 @@ import 'package:note_application/pages/notes%20pages/help_feedback_page.dart';
 import 'package:note_application/pages/notes%20pages/settings_page.dart';
 import 'package:note_application/pages/notes%20pages/trash_page.dart';
 import 'package:note_application/services/auth/firebase_auth_methods.dart';
+import 'package:note_application/theme/Extensions/my_colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DrawerWidget extends StatefulWidget {
@@ -39,6 +40,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
 
   @override
   Widget build(BuildContext context) {
+    //! Access Theme Extension Colors.
+    final myColors = Theme.of(context).extension<MyColors>();
+
     //! Finalizting which Menulist Item is active or which one is disable
     if (widget.iconNumber == 1) {
       notes = true;
@@ -54,7 +58,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     }
 
     return Drawer(
-      backgroundColor: Colors.white,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -62,9 +65,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             future: getUserData(),
             builder: (context, snapshot) {
               //! Drawer Header
-              return Container(
+              return SizedBox(
                 width: double.infinity,
-                color: Colors.grey.shade300,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -94,8 +96,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                       padding: const EdgeInsets.only(left: 18, bottom: 0),
                       child: Text(
                         name ?? "",
-                        style:
-                            const TextStyle(fontSize: 19, color: Colors.black),
+                        style: const TextStyle(fontSize: 19),
                       ),
                     ),
                     // User Email
@@ -124,7 +125,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(
-                    vertical: 8,
+                    vertical: 14,
                     horizontal: 6,
                   ),
                   child: InkWell(
@@ -145,22 +146,22 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     },
                     child: ListTile(
                       selected: notes,
-                      selectedTileColor: Colors.grey.shade300,
+                      selectedTileColor: myColors!.drawerListTileColor,
                       hoverColor: Colors.grey.shade300,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
                       ),
-                      leading: const Icon(
+                      leading: Icon(
                         Icons.edit_outlined,
                         size: 22,
-                        color: Colors.black,
+                        color: notes ? Colors.black : myColors.commanColor!,
                       ),
-                      title: const Text(
+                      title: Text(
                         "Notes",
                         style: TextStyle(
                           fontSize: 19,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black,
+                          color: notes ? Colors.black : myColors.commanColor!,
                         ),
                       ),
                     ),
@@ -189,22 +190,22 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     },
                     child: ListTile(
                       selected: trash,
-                      selectedTileColor: Colors.grey.shade300,
+                      selectedTileColor: myColors.drawerListTileColor,
                       hoverColor: Colors.grey.shade300,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
                       ),
-                      leading: const Icon(
+                      leading: Icon(
                         Icons.delete_outline,
                         size: 22,
-                        color: Colors.black,
+                        color: trash ? Colors.black : myColors.commanColor!,
                       ),
-                      title: const Text(
+                      title: Text(
                         "Trash",
                         style: TextStyle(
                           fontSize: 19,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black,
+                          color: trash ? Colors.black : myColors.commanColor!,
                         ),
                       ),
                     ),
@@ -233,22 +234,23 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     },
                     child: ListTile(
                       selected: settings,
-                      selectedTileColor: Colors.grey.shade300,
+                      selectedTileColor: myColors.drawerListTileColor,
                       hoverColor: Colors.grey.shade300,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
                       ),
-                      leading: const Icon(
+                      leading: Icon(
                         Icons.settings_outlined,
                         size: 22,
-                        color: Colors.black,
+                        color: settings ? Colors.black : myColors.commanColor!,
                       ),
-                      title: const Text(
+                      title: Text(
                         "Settings",
                         style: TextStyle(
                           fontSize: 19,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black,
+                          color:
+                              settings ? Colors.black : myColors.commanColor!,
                         ),
                       ),
                     ),
@@ -277,22 +279,26 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     },
                     child: ListTile(
                       selected: helpAndFeedback,
-                      selectedTileColor: Colors.grey.shade300,
+                      selectedTileColor: myColors.drawerListTileColor,
                       hoverColor: Colors.grey.shade300,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
                       ),
-                      leading: const Icon(
+                      leading: Icon(
                         Icons.help_outline_outlined,
                         size: 22,
-                        color: Colors.black,
+                        color: helpAndFeedback
+                            ? Colors.black
+                            : myColors.commanColor!,
                       ),
-                      title: const Text(
+                      title: Text(
                         "Help & Feedback",
                         style: TextStyle(
                           fontSize: 19,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black,
+                          color: helpAndFeedback
+                              ? Colors.black
+                              : myColors.commanColor!,
                         ),
                       ),
                     ),
@@ -321,7 +327,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 );
               },
               child: ListTile(
-                selectedTileColor: Colors.grey.shade300,
                 selected: false,
                 hoverColor: Colors.grey.shade300,
                 shape: RoundedRectangleBorder(
@@ -329,15 +334,12 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 ),
                 leading: const Icon(
                   Icons.logout,
-                  size: 22,
-                  color: Colors.black,
                 ),
                 title: const Text(
                   "Logout",
                   style: TextStyle(
                     fontSize: 19,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black,
                   ),
                 ),
               ),

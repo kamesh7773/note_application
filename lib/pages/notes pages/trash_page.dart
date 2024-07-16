@@ -7,6 +7,7 @@ import 'package:note_application/pages/home_page.dart';
 import 'package:note_application/providers/layout_change_provider.dart';
 import 'package:note_application/providers/toggle_provider.dart';
 import 'package:note_application/services/database/curd_methods.dart';
+import 'package:note_application/theme/Extensions/my_colors.dart';
 import 'package:note_application/widgets/note_container.dart';
 import 'package:provider/provider.dart';
 
@@ -51,6 +52,9 @@ class _TrashPageState extends State<TrashPage> {
 
   @override
   Widget build(BuildContext context) {
+    //! Access Theme Extension Colors.
+    final myColors = Theme.of(context).extension<MyColors>();
+
     //! Notes are selected or not Selected.
     final isSelected = controller.value.isSelecting;
     int selectedItems = controller.value.amount;
@@ -183,6 +187,7 @@ class _TrashPageState extends State<TrashPage> {
                         "assets/images/Trash.png",
                         width: 150,
                         fit: BoxFit.contain,
+                        color: myColors!.commanColor,
                       ),
                       const SizedBox(height: 40),
                       const Text(
@@ -217,11 +222,10 @@ class _TrashPageState extends State<TrashPage> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text(
+                                            const Text(
                                               "Notes auto-delete after 7 days.",
                                               style: TextStyle(
                                                 fontSize: 16,
-                                                color: Colors.grey.shade700,
                                               ),
                                             ),
                                             IconButton(
@@ -233,8 +237,6 @@ class _TrashPageState extends State<TrashPage> {
                                               },
                                               icon: const Icon(
                                                 Icons.close,
-                                                color: Color.fromARGB(
-                                                    255, 71, 71, 71),
                                               ),
                                             )
                                           ],
@@ -254,11 +256,10 @@ class _TrashPageState extends State<TrashPage> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text(
+                                            const Text(
                                               "Long press to select notes.",
                                               style: TextStyle(
                                                 fontSize: 16,
-                                                color: Colors.grey.shade700,
                                               ),
                                             ),
                                             IconButton(
@@ -270,8 +271,6 @@ class _TrashPageState extends State<TrashPage> {
                                               },
                                               icon: const Icon(
                                                 Icons.close,
-                                                color: Color.fromARGB(
-                                                    255, 71, 71, 71),
                                               ),
                                             )
                                           ],

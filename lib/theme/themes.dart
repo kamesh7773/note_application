@@ -4,7 +4,10 @@ import 'package:note_application/theme/Extensions/my_colors.dart';
 class NoteAppTheme {
   NoteAppTheme._();
 
+  //? ----------------
   //? LIGHT MODE THEME
+  //? ----------------
+
   static final ThemeData lightMode = ThemeData(
     brightness: Brightness.light,
     fontFamily: "Lato",
@@ -97,13 +100,16 @@ class NoteAppTheme {
     ),
   );
 
+  //? ---------------
   //? DARK MODE THEME
+  //? ---------------
+
   static final ThemeData darkMode = ThemeData(
     brightness: Brightness.dark,
     fontFamily: "Lato",
 
     //! Extension's
-    extensions: const <ThemeExtension<dynamic>>[
+    extensions: <ThemeExtension<dynamic>>[
       MyColors.dark,
     ],
 

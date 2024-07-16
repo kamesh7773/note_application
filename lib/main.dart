@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'package:note_application/pages/auth%20pages/forgotPassword.dart';
+import 'package:note_application/pages/auth%20pages/forgot_password.dart';
 import 'package:note_application/pages/auth%20pages/login_page.dart';
 import 'package:note_application/pages/auth%20pages/sign_up_page.dart';
 import 'package:note_application/pages/home_page.dart';
@@ -11,6 +11,7 @@ import 'package:note_application/pages/notes%20pages/settings_page.dart';
 import 'package:note_application/pages/notes%20pages/trash_page.dart';
 import 'package:note_application/providers/layout_change_provider.dart';
 import 'package:note_application/providers/otp_timer_provider.dart';
+import 'package:note_application/providers/theme_provider.dart';
 import 'package:note_application/providers/toggle_provider.dart';
 import 'package:note_application/services/auth/firebase_auth_methods.dart';
 import 'package:note_application/services/firebase/firebase_options.dart';
@@ -56,6 +57,9 @@ class NoteApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => LayoutChangeProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ThemeProvider(),
         ),
       ],
       child: MaterialApp(

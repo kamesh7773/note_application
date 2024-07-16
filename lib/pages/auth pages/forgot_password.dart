@@ -4,6 +4,8 @@ import 'package:note_application/helper/form_validators.dart';
 import 'package:note_application/helper/internet_checker.dart';
 import 'package:note_application/providers/otp_timer_provider.dart';
 import 'package:note_application/services/auth/firebase_auth_methods.dart';
+import 'package:note_application/theme/Extensions/my_colors.dart';
+import 'package:note_application/widgets/button_widget.dart';
 import 'package:note_application/widgets/textformfeild_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -52,6 +54,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
 
   @override
   Widget build(BuildContext context) {
+    //! Access Theme Extension Colors.
+    final myColors = Theme.of(context).extension<MyColors>();
+
     return PopScope(
       canPop: true,
       child: Scaffold(
@@ -99,9 +104,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         selector: (context, emailForgotLinkBtn) =>
                             emailForgotLinkBtn.forgotLinkBtbEnable,
                         builder: (context, value, child) {
-                          return ElevatedButton(
-                            // Method that call resent OTP
-                            onPressed: () async {
+                          return ButtonWidget(
+                            onTap: () async {
                               // storeing interent state in veriable
                               bool isInternet =
                                   await InternetChecker.checkInternet();
@@ -128,29 +132,17 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                 }
                               }
                             },
-                            style: ElevatedButton.styleFrom(
-                              minimumSize: const Size(double.infinity, 50),
-                              backgroundColor: context
-                                      .read<OtpTimerProvider>()
-                                      .forgotLinkBtbEnable
-                                  ? Colors.black
-                                  : const Color.fromARGB(255, 166, 165, 165),
-                              foregroundColor: Colors.black,
-                              elevation: 5,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                            child: Text(
-                              btnText,
-                              style: TextStyle(
-                                color: context
-                                        .read<OtpTimerProvider>()
-                                        .forgotLinkBtbEnable
-                                    ? Colors.white
-                                    : Colors.black,
-                              ),
-                            ),
+                            color: context
+                                    .read<OtpTimerProvider>()
+                                    .forgotLinkBtbEnable
+                                ? myColors!.buttonColor!
+                                : Theme.of(context).splashColor,
+                            text: "Send Forgot Password Link",
+                            textColor: context
+                                    .read<OtpTimerProvider>()
+                                    .forgotLinkBtbEnable
+                                ? Colors.white
+                                : const Color.fromARGB(255, 115, 114, 114),
                           );
                         },
                       )),

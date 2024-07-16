@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:note_application/pages/drawer%20page/drawer.dart';
 import 'package:note_application/pages/home_page.dart';
+import 'package:note_application/providers/theme_provider.dart';
+import 'package:note_application/theme/Extensions/my_colors.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -12,9 +15,6 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  //! Theme Mode BTN
-  bool _isDark = false;
-
   //! Method that Launch URL's.
   Future<void> _launchURL(Uri uri, bool inApp) async {
     try {
@@ -38,6 +38,9 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
+    //! Access Theme Extension Colors.
+    final myColors = Theme.of(context).extension<MyColors>();
+
     return PopScope(
       canPop: false,
       onPopInvoked: (value) {
@@ -94,16 +97,19 @@ class _SettingsPageState extends State<SettingsPage> {
                               ],
                             ),
                           ),
-                          Switch(
-                            activeColor: Colors.white,
-                            activeTrackColor: Colors.black,
-                            inactiveTrackColor: Colors.white,
-                            inactiveThumbColor: Colors.black,
-                            value: _isDark,
-                            onChanged: (value) {
-                              setState(() {
-                                _isDark = !_isDark;
-                              });
+                          Selector<ThemeProvider, bool>(
+                            selector: (context, theme) => theme.isDark,
+                            builder: (context, value, child) {
+                              return Switch(
+                                activeColor: Colors.white,
+                                activeTrackColor: Colors.black,
+                                inactiveTrackColor: Colors.white,
+                                inactiveThumbColor: Colors.black,
+                                value: value,
+                                onChanged: (value) {
+                                  context.read<ThemeProvider>().changeTheme();
+                                },
+                              );
                             },
                           )
                         ],
@@ -237,7 +243,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       ListTile(
                         leading: FaIcon(FontAwesomeIcons.message),
                         subtitle: Text(
-                          'Note it! is designed to help you manage your notes efficiently. While we strive to provide a reliable service, we cannot guarantee against data loss or corruption. Please back up important notes regularly. Account security is your responsibility; use strong, unique passwords. Note it! is not liable for any data loss, security breaches, or other issues arising from the use of this app.',
+                          'Note it! is designed to help you manage your notes efficiently. While we strive to provide a reliable service, we cannot guarantee against data loss or corruption. Please back up important notes regularly. Account security is your responsibility. use strong, unique passwords. Note it! is not liable for any data loss, security breaches, or other issues arising from the use of this app.',
                         ),
                       ),
                       SizedBox(height: 16.0),

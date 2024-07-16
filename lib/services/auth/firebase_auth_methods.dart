@@ -365,7 +365,7 @@ class FirebaseAuthMethod {
       // it's means that user is entered corrent email address it's mean we can send that Forgot password link to user Email Address.
       if (queryForEmailAndProvider.docs.isNotEmpty && context.mounted) {
         // Method for sending forgot password link to user
-        await _auth.sendPasswordResetEmail(email: email);
+        // await _auth.sendPasswordResetEmail(email: email);
         // Poping of the Progress Indicator
         if (context.mounted) {
           Navigator.pop(context);
