@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:note_application/helper/snackBar.dart';
+import 'package:note_application/helper/snackbar.dart';
 import 'package:note_application/helper/internet_checker.dart';
 import 'package:note_application/providers/otp_timer_provider.dart';
 import 'package:note_application/services/auth/firebase_auth_methods.dart';

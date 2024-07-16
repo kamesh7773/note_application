@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:note_application/helper/snackBar.dart';
+import 'package:note_application/helper/snackbar.dart';
 import 'package:note_application/helper/form_validators.dart';
 import 'package:note_application/pages/auth%20pages/login_page.dart';
 import 'package:note_application/providers/toggle_provider.dart';
 import 'package:note_application/services/auth/firebase_auth_methods.dart';
+import 'package:note_application/theme/Extensions/my_colors.dart';
 import 'package:note_application/widgets/button_widget.dart';
 import 'package:note_application/widgets/textformfeild_widget.dart';
 import 'package:provider/provider.dart';
@@ -40,6 +41,9 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
+    //! Access Theme Extension Colors.
+    final myColors = Theme.of(context).extension<MyColors>();
+
     return PopScope(
       canPop: false,
       onPopInvoked: (value) {
@@ -87,6 +91,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       "assets/images/Notes_logo.png",
                       height: 80,
                       width: 100,
+                      color: myColors!.commanColor,
                     ),
 
                     const SizedBox(height: 50),
@@ -167,7 +172,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           obscureText: value,
                           suffixIcon: IconButton(
                             icon: Icon(
-                                color: Colors.black,
+                                color: myColors.commanColor,
                                 value
                                     ? Icons.visibility_off
                                     : Icons.visibility),
@@ -198,7 +203,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             builder:
                                 (BuildContext context, value, Widget? child) {
                               return Checkbox(
-                                activeColor: Colors.black,
+                                activeColor: myColors.commanColor,
                                 value: value,
                                 onChanged: (value) {
                                   context
@@ -253,7 +258,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           signUpMethod();
                         }
                       },
-                      color: Colors.black,
+                      color: myColors.buttonColor!,
                       text: "Sign Up",
                     ),
 

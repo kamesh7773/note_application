@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:note_application/theme/Extensions/my_colors.dart';
 
 class NoteAppTheme {
   NoteAppTheme._();
@@ -7,6 +8,11 @@ class NoteAppTheme {
   static final ThemeData lightMode = ThemeData(
     brightness: Brightness.light,
     fontFamily: "Lato",
+
+    //! Extension's
+    extensions: <ThemeExtension<dynamic>>[
+      MyColors.light,
+    ],
 
     //! Appbar Theme
     appBarTheme: AppBarTheme(
@@ -80,9 +86,9 @@ class NoteAppTheme {
     iconTheme: const IconThemeData(color: Colors.black),
 
     //! SnackBar Theme
-    snackBarTheme: SnackBarThemeData(
-      contentTextStyle: const TextStyle(color: Colors.white),
-      backgroundColor: Colors.grey.shade700,
+    snackBarTheme: const SnackBarThemeData(
+      contentTextStyle: TextStyle(color: Colors.white),
+      backgroundColor: Colors.black,
     ),
 
     //! progressIndicator Theme
@@ -95,6 +101,11 @@ class NoteAppTheme {
   static final ThemeData darkMode = ThemeData(
     brightness: Brightness.dark,
     fontFamily: "Lato",
+
+    //! Extension's
+    extensions: const <ThemeExtension<dynamic>>[
+      MyColors.dark,
+    ],
 
     //! Appbar Theme
     appBarTheme: const AppBarTheme(

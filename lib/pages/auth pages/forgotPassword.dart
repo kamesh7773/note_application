@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:note_application/helper/snackBar.dart';
+import 'package:note_application/helper/snackbar.dart';
 import 'package:note_application/helper/form_validators.dart';
 import 'package:note_application/helper/internet_checker.dart';
 import 'package:note_application/providers/otp_timer_provider.dart';
@@ -36,8 +36,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       // Restarting the TImer again & and disabling the OTP resent btn
       if (mounted) {
         context.read<OtpTimerProvider>().startTimer();
-        context.read<OtpTimerProvider>().changeForgotLinkBtnValue =
-            false;
+        context.read<OtpTimerProvider>().changeForgotLinkBtnValue = false;
       }
     } else {
       return;
@@ -71,7 +70,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     style: TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black,
                     ),
                   ),
                 ),

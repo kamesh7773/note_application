@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:note_application/helper/form_validators.dart';
 import 'package:note_application/providers/toggle_provider.dart';
 import 'package:note_application/services/auth/firebase_auth_methods.dart';
+import 'package:note_application/theme/Extensions/my_colors.dart';
 import 'package:note_application/widgets/button_widget.dart';
 import 'package:note_application/widgets/textformfeild_widget.dart';
 import 'package:provider/provider.dart';
@@ -45,6 +46,9 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    //! Access Theme Extension Colors.
+    final myColors = Theme.of(context).extension<MyColors>();
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.surface,
@@ -64,9 +68,7 @@ class _LoginPageState extends State<LoginPage> {
                     "assets/images/Notes_logo.png",
                     height: 80,
                     width: 100,
-                    color: Theme.of(context).brightness == Brightness.dark
-                        ? Colors.white
-                        : Colors.black,
+                    color: myColors!.commanColor,
                   ),
 
                   const SizedBox(height: 60),
@@ -101,9 +103,7 @@ class _LoginPageState extends State<LoginPage> {
                         hintText: "Password",
                         obscureText: value,
                         suffixIcon: IconButton(
-                          color: Theme.of(context).brightness == Brightness.dark
-                              ? Colors.white
-                              : Colors.black,
+                          color: myColors.commanColor,
                           icon: Icon(
                               value ? Icons.visibility_off : Icons.visibility),
                           onPressed: () {
@@ -136,10 +136,7 @@ class _LoginPageState extends State<LoginPage> {
                               builder:
                                   (BuildContext context, value, Widget? child) {
                                 return Checkbox(
-                                  activeColor: Theme.of(context).brightness ==
-                                          Brightness.dark
-                                      ? Colors.white
-                                      : Colors.black,
+                                  activeColor: myColors.commanColor,
                                   value: value,
                                   onChanged: (value) {
                                     //! Remember me varible initlization
@@ -184,7 +181,7 @@ class _LoginPageState extends State<LoginPage> {
                         loginUser();
                       }
                     },
-                    color: Theme.of(context).colorScheme.inversePrimary,
+                    color: myColors.buttonColor!,
                     text: "Sign In",
                   ),
 
@@ -203,9 +200,7 @@ class _LoginPageState extends State<LoginPage> {
                           FirebaseAuthMethod.signInWithGoogle(context: context);
                         },
                         child: Card(
-                          color: Theme.of(context).brightness == Brightness.dark
-                              ? const Color.fromARGB(255, 209, 206, 206)
-                              : Colors.grey.shade300,
+                          color: myColors.googleFacebook,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(7),
                           ),
@@ -237,9 +232,7 @@ class _LoginPageState extends State<LoginPage> {
                           );
                         },
                         child: Card(
-                          color: Theme.of(context).brightness == Brightness.dark
-                              ? const Color.fromARGB(255, 209, 206, 206)
-                              : Colors.grey.shade300,
+                          color: myColors.googleFacebook,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),

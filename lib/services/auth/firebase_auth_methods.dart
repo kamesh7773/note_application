@@ -10,7 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:note_application/helper/internet_checker.dart';
 import 'package:note_application/helper/progress_indicator.dart';
-import 'package:note_application/helper/snackBar.dart';
+import 'package:note_application/helper/snackbar.dart';
 
 class FirebaseAuthMethod {
   // varible related Firebase instance related
