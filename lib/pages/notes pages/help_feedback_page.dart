@@ -88,7 +88,7 @@ class _HelpAndFeedbackPageState extends State<HelpAndFeedbackPage> {
                 ],
               ),
               ExpansionTile(
-                iconColor: myColors!.commanColor,
+                iconColor: myColors.commanColor,
                 title: const Text(
                     'What information is available in the Settings page?'),
                 children: const <Widget>[
