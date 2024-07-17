@@ -15,6 +15,7 @@ import 'package:note_application/providers/theme_provider.dart';
 import 'package:note_application/providers/toggle_provider.dart';
 import 'package:note_application/services/auth/firebase_auth_methods.dart';
 import 'package:note_application/services/firebase/firebase_options.dart';
+import 'package:note_application/theme/themes.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -34,17 +35,38 @@ void main() async {
 
   // checking user is previously login or not.
   bool isLogin = await FirebaseAuthMethod.isUserLogin();
+  // checking themeMode from Shared Preferences.
+  bool isDarkMode = await ThemeProvider.currentTheme();
+  // Checking Current Layout From Share Preferences.
+  bool isGridView = await LayoutChangeProvider.currentLayout();
 
-  runApp(
-    NoteApp(
-      isLogin: isLogin,
-    ),
-  );
+  runApp(NoteApp(
+    isLogin: isLogin,
+    isDarkMode: isDarkMode,
+    isGridView: isGridView,
+  ));
 }
 
-class NoteApp extends StatelessWidget {
+class NoteApp extends StatefulWidget {
   final bool isLogin;
-  const NoteApp({super.key, required this.isLogin});
+  final bool isDarkMode;
+  final bool isGridView;
+  const NoteApp({
+    super.key,
+    required this.isLogin,
+    required this.isDarkMode,
+    required this.isGridView,
+  });
+
+  @override
+  State<NoteApp> createState() => _NoteAppState();
+}
+
+class _NoteAppState extends State<NoteApp> {
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,31 +79,32 @@ class NoteApp extends StatelessWidget {
           create: (context) => ToggleProvider(),
         ),
         ChangeNotifierProvider(
-          create: (context) => LayoutChangeProvider(),
+          create: (context) =>
+              LayoutChangeProvider(isGridView: widget.isGridView),
         ),
         ChangeNotifierProvider(
-          create: (context) => ThemeProvider(),
+          create: (context) => ThemeProvider(isDarkMode: widget.isDarkMode),
         ),
       ],
-      child: Selector<ThemeProvider, ThemeData>(
-          selector: (context, data) => data.themeData,
-          builder: (context, value, child) {
-            return MaterialApp(
-              routes: {
-                "/HomePage": (context) => const HomePage(),
-                "/TrashPage": (context) => const TrashPage(),
-                "/SettingsPage": (context) => const SettingsPage(),
-                "/HelpAndFeedbackPage": (context) =>
-                    const HelpAndFeedbackPage(),
-                "/SignUpPage": (context) => const SignUpPage(),
-                "/LoginPage": (context) => const LoginPage(),
-                "/ForgotPasswordPage": (context) => const ForgotPasswordPage(),
-              },
-              theme: value,
-              debugShowCheckedModeBanner: false,
-              home: isLogin ? const HomePage() : const LoginPage(),
-            );
-          }),
+      child: Selector<ThemeProvider, bool>(
+        selector: (context, mode) => mode.isDarkMode,
+        builder: (context, value, child) {
+          return MaterialApp(
+            routes: {
+              "/HomePage": (context) => const HomePage(),
+              "/TrashPage": (context) => const TrashPage(),
+              "/SettingsPage": (context) => const SettingsPage(),
+              "/HelpAndFeedbackPage": (context) => const HelpAndFeedbackPage(),
+              "/SignUpPage": (context) => const SignUpPage(),
+              "/LoginPage": (context) => const LoginPage(),
+              "/ForgotPasswordPage": (context) => const ForgotPasswordPage(),
+            },
+            theme: value ? NoteAppTheme.darkMode : NoteAppTheme.lightMode,
+            debugShowCheckedModeBanner: false,
+            home: widget.isLogin ? const HomePage() : const LoginPage(),
+          );
+        },
+      ),
     );
   }
 }

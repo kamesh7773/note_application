@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:note_application/services/database/curd_methods.dart';
+import 'package:note_application/theme/Extensions/my_colors.dart';
 
 class AddNotePage extends StatefulWidget {
   final String? docID;
@@ -128,6 +129,9 @@ class _AddNotePageState extends State<AddNotePage> {
 
   @override
   Widget build(BuildContext context) {
+    //! Access Theme Extension Colors.
+    final myColors = Theme.of(context).extension<MyColors>();
+
     return PopScope(
       canPop: false,
       onPopInvoked: (didPop) {
@@ -135,6 +139,7 @@ class _AddNotePageState extends State<AddNotePage> {
       },
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: myColors!.notePage,
           leading: IconButton(
             // Method for adding note
             onPressed: addingNote2,

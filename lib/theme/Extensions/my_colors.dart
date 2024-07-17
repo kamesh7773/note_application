@@ -2,20 +2,22 @@ import 'package:flutter/material.dart';
 
 @immutable
 class MyColors extends ThemeExtension<MyColors> {
-  const MyColors({
-    this.googleFacebook,
-    this.buttonColor,
-    this.commanColor,
-    this.drawerListTileColor,
-    this.toggleSwitch,
-  });
-
   //! Declaring varible for custom color for
   final Color? commanColor;
   final Color? buttonColor;
   final Color? googleFacebook;
   final Color? drawerListTileColor;
   final Color? toggleSwitch;
+  final Color? notePage;
+
+  const MyColors({
+    this.googleFacebook,
+    this.buttonColor,
+    this.commanColor,
+    this.drawerListTileColor,
+    this.toggleSwitch,
+    this.notePage,
+  });
 
   @override
   ThemeExtension<MyColors> copyWith({
@@ -24,6 +26,7 @@ class MyColors extends ThemeExtension<MyColors> {
     Color? googleFacebook,
     Color? drawerListTileColor,
     Color? toggleSwitch,
+    Color? notePage,
   }) {
     return MyColors(
       commanColor: commanColor ?? this.commanColor,
@@ -31,6 +34,7 @@ class MyColors extends ThemeExtension<MyColors> {
       googleFacebook: buttonColor ?? this.googleFacebook,
       drawerListTileColor: buttonColor ?? this.drawerListTileColor,
       toggleSwitch: buttonColor ?? this.toggleSwitch,
+      notePage: buttonColor ?? this.notePage,
     );
   }
 
@@ -46,6 +50,7 @@ class MyColors extends ThemeExtension<MyColors> {
       drawerListTileColor:
           Color.lerp(drawerListTileColor, other.drawerListTileColor, t),
       toggleSwitch: Color.lerp(toggleSwitch, other.toggleSwitch, t),
+      notePage: Color.lerp(notePage, other.notePage, t),
     );
   }
 
@@ -56,6 +61,7 @@ class MyColors extends ThemeExtension<MyColors> {
     googleFacebook: const Color.fromARGB(255, 209, 206, 206),
     drawerListTileColor: Colors.grey[400],
     toggleSwitch: Colors.black,
+    notePage: const Color(0xFF181818),
   );
 
   //! variable Colors for light Theme.
@@ -65,5 +71,6 @@ class MyColors extends ThemeExtension<MyColors> {
     googleFacebook: Colors.grey.shade300,
     drawerListTileColor: Colors.grey[400],
     toggleSwitch: Colors.white,
+    notePage: Colors.white,
   );
 }

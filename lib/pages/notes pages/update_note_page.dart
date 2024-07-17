@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:note_application/services/database/curd_methods.dart';
+import 'package:note_application/theme/Extensions/my_colors.dart';
 
 class UpdateNotePage extends StatefulWidget {
   final String? docID;
@@ -71,6 +72,10 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
 
   @override
   Widget build(BuildContext context) {
+    //! Access Theme Extension Colors.
+    final myColors = Theme.of(context).extension<MyColors>();
+
+    //! Assigning the FireStore Data to textEditingController's.
     textEditingController1.text = widget.title!;
     textEditingController2.text = widget.note!;
 
@@ -82,6 +87,7 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
       },
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: myColors!.notePage,
           // Add the Note when user Press Back arrow button of AppBar()
           leading: IconButton(
             onPressed: updatingNote2,
@@ -110,7 +116,12 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
                 ),
                 cursorColor: Theme.of(context).colorScheme.inversePrimary,
                 decoration: const InputDecoration(
-                  border: InputBorder.none,
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                  ),
                   contentPadding: EdgeInsets.symmetric(horizontal: 16),
                   hintText: "Title",
                   hintStyle: TextStyle(fontSize: 22),
@@ -126,7 +137,12 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
                   autofocus: true,
                   cursorColor: Theme.of(context).colorScheme.inversePrimary,
                   decoration: const InputDecoration(
-                    border: InputBorder.none,
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                    ),
                     contentPadding: EdgeInsets.symmetric(horizontal: 18),
                     hintText: "Note : ",
                     hintStyle: TextStyle(fontSize: 18),

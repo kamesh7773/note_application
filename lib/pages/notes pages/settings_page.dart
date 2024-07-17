@@ -81,43 +81,36 @@ class _SettingsPageState extends State<SettingsPage> {
                             fontSize: 22, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 16.0),
-                      Selector<ThemeProvider, bool>(
-                        selector: (context, theme) => theme.isDark,
-                        builder: (context, value, child) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 13),
-                                child: Row(
-                                  children: [
-                                    Icon(Icons.dark_mode),
-                                    SizedBox(width: 10),
-                                    Text(
-                                      "Dark Mode",
-                                      style: TextStyle(fontSize: 18),
-                                    ),
-                                  ],
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 13),
+                            child: Row(
+                              children: [
+                                Icon(Icons.dark_mode),
+                                SizedBox(width: 10),
+                                Text(
+                                  "Dark Mode",
+                                  style: TextStyle(fontSize: 18),
                                 ),
-                              ),
-                              Selector<ThemeProvider, bool>(
-                                selector: (context, theme) => theme.isDark,
-                                builder: (context, value, child) {
-                                  return Switch(
-                                    activeColor: myColors!.toggleSwitch,
-                                    activeTrackColor: myColors.commanColor,
-                                    value: value,
-                                    onChanged: (value) {
-                                      context
-                                          .read<ThemeProvider>()
-                                          .changeTheme();
-                                    },
-                                  );
+                              ],
+                            ),
+                          ),
+                          Selector<ThemeProvider, bool>(
+                            selector: (context, theme) => theme.isDarkMode,
+                            builder: (context, value, child) {
+                              return Switch(
+                                activeColor: myColors!.toggleSwitch,
+                                activeTrackColor: myColors.commanColor,
+                                value: value,
+                                onChanged: (value) {
+                                  context.read<ThemeProvider>().toggleTheme();
                                 },
-                              )
-                            ],
-                          );
-                        },
+                              );
+                            },
+                          )
+                        ],
                       ),
                     ],
                   ),

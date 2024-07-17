@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/widgets.dart';
 import 'package:note_application/pages/drawer%20page/drawer.dart';
 import 'package:note_application/pages/notes%20pages/add_note_page.dart';
 import 'package:note_application/pages/notes%20pages/update_note_page.dart';
@@ -216,8 +215,6 @@ class Getting extends State<HomePage> {
                               borderRadius: BorderRadius.circular(50),
                               child: CachedNetworkImage(
                                 imageUrl: imageUrl!,
-                                placeholder: (context, url) =>
-                                    const CircularProgressIndicator(),
                                 errorWidget: (context, url, error) =>
                                     const Icon(Icons.error),
                               ),

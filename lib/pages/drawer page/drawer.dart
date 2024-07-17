@@ -83,8 +83,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                           child: CachedNetworkImage(
                             imageUrl: imageUrl ??
                                 "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQq6gaTf6N93kzolH98ominWZELW881HqCgw&s",
-                            placeholder: (context, url) =>
-                                const CircularProgressIndicator(),
                             errorWidget: (context, url, error) =>
                                 const Icon(Icons.error),
                           ),

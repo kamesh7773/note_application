@@ -130,7 +130,7 @@ packages:
     source: hosted
     version: "1.18.0"
   colored_print:
-    dependency: "direct main"
+    dependency: "direct dev"
     description:
       name: colored_print
       sha256: ab9f458563fb4bbc81ac8c5fea65f4e0154f20382458d40bd985c950208f3d21
