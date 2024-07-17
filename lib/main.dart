@@ -1,3 +1,4 @@
+import 'package:colored_print/colored_print.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -36,9 +37,11 @@ void main() async {
   // checking user is previously login or not.
   bool isLogin = await FirebaseAuthMethod.isUserLogin();
 
-  runApp(NoteApp(
-    isLogin: isLogin,
-  ));
+  runApp(
+    NoteApp(
+      isLogin: isLogin,
+    ),
+  );
 }
 
 class NoteApp extends StatelessWidget {
@@ -62,22 +65,25 @@ class NoteApp extends StatelessWidget {
           create: (context) => ThemeProvider(),
         ),
       ],
-      child: MaterialApp(
-        routes: {
-          "/HomePage": (context) => const HomePage(),
-          "/TrashPage": (context) => const TrashPage(),
-          "/SettingsPage": (context) => const SettingsPage(),
-          "/HelpAndFeedbackPage": (context) => const HelpAndFeedbackPage(),
-          "/SignUpPage": (context) => const SignUpPage(),
-          "/LoginPage": (context) => const LoginPage(),
-          "/ForgotPasswordPage": (context) => const ForgotPasswordPage(),
-        },
-        themeMode: ThemeMode.system,
-        theme: NoteAppTheme.lightMode,
-        darkTheme: NoteAppTheme.darkMode,
-        debugShowCheckedModeBanner: false,
-        home: isLogin ? const HomePage() : const LoginPage(),
-      ),
+      child: Selector<ThemeProvider, ThemeData>(
+          selector: (context, data) => data.themeData,
+          builder: (context, value, child) {
+            return MaterialApp(
+              routes: {
+                "/HomePage": (context) => const HomePage(),
+                "/TrashPage": (context) => const TrashPage(),
+                "/SettingsPage": (context) => const SettingsPage(),
+                "/HelpAndFeedbackPage": (context) =>
+                    const HelpAndFeedbackPage(),
+                "/SignUpPage": (context) => const SignUpPage(),
+                "/LoginPage": (context) => const LoginPage(),
+                "/ForgotPasswordPage": (context) => const ForgotPasswordPage(),
+              },
+              theme: value,
+              debugShowCheckedModeBanner: false,
+              home: isLogin ? const HomePage() : const LoginPage(),
+            );
+          }),
     );
   }
 }

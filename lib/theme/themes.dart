@@ -98,6 +98,12 @@ class NoteAppTheme {
     progressIndicatorTheme: const ProgressIndicatorThemeData(
       linearTrackColor: Colors.lightBlue,
     ),
+
+    //! Switch Theme
+    switchTheme: const SwitchThemeData(
+      thumbColor: WidgetStatePropertyAll(Colors.black),
+      trackColor: WidgetStatePropertyAll(Colors.white),
+    ),
   );
 
   //? ---------------
@@ -194,6 +200,12 @@ class NoteAppTheme {
     progressIndicatorTheme: const ProgressIndicatorThemeData(
       circularTrackColor: Colors.white,
       linearTrackColor: Colors.lightBlue,
+    ),
+
+    //! Switch Theme
+    switchTheme: const SwitchThemeData(
+      thumbColor: WidgetStatePropertyAll(Colors.white),
+      trackColor: WidgetStatePropertyAll(Colors.black),
     ),
   );
 }

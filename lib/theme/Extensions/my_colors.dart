@@ -55,7 +55,7 @@ class MyColors extends ThemeExtension<MyColors> {
     buttonColor: const Color.fromARGB(255, 100, 100, 100),
     googleFacebook: const Color.fromARGB(255, 209, 206, 206),
     drawerListTileColor: Colors.grey[400],
-    toggleSwitch: Colors.white,
+    toggleSwitch: Colors.black,
   );
 
   //! variable Colors for light Theme.
@@ -64,6 +64,6 @@ class MyColors extends ThemeExtension<MyColors> {
     buttonColor: Colors.black,
     googleFacebook: Colors.grey.shade300,
     drawerListTileColor: Colors.grey[400],
-    toggleSwitch: Colors.black,
+    toggleSwitch: Colors.white,
   );
 }

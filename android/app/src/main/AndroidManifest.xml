@@ -13,6 +13,7 @@
         android:label="Note It!"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
+        
         <!-- Code related to facebook sign in -->
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
         <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token"/>
@@ -30,6 +31,7 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
+        <!-- Code related to facebook sign in -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
