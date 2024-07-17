@@ -33,11 +33,11 @@ void main() async {
     );
   }
 
-  // checking user is previously login or not.
+  // checking user is already login or not.
   bool isLogin = await FirebaseAuthMethod.isUserLogin();
-  // checking themeMode from Shared Preferences.
+  // checking user applied ThemeMode from Shared Preferences.
   bool isDarkMode = await ThemeProvider.currentTheme();
-  // Checking Current Layout From Share Preferences.
+  // Checking user applied Layout From Share Preferences.
   bool isGridView = await LayoutChangeProvider.currentLayout();
 
   runApp(NoteApp(
@@ -47,7 +47,7 @@ void main() async {
   ));
 }
 
-class NoteApp extends StatefulWidget {
+class NoteApp extends StatelessWidget {
   final bool isLogin;
   final bool isDarkMode;
   final bool isGridView;
@@ -57,16 +57,6 @@ class NoteApp extends StatefulWidget {
     required this.isDarkMode,
     required this.isGridView,
   });
-
-  @override
-  State<NoteApp> createState() => _NoteAppState();
-}
-
-class _NoteAppState extends State<NoteApp> {
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,11 +69,10 @@ class _NoteAppState extends State<NoteApp> {
           create: (context) => ToggleProvider(),
         ),
         ChangeNotifierProvider(
-          create: (context) =>
-              LayoutChangeProvider(isGridView: widget.isGridView),
+          create: (context) => LayoutChangeProvider(isGridView: isGridView),
         ),
         ChangeNotifierProvider(
-          create: (context) => ThemeProvider(isDarkMode: widget.isDarkMode),
+          create: (context) => ThemeProvider(isDarkMode: isDarkMode),
         ),
       ],
       child: Selector<ThemeProvider, bool>(
@@ -101,7 +90,7 @@ class _NoteAppState extends State<NoteApp> {
             },
             theme: value ? NoteAppTheme.darkMode : NoteAppTheme.lightMode,
             debugShowCheckedModeBanner: false,
-            home: widget.isLogin ? const HomePage() : const LoginPage(),
+            home: isLogin ? const HomePage() : const LoginPage(),
           );
         },
       ),
