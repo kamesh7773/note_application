@@ -57,125 +57,276 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     //! Access Theme Extension Colors.
     final myColors = Theme.of(context).extension<MyColors>();
 
-    return PopScope(
-      canPop: true,
-      child: Scaffold(
-        appBar: AppBar(),
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        body: SafeArea(
-          child: Form(
-            key: forgotpasswordKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Text(
-                    "Forgot Password",
-                    style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Text(
-                    "Don't worray sometimes people can forgot too.enter your email and we will send you a password reset link.",
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: TextFormFeildWidget(
-                    hintText: "E-mail",
-                    obscureText: false,
-                    prefixIcon: const Icon(Icons.email),
-                    validator: FormValidator.emailValidator,
-                    textEditingController: _forgotPasswordController,
-                  ),
-                ),
-                const SizedBox(height: 40),
-                Center(
-                  child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      //! Provider Selector is used
-                      child: Selector<OtpTimerProvider, bool>(
-                        selector: (context, emailForgotLinkBtn) =>
-                            emailForgotLinkBtn.forgotLinkBtbEnable,
-                        builder: (context, value, child) {
-                          return ButtonWidget(
-                            onTap: () async {
-                              // storeing interent state in veriable
-                              bool isInternet =
-                                  await InternetChecker.checkInternet();
-
-                              // If Form Validation get completed only then call the forgot link method
-                              if (forgotpasswordKey.currentState!.validate() &&
-                                  context.mounted) {
-                                // if there is not internet
-                                if (isInternet) {
-                                  SnackBars.normalSnackBar(
-                                      context, "Please turn on your Internet");
-                                }
-                                // if Internet connection is avaible
-                                else if (!isInternet && context.mounted) {
-                                  if (context
-                                      .read<OtpTimerProvider>()
-                                      .forgotLinkBtbEnable) {
-                                    resentOTP();
-                                  }
-                                  // else return nothing
-                                  else {
-                                    return;
-                                  }
-                                }
-                              }
-                            },
-                            color: context
-                                    .read<OtpTimerProvider>()
-                                    .forgotLinkBtbEnable
-                                ? myColors!.buttonColor!
-                                : Theme.of(context).splashColor,
-                            text: "Send Forgot Password Link",
-                            textColor: context
-                                    .read<OtpTimerProvider>()
-                                    .forgotLinkBtbEnable
-                                ? Colors.white
-                                : const Color.fromARGB(255, 115, 114, 114),
-                          );
-                        },
-                      )),
-                ),
-                const SizedBox(height: 50),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Row(
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        //! For Desktop & Tablets.
+        if (constraints.maxWidth >= 1024) {
+          return PopScope(
+            canPop: true,
+            child: Scaffold(
+              appBar: AppBar(),
+              backgroundColor: Theme.of(context).colorScheme.surface,
+              body: SafeArea(
+                child: Form(
+                  key: forgotpasswordKey,
+                  child: Center(
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text("Send OTP again in"),
-                        //! Provider Selector is used
-                        Selector<OtpTimerProvider, Duration>(
-                          selector: (context, otptimer) => otptimer.duration,
-                          builder: (context, duration, child) {
-                            return Text(
-                              " 00:${duration.inSeconds.toString()}",
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
-                            );
-                          },
+                        const Padding(
+                          padding: EdgeInsets.all(16.0),
+                          child: Text(
+                            "Forgot Password",
+                            style: TextStyle(
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
-                        const Text(" sec")
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16.0),
+                          child: SizedBox(
+                            width: 400,
+                            child: Text(
+                              "Don't worray sometimes people can forgot too.enter your email and we will send you a password reset link.",
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: SizedBox(
+                            width: 400,
+                            child: TextFormFeildWidget(
+                              hintText: "E-mail",
+                              obscureText: false,
+                              prefixIcon: const Icon(Icons.email),
+                              validator: FormValidator.emailValidator,
+                              textEditingController: _forgotPasswordController,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 15),
+                        Center(
+                          child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              //! Provider Selector is used
+                              child: Selector<OtpTimerProvider, bool>(
+                                selector: (context, emailForgotLinkBtn) =>
+                                    emailForgotLinkBtn.forgotLinkBtbEnable,
+                                builder: (context, value, child) {
+                                  return SizedBox(
+                                    width: 400,
+                                    child: ButtonWidget(
+                                      onTap: () async {
+                                        // storeing interent state in veriable
+                                        bool isInternet = await InternetChecker
+                                            .checkInternet();
+
+                                        // If Form Validation get completed only then call the forgot link method
+                                        if (forgotpasswordKey.currentState!
+                                                .validate() &&
+                                            context.mounted) {
+                                          // if there is not internet
+                                          if (isInternet) {
+                                            SnackBars.normalSnackBar(context,
+                                                "Please turn on your Internet");
+                                          }
+                                          // if Internet connection is avaible
+                                          else if (!isInternet &&
+                                              context.mounted) {
+                                            if (context
+                                                .read<OtpTimerProvider>()
+                                                .forgotLinkBtbEnable) {
+                                              resentOTP();
+                                            }
+                                            // else return nothing
+                                            else {
+                                              return;
+                                            }
+                                          }
+                                        }
+                                      },
+                                      color: context
+                                              .read<OtpTimerProvider>()
+                                              .forgotLinkBtbEnable
+                                          ? myColors!.buttonColor!
+                                          : Theme.of(context).splashColor,
+                                      text: "Send Forgot Password Link",
+                                      textColor: context
+                                              .read<OtpTimerProvider>()
+                                              .forgotLinkBtbEnable
+                                          ? Colors.white
+                                          : const Color.fromARGB(
+                                              255, 115, 114, 114),
+                                    ),
+                                  );
+                                },
+                              )),
+                        ),
+                        const SizedBox(height: 30),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text("Send OTP again in"),
+                                //! Provider Selector is used
+                                Selector<OtpTimerProvider, Duration>(
+                                  selector: (context, otptimer) =>
+                                      otptimer.duration,
+                                  builder: (context, duration, child) {
+                                    return Text(
+                                      " 00:${duration.inSeconds.toString()}",
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    );
+                                  },
+                                ),
+                                const Text(" sec")
+                              ],
+                            ),
+                          ],
+                        ),
                       ],
                     ),
-                  ],
+                  ),
                 ),
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
+          );
+        }
+        //! For Mobile Phone
+        else {
+          return PopScope(
+            canPop: true,
+            child: Scaffold(
+              appBar: AppBar(),
+              backgroundColor: Theme.of(context).colorScheme.surface,
+              body: SafeArea(
+                child: Form(
+                  key: forgotpasswordKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.all(16.0),
+                        child: Text(
+                          "Forgot Password",
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Text(
+                          "Don't worray sometimes people can forgot too.enter your email and we will send you a password reset link.",
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: TextFormFeildWidget(
+                          hintText: "E-mail",
+                          obscureText: false,
+                          prefixIcon: const Icon(Icons.email),
+                          validator: FormValidator.emailValidator,
+                          textEditingController: _forgotPasswordController,
+                        ),
+                      ),
+                      const SizedBox(height: 40),
+                      Center(
+                        child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            //! Provider Selector is used
+                            child: Selector<OtpTimerProvider, bool>(
+                              selector: (context, emailForgotLinkBtn) =>
+                                  emailForgotLinkBtn.forgotLinkBtbEnable,
+                              builder: (context, value, child) {
+                                return ButtonWidget(
+                                  onTap: () async {
+                                    // storeing interent state in veriable
+                                    bool isInternet =
+                                        await InternetChecker.checkInternet();
+
+                                    // If Form Validation get completed only then call the forgot link method
+                                    if (forgotpasswordKey.currentState!
+                                            .validate() &&
+                                        context.mounted) {
+                                      // if there is not internet
+                                      if (isInternet) {
+                                        SnackBars.normalSnackBar(context,
+                                            "Please turn on your Internet");
+                                      }
+                                      // if Internet connection is avaible
+                                      else if (!isInternet && context.mounted) {
+                                        if (context
+                                            .read<OtpTimerProvider>()
+                                            .forgotLinkBtbEnable) {
+                                          resentOTP();
+                                        }
+                                        // else return nothing
+                                        else {
+                                          return;
+                                        }
+                                      }
+                                    }
+                                  },
+                                  color: context
+                                          .read<OtpTimerProvider>()
+                                          .forgotLinkBtbEnable
+                                      ? myColors!.buttonColor!
+                                      : Theme.of(context).splashColor,
+                                  text: "Send Forgot Password Link",
+                                  textColor: context
+                                          .read<OtpTimerProvider>()
+                                          .forgotLinkBtbEnable
+                                      ? Colors.white
+                                      : const Color.fromARGB(
+                                          255, 115, 114, 114),
+                                );
+                              },
+                            )),
+                      ),
+                      const SizedBox(height: 50),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text("Send OTP again in"),
+                              //! Provider Selector is used
+                              Selector<OtpTimerProvider, Duration>(
+                                selector: (context, otptimer) =>
+                                    otptimer.duration,
+                                builder: (context, duration, child) {
+                                  return Text(
+                                    " 00:${duration.inSeconds.toString()}",
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold),
+                                  );
+                                },
+                              ),
+                              const Text(" sec")
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        }
+      },
     );
   }
 }
