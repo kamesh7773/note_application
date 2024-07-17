@@ -167,7 +167,12 @@ class _AddNotePageState extends State<AddNotePage> {
                 ),
                 cursorColor: Theme.of(context).colorScheme.inversePrimary,
                 decoration: const InputDecoration(
-                  border: InputBorder.none,
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                  ),
                   contentPadding: EdgeInsets.symmetric(horizontal: 16),
                   hintText: "Title",
                   hintStyle: TextStyle(fontSize: 22),
@@ -183,7 +188,12 @@ class _AddNotePageState extends State<AddNotePage> {
                   autofocus: true,
                   cursorColor: Theme.of(context).colorScheme.inversePrimary,
                   decoration: const InputDecoration(
-                    border: InputBorder.none,
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                    ),
                     contentPadding: EdgeInsets.symmetric(horizontal: 18),
                     hintText: "Note : ",
                     hintStyle: TextStyle(fontSize: 18),

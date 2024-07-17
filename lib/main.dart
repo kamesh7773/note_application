@@ -4,7 +4,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:note_application/pages/auth%20pages/forgot_password.dart';
 import 'package:note_application/pages/auth%20pages/login_page.dart';
-import 'package:note_application/pages/auth%20pages/otp_page.dart';
 import 'package:note_application/pages/auth%20pages/sign_up_page.dart';
 import 'package:note_application/pages/home_page.dart';
 import 'package:note_application/pages/notes%20pages/help_feedback_page.dart';
