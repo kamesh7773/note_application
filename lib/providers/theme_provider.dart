@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeProvider extends ChangeNotifier {
-  late bool _isDarkMode;
+  bool _isDarkMode = false;
   bool get isDarkMode => _isDarkMode;
 
-  //! Here we are accessing the
-  ThemeProvider({bool isDarkMode = false}) {
-    _isDarkMode = isDarkMode;
-  }
+  //! The ThemeProvider constructor is always invoked when the application starts because the ThemeProvider class is used in the ChangeNotifierProvider.
+  //! we need to ensure the theme value need to be retrived and pass it to the ThemeProvider class before application is started. To achieve this, we make
+  //! the main() method async and fetch all the SharedPreferences values and pass it to the ThemeProvider class before calling runApp(). This way, 
+  //! the SharedPreferences values are retrieved successfully before the application get started ensuring that our application has the correct 
+  //! themeData from SharedPreferences.
+  ThemeProvider(this._isDarkMode);
 
   //! Change the Theme based on User Selection.
   void toggleTheme() {
@@ -24,6 +26,7 @@ class ThemeProvider extends ChangeNotifier {
   }
 
   //! Retriving the Current Theme From SharedPreferences.
+  //! [ This method get called from main() method ]
   static Future<bool> currentTheme() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getBool('isDarkMode') ?? false;

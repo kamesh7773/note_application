@@ -36,25 +36,25 @@ void main() async {
   // checking user is already login or not.
   bool isLogin = await FirebaseAuthMethod.isUserLogin();
   // checking user applied ThemeMode from Shared Preferences.
-  bool isDarkMode = await ThemeProvider.currentTheme();
+  bool savedTheme = await ThemeProvider.currentTheme();
   // Checking user applied Layout From Share Preferences.
   bool isGridView = await LayoutChangeProvider.currentLayout();
 
   runApp(NoteApp(
     isLogin: isLogin,
-    isDarkMode: isDarkMode,
+    savedTheme: savedTheme,
     isGridView: isGridView,
   ));
 }
 
 class NoteApp extends StatelessWidget {
   final bool isLogin;
-  final bool isDarkMode;
+  final bool savedTheme;
   final bool isGridView;
   const NoteApp({
     super.key,
     required this.isLogin,
-    required this.isDarkMode,
+    required this.savedTheme,
     required this.isGridView,
   });
 
@@ -69,10 +69,10 @@ class NoteApp extends StatelessWidget {
           create: (context) => ToggleProvider(),
         ),
         ChangeNotifierProvider(
-          create: (context) => LayoutChangeProvider(isGridView: isGridView),
+          create: (context) => LayoutChangeProvider(isGridView),
         ),
         ChangeNotifierProvider(
-          create: (context) => ThemeProvider(isDarkMode: isDarkMode),
+          create: (context) => ThemeProvider(savedTheme),
         ),
       ],
       child: Selector<ThemeProvider, bool>(

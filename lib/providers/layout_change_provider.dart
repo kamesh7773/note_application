@@ -2,15 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LayoutChangeProvider extends ChangeNotifier {
-  late bool _isGridView;
+  bool _isGridView = true;
   final bool _isGridViewForTrash = true;
 
   bool get isGridView => _isGridView;
   bool get isGridViewForTrash => _isGridViewForTrash;
 
-  LayoutChangeProvider({bool isGridView = true}) {
-    _isGridView = isGridView;
-  }
+  LayoutChangeProvider(this._isGridView);
 
   //! Change the Layout based on User Selection.
   void changeLayout() {
@@ -18,7 +16,6 @@ class LayoutChangeProvider extends ChangeNotifier {
     _saveToPrefs();
     notifyListeners();
   }
-  
 
   //! This Method save user selected current Layout in SharedPreferences.
   Future<void> _saveToPrefs() async {
