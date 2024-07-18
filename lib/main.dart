@@ -88,7 +88,6 @@ class NoteApp extends StatelessWidget {
               "/LoginPage": (context) => const LoginPage(),
               "/ForgotPasswordPage": (context) => const ForgotPasswordPage(),
             },
-            themeMode: ThemeMode.system,
             theme: value ? NoteAppTheme.darkMode : NoteAppTheme.lightMode,
             debugShowCheckedModeBanner: false,
             home: isLogin ? const HomePage() : const LoginPage(),

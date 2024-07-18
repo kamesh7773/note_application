@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:note_application/services/database/curd_methods.dart';
 import 'package:note_application/theme/Extensions/my_colors.dart';
@@ -114,6 +115,13 @@ class _AddNotePageState extends State<AddNotePage> {
   // Method for deleting Note
   // ------------------------
   void deletingNote() {
+    FireStoreCurdMethods.addNoteToTrash(
+      deletedNotes: {
+        "title": textEditingController1.text,
+        "note": textEditingController2.text,
+        "timestamp": Timestamp.now(),
+      },
+    );
     FireStoreCurdMethods.deleteNote(docID: widget.docID);
     Navigator.of(context).pop();
     // Showing SnackBar

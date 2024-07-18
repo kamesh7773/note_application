@@ -67,8 +67,8 @@ class _LoginPageState extends State<LoginPage> {
                         // Logo
                         Image.asset(
                           "assets/images/Notes_logo.png",
-                          height: 60,
-                          width: 60,
+                          height: 75,
+                          width: 75,
                           color: myColors!.commanColor,
                         ),
 
@@ -289,8 +289,7 @@ class _LoginPageState extends State<LoginPage> {
                             const Text("You don't have an account? "),
                             GestureDetector(
                               onTap: () {
-                                Navigator.of(context)
-                                    .popAndPushNamed("/SignUpPage");
+                                Navigator.of(context).pushNamed("/SignUpPage");
                               },
                               child: const Text(
                                 "Register Here",

@@ -28,6 +28,23 @@ class FireStoreCurdMethods {
     }
   }
 
+  //! CREATE: Move deleted Note to Trash at FireStore
+  static Future<void> addNoteToTrash(
+      {required Map<String, dynamic> deletedNotes}) {
+    try {
+      // Reference to a CurrentUserID document in the main collection
+      DocumentReference currentUserID =
+          users.doc(FirebaseAuth.instance.currentUser!.uid.toString());
+
+      // Creating Reference Trash  Sub-Collection insdie currentUserID Users Document.
+      CollectionReference trash = currentUserID.collection('trash');
+
+      return trash.add(deletedNotes);
+    } catch (error) {
+      throw error.toString();
+    }
+  }
+
   //! UPDATE: updating "Note" at FireStore
   static Future<void> updateNote({String? docID, String? title, String? note}) {
     try {

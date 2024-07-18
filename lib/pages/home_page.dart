@@ -115,22 +115,10 @@ class Getting extends State<HomePage> {
                           }
 
                           //! Moveing List of Deleted notes to Trash Data base.
-                          try {
-                            // Reference to a CurrentUserID document in the main collection
-                            DocumentReference currentUserID = users.doc(
-                                FirebaseAuth.instance.currentUser!.uid
-                                    .toString());
-
-                            // Creating Reference Trash  Sub-Collection insdie currentUserID Users Document.
-                            CollectionReference trash =
-                                currentUserID.collection('trash');
-
-                            // Adding deleted Notes to trash.
-                            for (var element in deletedNotes) {
-                              trash.add(element);
-                            }
-                          } catch (error) {
-                            throw error.toString();
+                          // Adding deleted Notes to trash.
+                          for (var element in deletedNotes) {
+                            FireStoreCurdMethods.addNoteToTrash(
+                                deletedNotes: element);
                           }
 
                           //! After Moving deleteNotes to Trash we clear our the deletedNotes list[].

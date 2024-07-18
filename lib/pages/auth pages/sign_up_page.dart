@@ -63,7 +63,14 @@ class _SignUpPageState extends State<SignUpPage> {
               }
             },
             child: Scaffold(
-              appBar: AppBar(),
+              appBar: AppBar(
+                leading: IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  icon: const Icon(Icons.arrow_back),
+                ),
+              ),
               backgroundColor: Theme.of(context).colorScheme.surface,
               body: Center(
                 child: SingleChildScrollView(
@@ -76,8 +83,8 @@ class _SignUpPageState extends State<SignUpPage> {
                         // Logo
                         Image.asset(
                           "assets/images/Notes_logo.png",
-                          height: 60,
-                          width: 60,
+                          height: 75,
+                          width: 75,
                           color: myColors!.commanColor,
                         ),
 
