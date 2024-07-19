@@ -85,6 +85,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         selector: (context, theme) => theme.isDarkMode,
                         builder: (context, value, child) {
                           return InkWell(
+                            borderRadius: BorderRadius.circular(8),
                             onTap: () {
                               context.read<ThemeProvider>().toggleTheme();
                             },
@@ -143,6 +144,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           title: Text('App Version'),
                           subtitle: Text('1.0.0')),
                       InkWell(
+                        borderRadius: BorderRadius.circular(8),
                         onTap: () {
                           _launchURL(
                             Uri.parse(
@@ -185,6 +187,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           title: Text('Name'),
                           subtitle: Text('Kamesh Singh Sisodiya')),
                       InkWell(
+                        borderRadius: BorderRadius.circular(8),
                         onTap: () {
                           _launchURL(
                             Uri.parse("https://github.com/kamesh7773"),
@@ -197,6 +200,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         ),
                       ),
                       InkWell(
+                        borderRadius: BorderRadius.circular(8),
                         onTap: () {
                           _launchURL(
                             Uri.parse(
@@ -210,6 +214,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         ),
                       ),
                       InkWell(
+                        borderRadius: BorderRadius.circular(8),
                         onTap: () {
                           _launchURL(
                             Uri.parse(
