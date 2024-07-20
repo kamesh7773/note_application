@@ -1,4 +1,3 @@
-import 'package:colored_print/colored_print.dart';
 import 'package:flutter/material.dart';
 import 'package:note_application/helper/snackbar.dart';
 import 'package:note_application/helper/internet_checker.dart';
