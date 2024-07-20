@@ -4,14 +4,17 @@ import 'dart:async';
 class OtpTimerProvider extends ChangeNotifier {
   // variable's delcartion.
   bool _emailOtpSendBtnEnable = false;
-  bool _phoneOtpSendBtnEnable = false;
   bool _forgotLinkBtbEnable = true;
   Duration _duration = const Duration(seconds: 60);
   Timer? _timer;
 
+  OtpTimerProvider() {
+    _emailOtpSendBtnEnable = false;
+    _forgotLinkBtbEnable = true;
+  }
+
   // declaring getters.
   bool get emailOtpSendBtnEnable => _emailOtpSendBtnEnable;
-  bool get phoneOtpSendBtnEnable => _phoneOtpSendBtnEnable;
   bool get forgotLinkBtbEnable => _forgotLinkBtbEnable;
   Duration get duration => _duration;
   Timer? get timer => _timer;
@@ -22,12 +25,6 @@ class OtpTimerProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  set changePhoneOtpBtnValue(bool value) {
-    _phoneOtpSendBtnEnable = value;
-    notifyListeners();
-  }
-
-  // declarting setters.
   set changeForgotLinkBtnValue(bool value) {
     _forgotLinkBtbEnable = value;
     notifyListeners();
@@ -43,11 +40,18 @@ class OtpTimerProvider extends ChangeNotifier {
       } else {
         timer.cancel();
         _emailOtpSendBtnEnable = true;
-        _phoneOtpSendBtnEnable = true;
         _forgotLinkBtbEnable = true;
         _duration = const Duration(seconds: 60);
         notifyListeners();
       }
     });
+  }
+
+  //! Method reset the Timer & Button to default when click back button for chnage value or he/she by mistake press the back button.
+  void resetTimerAndBtn() {
+    _timer!.cancel();
+    _emailOtpSendBtnEnable = false;
+    _forgotLinkBtbEnable = true;
+    _duration = const Duration(seconds: 60);
   }
 }

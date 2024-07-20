@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:note_application/helper/internet_checker.dart';
 import 'package:note_application/helper/snackbar.dart';
 import 'package:note_application/helper/form_validators.dart';
 import 'package:note_application/pages/auth%20pages/login_page.dart';
@@ -487,23 +488,38 @@ class _SignUpPageState extends State<SignUpPage> {
                           const SizedBox(height: 20),
                           // SignUp in button
                           ButtonWidget(
-                            onTap: () {
-                              // First we check the Form Validation
-                              _signUpFormKey.currentState!.validate();
+                            onTap: () async {
+                              // storeing interent state in veriable
+                              bool isInternet =
+                                  await InternetChecker.checkInternet();
 
-                              // if FormValidation is checked & Privicy Policy checkbox is not checked
-                              if (_signUpFormKey.currentState!.validate() &&
-                                  !context.read<ToggleProvider>().isChecked) {
+                              // if there is no internet
+                              if (isInternet && context.mounted) {
                                 SnackBars.normalSnackBar(
-                                  context,
-                                  "Please accept the Privicy Policy & Term of use",
-                                );
+                                    context, "Please turn on your Internet");
                               }
-
-                              // If FormValidation is checked & Privicy Policy checkbox is also checked then only we fire the SignUP method.
-                              if (_signUpFormKey.currentState!.validate() &&
-                                  context.read<ToggleProvider>().isChecked) {
-                                signUpMethod();
+                              // if there is internet
+                              else {
+                                if (context.mounted) {
+                                  // if FormValidation is checked & Privicy Policy checkbox is not checked
+                                  if (_signUpFormKey.currentState!.validate() &&
+                                      !context
+                                          .read<ToggleProvider>()
+                                          .isChecked &&
+                                      context.mounted) {
+                                    SnackBars.normalSnackBar(
+                                      context,
+                                      "Please accept the Privicy Policy & Term of use",
+                                    );
+                                  }
+                                  // If FormValidation is checked & Privicy Policy checkbox is also checked then only we fire the SignUP method.
+                                  if (_signUpFormKey.currentState!.validate() &&
+                                      context
+                                          .read<ToggleProvider>()
+                                          .isChecked) {
+                                    signUpMethod();
+                                  }
+                                }
                               }
                             },
                             color: myColors.buttonColor!,

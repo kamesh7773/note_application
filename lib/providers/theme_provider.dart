@@ -60,6 +60,11 @@ class ThemeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  //! This Method Reset the Selcted Raido Theme value when user cancel the Theme selection.
+  void resetRadiobtn() {
+    _level = _theme;
+  }
+
   //! This Method save user selected Radio Button Level in SharedPreferences.
   void _saveToPrefs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

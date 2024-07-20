@@ -12,7 +12,7 @@ class ProgressIndicators {
       context: context,
       builder: (context) {
         return PopScope(
-          canPop: true, // Please set this to false once you debug your code
+          canPop: true, //! Please set this to false once you debug your code
           child: Center(
             child: LoadingAnimationWidget.prograssiveDots(
               color: myColors!.commanColor!,

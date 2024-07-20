@@ -155,6 +155,8 @@ class _SettingsPageState extends State<SettingsPage> {
                 InkWell(
                   borderRadius: BorderRadius.circular(20),
                   onTap: () {
+                    //! This Method reset the Radio Selection value when user Dismis or press back btn.
+                    context.read<ThemeProvider>().resetRadiobtn();
                     Navigator.of(context).pop();
                   },
                   child: const Padding(

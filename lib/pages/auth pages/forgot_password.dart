@@ -63,6 +63,14 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         if (constraints.maxWidth >= 1024) {
           return PopScope(
             canPop: true,
+            onPopInvoked: (value) {
+              if (value) {
+                //! This method is called when user press back button in middle of filling otp on OTP Page so we have cancel the current timer and disable
+                //! Resent Button again if we don't do that the timer() get overlape and timer will run very fast and resent btn will get enable even though
+                //! timer is runing.
+                context.read<OtpTimerProvider>().resetTimerAndBtn();
+              }
+            },
             child: Scaffold(
               appBar: AppBar(),
               backgroundColor: Theme.of(context).colorScheme.surface,
@@ -129,7 +137,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                         if (forgotpasswordKey.currentState!
                                                 .validate() &&
                                             context.mounted) {
-                                          // if there is not internet
+                                          // if there is no internet
                                           if (isInternet) {
                                             SnackBars.normalSnackBar(context,
                                                 "Please turn on your Internet");
@@ -203,6 +211,14 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         else {
           return PopScope(
             canPop: true,
+            onPopInvoked: (value) {
+              if (value) {
+                //! This method is called when user press back button in middle of filling otp on OTP Page so we have cancel the current timer and disable
+                //! Resent Button again if we don't do that the timer() get overlape and timer will run very fast and resent btn will get enable even though
+                //! timer is runing.
+                context.read<OtpTimerProvider>().resetTimerAndBtn();
+              }
+            },
             child: Scaffold(
               appBar: AppBar(),
               backgroundColor: Theme.of(context).colorScheme.surface,
