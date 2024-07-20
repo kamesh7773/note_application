@@ -74,7 +74,6 @@ class _SettingsPageState extends State<SettingsPage> {
                           child: Row(
                             children: [
                               Radio(
-                                activeColor: commanColor,
                                 value: "System",
                                 groupValue: context.read<ThemeProvider>().level,
                                 onChanged: (value) {
@@ -102,7 +101,6 @@ class _SettingsPageState extends State<SettingsPage> {
                           child: Row(
                             children: [
                               Radio(
-                                activeColor: commanColor,
                                 value: "Light",
                                 groupValue: context.read<ThemeProvider>().level,
                                 onChanged: (value) {
@@ -130,7 +128,6 @@ class _SettingsPageState extends State<SettingsPage> {
                           child: Row(
                             children: [
                               Radio(
-                                activeColor: commanColor,
                                 value: "Dark",
                                 groupValue: context.read<ThemeProvider>().level,
                                 onChanged: (value) {
@@ -155,16 +152,23 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
               ),
               actions: [
-                TextButton(
-                  onPressed: () {
+                InkWell(
+                  borderRadius: BorderRadius.circular(20),
+                  onTap: () {
                     Navigator.of(context).pop();
                   },
-                  child: const Text("Cancel"),
-                ),
-                TextButton(
-                  style: TextButton.styleFrom(
-                    backgroundColor: commanColor,
+                  child: const Padding(
+                    padding: EdgeInsets.all(6.0),
+                    child: Text(
+                      "Cancel",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
+                ),
+                const SizedBox(width: 2),
+                TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                     context.read<ThemeProvider>().setTheme();
@@ -229,161 +233,8 @@ class _SettingsPageState extends State<SettingsPage> {
                       InkWell(
                         borderRadius: BorderRadius.circular(8),
                         onTap: () {
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return Selector<ThemeProvider, String>(
-                                selector: (context, value) => value.level,
-                                builder: (context, value, child) {
-                                  return AlertDialog(
-                                    contentPadding: EdgeInsets.zero,
-                                    content: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          const Column(
-                                            children: [
-                                              SizedBox(height: 13),
-                                              Icon(Icons.color_lens),
-                                              SizedBox(height: 10),
-                                              Text(
-                                                "color scheme",
-                                                style: TextStyle(fontSize: 22),
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(height: 20),
-                                          Column(
-                                            children: [
-                                              InkWell(
-                                                onTap: () {
-                                                  context
-                                                      .read<ThemeProvider>()
-                                                      .toggleRadiobtn("System");
-                                                },
-                                                child: Row(
-                                                  children: [
-                                                    Radio(
-                                                      activeColor:
-                                                          myColors!.commanColor,
-                                                      value: "System",
-                                                      groupValue: context
-                                                          .read<ThemeProvider>()
-                                                          .level,
-                                                      onChanged: (value) {
-                                                        context
-                                                            .read<
-                                                                ThemeProvider>()
-                                                            .toggleRadiobtn(
-                                                                value);
-                                                      },
-                                                    ),
-                                                    const SizedBox(width: 15),
-                                                    const Text(
-                                                      "System",
-                                                      style: TextStyle(
-                                                        fontSize: 18,
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                              InkWell(
-                                                onTap: () {
-                                                  context
-                                                      .read<ThemeProvider>()
-                                                      .toggleRadiobtn("Light");
-                                                },
-                                                child: Row(
-                                                  children: [
-                                                    Radio(
-                                                      activeColor:
-                                                          myColors!.commanColor,
-                                                      value: "Light",
-                                                      groupValue: context
-                                                          .read<ThemeProvider>()
-                                                          .level,
-                                                      onChanged: (value) {
-                                                        context
-                                                            .read<
-                                                                ThemeProvider>()
-                                                            .toggleRadiobtn(
-                                                                value);
-                                                      },
-                                                    ),
-                                                    const SizedBox(width: 15),
-                                                    const Text(
-                                                      "Light",
-                                                      style: TextStyle(
-                                                        fontSize: 18,
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                              InkWell(
-                                                onTap: () {
-                                                  context
-                                                      .read<ThemeProvider>()
-                                                      .toggleRadiobtn("Dark");
-                                                },
-                                                child: Row(
-                                                  children: [
-                                                    Radio(
-                                                      activeColor:
-                                                          myColors.commanColor,
-                                                      value: "Dark",
-                                                      groupValue: context
-                                                          .read<ThemeProvider>()
-                                                          .level,
-                                                      onChanged: (value) {
-                                                        context
-                                                            .read<
-                                                                ThemeProvider>()
-                                                            .toggleRadiobtn(
-                                                                value);
-                                                      },
-                                                    ),
-                                                    const SizedBox(width: 15),
-                                                    const Text(
-                                                      "Dark",
-                                                      style: TextStyle(
-                                                        fontSize: 18,
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: const Text("Cancel"),
-                                      ),
-                                      TextButton(
-                                        style: TextButton.styleFrom(
-                                          backgroundColor: myColors.commanColor,
-                                        ),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                          context
-                                              .read<ThemeProvider>()
-                                              .setTheme();
-                                        },
-                                        child: const Text("OK"),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            },
+                          showThemeDiologBox(
+                            commanColor: myColors!.commanColor,
                           );
                         },
                         child: Row(

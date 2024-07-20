@@ -108,6 +108,18 @@ class NoteAppTheme {
     dialogTheme: DialogTheme(
       backgroundColor: Colors.grey.shade300,
     ),
+
+    //! Radio btn Theme
+    radioTheme: const RadioThemeData(
+      fillColor: WidgetStatePropertyAll(Colors.black),
+    ),
+
+    //! Text Btn Theme
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+        backgroundColor: Colors.black,
+      ),
+    ),
   );
 
   //? ---------------
@@ -214,6 +226,18 @@ class NoteAppTheme {
     //! Diolog box Theme
     dialogTheme: const DialogTheme(
       backgroundColor: Color.fromARGB(255, 34, 33, 33),
+    ),
+
+    //! Radio btn Theme
+    radioTheme: const RadioThemeData(
+      fillColor: WidgetStatePropertyAll(Colors.white),
+    ),
+
+    //! Text Btn Theme
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+        backgroundColor: Colors.white,
+      ),
     ),
   );
 }

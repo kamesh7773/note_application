@@ -15,7 +15,6 @@ import 'package:note_application/providers/theme_provider.dart';
 import 'package:note_application/providers/toggle_provider.dart';
 import 'package:note_application/services/auth/firebase_auth_methods.dart';
 import 'package:note_application/services/firebase/firebase_options.dart';
-import 'package:note_application/theme/themes.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
