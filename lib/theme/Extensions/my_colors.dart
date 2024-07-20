@@ -7,7 +7,7 @@ class MyColors extends ThemeExtension<MyColors> {
   final Color? buttonColor;
   final Color? googleFacebook;
   final Color? drawerListTileColor;
-  final Color? toggleSwitch;
+  final Color? appBar;
   final Color? notePage;
 
   const MyColors({
@@ -15,7 +15,7 @@ class MyColors extends ThemeExtension<MyColors> {
     this.buttonColor,
     this.commanColor,
     this.drawerListTileColor,
-    this.toggleSwitch,
+    this.appBar,
     this.notePage,
   });
 
@@ -25,7 +25,7 @@ class MyColors extends ThemeExtension<MyColors> {
     Color? buttonColor,
     Color? googleFacebook,
     Color? drawerListTileColor,
-    Color? toggleSwitch,
+    Color? appBar,
     Color? notePage,
   }) {
     return MyColors(
@@ -33,7 +33,7 @@ class MyColors extends ThemeExtension<MyColors> {
       buttonColor: buttonColor ?? this.buttonColor,
       googleFacebook: buttonColor ?? this.googleFacebook,
       drawerListTileColor: buttonColor ?? this.drawerListTileColor,
-      toggleSwitch: buttonColor ?? this.toggleSwitch,
+      appBar: buttonColor ?? this.appBar,
       notePage: buttonColor ?? this.notePage,
     );
   }
@@ -49,7 +49,7 @@ class MyColors extends ThemeExtension<MyColors> {
       googleFacebook: Color.lerp(googleFacebook, other.googleFacebook, t),
       drawerListTileColor:
           Color.lerp(drawerListTileColor, other.drawerListTileColor, t),
-      toggleSwitch: Color.lerp(toggleSwitch, other.toggleSwitch, t),
+      appBar: Color.lerp(appBar, other.appBar, t),
       notePage: Color.lerp(notePage, other.notePage, t),
     );
   }
@@ -60,7 +60,7 @@ class MyColors extends ThemeExtension<MyColors> {
     buttonColor: const Color.fromARGB(255, 100, 100, 100),
     googleFacebook: const Color.fromARGB(255, 209, 206, 206),
     drawerListTileColor: Colors.grey[400],
-    toggleSwitch: Colors.black,
+    appBar: Colors.black,
     notePage: const Color(0xFF181818),
   );
 
@@ -70,7 +70,7 @@ class MyColors extends ThemeExtension<MyColors> {
     buttonColor: Colors.black,
     googleFacebook: Colors.grey.shade300,
     drawerListTileColor: Colors.grey[400],
-    toggleSwitch: Colors.white,
+    appBar: Colors.white,
     notePage: Colors.white,
   );
 }

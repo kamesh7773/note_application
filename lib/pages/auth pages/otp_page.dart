@@ -82,7 +82,7 @@ class EmailOtpPageOtpPageState extends State<EmailOtpPage> {
         if (constraints.maxWidth >= 1024) {
           return Scaffold(
             appBar: AppBar(
-              backgroundColor: myColors!.toggleSwitch,
+              backgroundColor: myColors!.appBar,
             ),
             body: Center(
               child: SingleChildScrollView(

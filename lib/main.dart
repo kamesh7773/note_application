@@ -36,25 +36,25 @@ void main() async {
   // checking user is already login or not.
   bool isLogin = await FirebaseAuthMethod.isUserLogin();
   // checking user applied ThemeMode from Shared Preferences.
-  bool savedTheme = await ThemeProvider.currentTheme();
+  String savedLevel = await ThemeProvider.currentTheme();
   // Checking user applied Layout From Share Preferences.
   bool isGridView = await LayoutChangeProvider.currentLayout();
 
   runApp(NoteApp(
     isLogin: isLogin,
-    savedTheme: savedTheme,
+    savedLevel: savedLevel,
     isGridView: isGridView,
   ));
 }
 
 class NoteApp extends StatelessWidget {
   final bool isLogin;
-  final bool savedTheme;
+  final String savedLevel;
   final bool isGridView;
   const NoteApp({
     super.key,
     required this.isLogin,
-    required this.savedTheme,
+    required this.savedLevel,
     required this.isGridView,
   });
 
@@ -72,11 +72,11 @@ class NoteApp extends StatelessWidget {
           create: (context) => LayoutChangeProvider(isGridView),
         ),
         ChangeNotifierProvider(
-          create: (context) => ThemeProvider(savedTheme),
+          create: (context) => ThemeProvider(savedLevel),
         ),
       ],
-      child: Selector<ThemeProvider, bool>(
-        selector: (context, mode) => mode.isDarkMode,
+      child: Selector<ThemeProvider, ThemeData>(
+        selector: (context, data) => data.themeData,
         builder: (context, value, child) {
           return MaterialApp(
             routes: {
@@ -88,7 +88,7 @@ class NoteApp extends StatelessWidget {
               "/LoginPage": (context) => const LoginPage(),
               "/ForgotPasswordPage": (context) => const ForgotPasswordPage(),
             },
-            theme: value ? NoteAppTheme.darkMode : NoteAppTheme.lightMode,
+            theme: value,
             debugShowCheckedModeBanner: false,
             home: isLogin ? const HomePage() : const LoginPage(),
           );

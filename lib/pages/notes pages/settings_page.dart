@@ -36,6 +36,149 @@ class _SettingsPageState extends State<SettingsPage> {
     }
   }
 
+  //! Method for Showing Diolog box For Selected Themes.
+  void showThemeDiologBox({required commanColor}) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Selector<ThemeProvider, String>(
+          selector: (context, value) => value.level,
+          builder: (context, value, child) {
+            return AlertDialog(
+              contentPadding: EdgeInsets.zero,
+              content: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Column(
+                      children: [
+                        SizedBox(height: 13),
+                        Icon(Icons.color_lens),
+                        SizedBox(height: 10),
+                        Text(
+                          "color scheme",
+                          style: TextStyle(fontSize: 22),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    Column(
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            context
+                                .read<ThemeProvider>()
+                                .toggleRadiobtn("System");
+                          },
+                          child: Row(
+                            children: [
+                              Radio(
+                                activeColor: commanColor,
+                                value: "System",
+                                groupValue: context.read<ThemeProvider>().level,
+                                onChanged: (value) {
+                                  context
+                                      .read<ThemeProvider>()
+                                      .toggleRadiobtn(value);
+                                },
+                              ),
+                              const SizedBox(width: 15),
+                              const Text(
+                                "System",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            context
+                                .read<ThemeProvider>()
+                                .toggleRadiobtn("Light");
+                          },
+                          child: Row(
+                            children: [
+                              Radio(
+                                activeColor: commanColor,
+                                value: "Light",
+                                groupValue: context.read<ThemeProvider>().level,
+                                onChanged: (value) {
+                                  context
+                                      .read<ThemeProvider>()
+                                      .toggleRadiobtn(value);
+                                },
+                              ),
+                              const SizedBox(width: 15),
+                              const Text(
+                                "Light",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            context
+                                .read<ThemeProvider>()
+                                .toggleRadiobtn("Dark");
+                          },
+                          child: Row(
+                            children: [
+                              Radio(
+                                activeColor: commanColor,
+                                value: "Dark",
+                                groupValue: context.read<ThemeProvider>().level,
+                                onChanged: (value) {
+                                  context
+                                      .read<ThemeProvider>()
+                                      .toggleRadiobtn(value);
+                                },
+                              ),
+                              const SizedBox(width: 15),
+                              const Text(
+                                "Dark",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text("Cancel"),
+                ),
+                TextButton(
+                  style: TextButton.styleFrom(
+                    backgroundColor: commanColor,
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    context.read<ThemeProvider>().setTheme();
+                  },
+                  child: const Text("OK"),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     //! Access Theme Extension Colors.
@@ -64,7 +207,7 @@ class _SettingsPageState extends State<SettingsPage> {
           padding: const EdgeInsets.all(9.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
+            children: [
               Container(
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.grey.shade500),
@@ -78,45 +221,211 @@ class _SettingsPageState extends State<SettingsPage> {
                       const Text(
                         'Theme',
                         style: TextStyle(
-                            fontSize: 22, fontWeight: FontWeight.bold),
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       const SizedBox(height: 16.0),
-                      Selector<ThemeProvider, bool>(
-                        selector: (context, theme) => theme.isDarkMode,
-                        builder: (context, value, child) {
-                          return InkWell(
-                            borderRadius: BorderRadius.circular(8),
-                            onTap: () {
-                              context.read<ThemeProvider>().toggleTheme();
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 13),
-                                  child: Row(
-                                    children: [
-                                      Icon(Icons.dark_mode),
-                                      SizedBox(width: 10),
-                                      Text(
-                                        "Dark Mode",
-                                        style: TextStyle(fontSize: 18),
+                      InkWell(
+                        borderRadius: BorderRadius.circular(8),
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return Selector<ThemeProvider, String>(
+                                selector: (context, value) => value.level,
+                                builder: (context, value, child) {
+                                  return AlertDialog(
+                                    contentPadding: EdgeInsets.zero,
+                                    content: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          const Column(
+                                            children: [
+                                              SizedBox(height: 13),
+                                              Icon(Icons.color_lens),
+                                              SizedBox(height: 10),
+                                              Text(
+                                                "color scheme",
+                                                style: TextStyle(fontSize: 22),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 20),
+                                          Column(
+                                            children: [
+                                              InkWell(
+                                                onTap: () {
+                                                  context
+                                                      .read<ThemeProvider>()
+                                                      .toggleRadiobtn("System");
+                                                },
+                                                child: Row(
+                                                  children: [
+                                                    Radio(
+                                                      activeColor:
+                                                          myColors!.commanColor,
+                                                      value: "System",
+                                                      groupValue: context
+                                                          .read<ThemeProvider>()
+                                                          .level,
+                                                      onChanged: (value) {
+                                                        context
+                                                            .read<
+                                                                ThemeProvider>()
+                                                            .toggleRadiobtn(
+                                                                value);
+                                                      },
+                                                    ),
+                                                    const SizedBox(width: 15),
+                                                    const Text(
+                                                      "System",
+                                                      style: TextStyle(
+                                                        fontSize: 18,
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                              InkWell(
+                                                onTap: () {
+                                                  context
+                                                      .read<ThemeProvider>()
+                                                      .toggleRadiobtn("Light");
+                                                },
+                                                child: Row(
+                                                  children: [
+                                                    Radio(
+                                                      activeColor:
+                                                          myColors!.commanColor,
+                                                      value: "Light",
+                                                      groupValue: context
+                                                          .read<ThemeProvider>()
+                                                          .level,
+                                                      onChanged: (value) {
+                                                        context
+                                                            .read<
+                                                                ThemeProvider>()
+                                                            .toggleRadiobtn(
+                                                                value);
+                                                      },
+                                                    ),
+                                                    const SizedBox(width: 15),
+                                                    const Text(
+                                                      "Light",
+                                                      style: TextStyle(
+                                                        fontSize: 18,
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                              InkWell(
+                                                onTap: () {
+                                                  context
+                                                      .read<ThemeProvider>()
+                                                      .toggleRadiobtn("Dark");
+                                                },
+                                                child: Row(
+                                                  children: [
+                                                    Radio(
+                                                      activeColor:
+                                                          myColors.commanColor,
+                                                      value: "Dark",
+                                                      groupValue: context
+                                                          .read<ThemeProvider>()
+                                                          .level,
+                                                      onChanged: (value) {
+                                                        context
+                                                            .read<
+                                                                ThemeProvider>()
+                                                            .toggleRadiobtn(
+                                                                value);
+                                                      },
+                                                    ),
+                                                    const SizedBox(width: 15),
+                                                    const Text(
+                                                      "Dark",
+                                                      style: TextStyle(
+                                                        fontSize: 18,
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: const Text("Cancel"),
+                                      ),
+                                      TextButton(
+                                        style: TextButton.styleFrom(
+                                          backgroundColor: myColors.commanColor,
+                                        ),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                          context
+                                              .read<ThemeProvider>()
+                                              .setTheme();
+                                        },
+                                        child: const Text("OK"),
                                       ),
                                     ],
-                                  ),
-                                ),
-                                Switch(
-                                  activeColor: myColors!.toggleSwitch,
-                                  activeTrackColor: myColors.commanColor,
-                                  value: value,
-                                  onChanged: (value) {
-                                    context.read<ThemeProvider>().toggleTheme();
-                                  },
-                                ),
-                              ],
-                            ),
+                                  );
+                                },
+                              );
+                            },
                           );
                         },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 13),
+                              child: Row(
+                                children: [
+                                  Icon(Icons.color_lens),
+                                  SizedBox(width: 10),
+                                  Text(
+                                    "Color scheme",
+                                    style: TextStyle(fontSize: 17),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              child: Chip(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 14,
+                                  vertical: 8,
+                                ),
+                                shape: const RoundedRectangleBorder(
+                                  side: BorderSide(color: Colors.transparent),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(25),
+                                  ),
+                                ),
+                                label: Selector<ThemeProvider, String>(
+                                  selector: (context, value) => value.theme,
+                                  builder: (context, value, child) {
+                                    return Text(value);
+                                  },
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -179,7 +488,9 @@ class _SettingsPageState extends State<SettingsPage> {
                       const Text(
                         'Developer Information',
                         style: TextStyle(
-                            fontSize: 22, fontWeight: FontWeight.bold),
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       const SizedBox(height: 16.0),
                       const ListTile(

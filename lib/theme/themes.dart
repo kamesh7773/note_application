@@ -99,10 +99,14 @@ class NoteAppTheme {
       linearTrackColor: Colors.lightBlue,
     ),
 
-    //! Switch Theme
-    switchTheme: const SwitchThemeData(
-      thumbColor: WidgetStatePropertyAll(Colors.black),
-      trackColor: WidgetStatePropertyAll(Colors.white),
+    //! Chip Theme
+    chipTheme: ChipThemeData(
+      backgroundColor: Colors.grey.shade300,
+    ),
+
+    //! Diolog box Theme
+    dialogTheme: DialogTheme(
+      backgroundColor: Colors.grey.shade300,
     ),
   );
 
@@ -202,10 +206,14 @@ class NoteAppTheme {
       linearTrackColor: Colors.lightBlue,
     ),
 
-    //! Switch Theme
-    switchTheme: const SwitchThemeData(
-      thumbColor: WidgetStatePropertyAll(Colors.white),
-      trackColor: WidgetStatePropertyAll(Colors.black),
+    //! Chip Theme
+    chipTheme: const ChipThemeData(
+      backgroundColor: Color.fromARGB(255, 100, 100, 100),
+    ),
+
+    //! Diolog box Theme
+    dialogTheme: const DialogTheme(
+      backgroundColor: Color.fromARGB(255, 34, 33, 33),
     ),
   );
 }
