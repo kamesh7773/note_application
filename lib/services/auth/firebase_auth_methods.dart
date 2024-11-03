@@ -45,11 +45,7 @@ class FirebaseAuthMethod {
       ProgressIndicators.showProgressIndicator(context);
       //* 1st We check if the entered email address is already present & its provider is "Email & Password" in the "users" collection by querying FireStore's "users" Collection.
       // searching for Email Address & "Email & Password" provider in "users" collection at once
-      QuerySnapshot queryForEmailAndProvider = await _db
-          .collection('users')
-          .where("email", isEqualTo: email)
-          .where("provider", isEqualTo: "Email & Password")
-          .get();
+      QuerySnapshot queryForEmailAndProvider = await _db.collection('users').where("email", isEqualTo: email).where("provider", isEqualTo: "Email & Password").get();
 
       // if the entered Email address already present in "users" collection and Provider is "Email & Password"
       // it's means that entered email is already have account in Fireabase.
@@ -114,9 +110,7 @@ class FirebaseAuthMethod {
     }
     //? Handling Exceptions of  email address already present & its provider is "Email & Password" in Firebase "users" collection.
     on FirebaseAuthException catch (error) {
-      if (error.message ==
-              "A network error (such as timeout, interrupted connection or unreachable host) has occurred." &&
-          context.mounted) {
+      if (error.message == "A network error (such as timeout, interrupted connection or unreachable host) has occurred." && context.mounted) {
         // Navigator.pop(context);
         Navigator.popUntil(context, ModalRoute.withName("/SignUpPage"));
         SnackBars.normalSnackBar(context, "Please turn on your Internet");
@@ -163,8 +157,7 @@ class FirebaseAuthMethod {
             "userName": userName,
             "email": email,
             "phoneNumber": "empty",
-            "imageUrl":
-                "https://p7.hiclipart.com/preview/782/114/405/5bbc3519d674c.jpg",
+            "imageUrl": "https://p7.hiclipart.com/preview/782/114/405/5bbc3519d674c.jpg",
             "provider": "Email & Password",
             "userID": _auth.currentUser!.uid,
           }).then((value) {
@@ -174,8 +167,7 @@ class FirebaseAuthMethod {
           });
 
           // fetching current userId info from "users" collection.
-          final currentUserInfo =
-              await _db.collection("users").doc(_auth.currentUser!.uid).get();
+          final currentUserInfo = await _db.collection("users").doc(_auth.currentUser!.uid).get();
 
           final userData = currentUserInfo.data();
 
@@ -199,17 +191,14 @@ class FirebaseAuthMethod {
             if (context.mounted) {
               Navigator.pop(context);
             }
-            SnackBars.normalSnackBar(
-                context, "Your email account has been created successfully!");
+            SnackBars.normalSnackBar(context, "Your email account has been created successfully!");
             Navigator.of(context).popAndPushNamed("/HomePage");
           }
         }
 
         //? handling createUserWithEmailAndPassword & Storing user info at firebase.
         on FirebaseAuthException catch (error) {
-          if (error.message ==
-                  "A network error (such as timeout, interrupted connection or unreachable host) has occurred." &&
-              context.mounted) {
+          if (error.message == "A network error (such as timeout, interrupted connection or unreachable host) has occurred." && context.mounted) {
             // Navigator.pop(context);
             Navigator.popUntil(context, ModalRoute.withName("/SignUpPage"));
             SnackBars.normalSnackBar(context, "Please turn on your Internet");
@@ -229,8 +218,7 @@ class FirebaseAuthMethod {
     }
     //? Handling E-mail OTP error's
     catch (error) {
-      if (error ==
-          "ClientException with SocketException: Failed host lookup: 'direct-robbi-kamesh-cc8a724a.koyeb.app' (OS Error: No address associated with hostname, errno = 7), uri=https://direct-robbi-kamesh-cc8a724a.koyeb.app/_emailOtp-login") {
+      if (error == "ClientException with SocketException: Failed host lookup: 'direct-robbi-kamesh-cc8a724a.koyeb.app' (OS Error: No address associated with hostname, errno = 7), uri=https://direct-robbi-kamesh-cc8a724a.koyeb.app/_emailOtp-login") {
         if (context.mounted) {
           Navigator.pop(context);
           SnackBars.normalSnackBar(context, "Please turn on your Internet");
@@ -245,8 +233,7 @@ class FirebaseAuthMethod {
   }
 
   //! Resend OTP on Email Method
-  static Future<void> emailAuthResentOTP(
-      {required email, required BuildContext context}) async {
+  static Future<void> emailAuthResentOTP({required email, required BuildContext context}) async {
     try {
       // Showing the progress Indicator
       ProgressIndicators.showProgressIndicator(context);
@@ -258,8 +245,7 @@ class FirebaseAuthMethod {
     }
     //? Handling E-mail OTP error's
     catch (error) {
-      if (error ==
-          "ClientException with SocketException: Failed host lookup: 'direct-robbi-kamesh-cc8a724a.koyeb.app' (OS Error: No address associated with hostname, errno = 7), uri=https://direct-robbi-kamesh-cc8a724a.koyeb.app/otp-login") {
+      if (error == "ClientException with SocketException: Failed host lookup: 'direct-robbi-kamesh-cc8a724a.koyeb.app' (OS Error: No address associated with hostname, errno = 7), uri=https://direct-robbi-kamesh-cc8a724a.koyeb.app/otp-login") {
         if (context.mounted) {
           // poping out the progress indicator
           SnackBars.normalSnackBar(context, "Please turn on your Internet");
@@ -288,8 +274,7 @@ class FirebaseAuthMethod {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
 
       // fetching current userId info from "users" collection.
-      final currentUserInfo =
-          await _db.collection("users").doc(_auth.currentUser!.uid).get();
+      final currentUserInfo = await _db.collection("users").doc(_auth.currentUser!.uid).get();
 
       final userData = currentUserInfo.data();
 
@@ -316,14 +301,10 @@ class FirebaseAuthMethod {
     }
     // Handling Login auth Exceptions
     on FirebaseAuthException catch (error) {
-      if (error.message ==
-              "A network error (such as timeout, interrupted connection or unreachable host) has occurred." &&
-          context.mounted) {
+      if (error.message == "A network error (such as timeout, interrupted connection or unreachable host) has occurred." && context.mounted) {
         Navigator.pop(context);
         SnackBars.normalSnackBar(context, "Please turn on your Internet");
-      } else if (error.message ==
-              "The supplied auth credential is incorrect, malformed or has expired." &&
-          context.mounted) {
+      } else if (error.message == "The supplied auth credential is incorrect, malformed or has expired." && context.mounted) {
         Navigator.pop(context);
         SnackBars.normalSnackBar(context, "Invaild email or password");
       } else {
@@ -347,17 +328,13 @@ class FirebaseAuthMethod {
       ProgressIndicators.showProgressIndicator(context);
       //* 1st We check if the entered email address is already present & its provider is "Email & Password" in the "users" collection by querying FireStore's "users" Collection.
       // searching for Email Address & "Email & Password" provider in "users" collection at once
-      QuerySnapshot queryForEmailAndProvider = await _db
-          .collection('users')
-          .where("email", isEqualTo: email)
-          .where("provider", isEqualTo: "Email & Password")
-          .get();
+      QuerySnapshot queryForEmailAndProvider = await _db.collection('users').where("email", isEqualTo: email).where("provider", isEqualTo: "Email & Password").get();
 
       // if the entered Email address already present in "users" collection and Provider is "Email & Password"
       // it's means that user is entered corrent email address it's mean we can send that Forgot password link to user Email Address.
       if (queryForEmailAndProvider.docs.isNotEmpty && context.mounted) {
         // Method for sending forgot password link to user
-        // await _auth.sendPasswordResetEmail(email: email);
+        await _auth.sendPasswordResetEmail(email: email);
         // Poping of the Progress Indicator
         if (context.mounted) {
           Navigator.pop(context);
@@ -365,7 +342,9 @@ class FirebaseAuthMethod {
         // Redirect user to ForgotPasswordHoldPage
         if (context.mounted) {
           SnackBars.normalSnackBar(
-              context, "Forgot Password Link sended to your Email address");
+            context,
+            "Forgot Password Link sended to your Email address",
+          );
         }
 
         associatedEmail = true;
@@ -387,14 +366,10 @@ class FirebaseAuthMethod {
     }
     // Handling forgot password auth Exceptions
     on FirebaseAuthException catch (error) {
-      if (error.message ==
-              "A network error (such as timeout, interrupted connection or unreachable host) has occurred." &&
-          context.mounted) {
+      if (error.message == "A network error (such as timeout, interrupted connection or unreachable host) has occurred." && context.mounted) {
         Navigator.pop(context);
         SnackBars.normalSnackBar(context, "Please turn on your Internet");
-      } else if (error.message ==
-              "The supplied auth credential is incorrect, malformed or has expired." &&
-          context.mounted) {
+      } else if (error.message == "The supplied auth credential is incorrect, malformed or has expired." && context.mounted) {
         Navigator.pop(context);
         SnackBars.normalSnackBar(context, "Invaild email");
       } else {
@@ -431,8 +406,7 @@ class FirebaseAuthMethod {
         googleProvider.addScope("email");
 
         //* 3rd this code pop the google signIn/signUp interface/UI like showing google id that is logged in user's browser
-        final UserCredential userCredential =
-            await _auth.signInWithPopup(googleProvider);
+        final UserCredential userCredential = await _auth.signInWithPopup(googleProvider);
 
         if (context.mounted) {
           ProgressIndicators.showProgressIndicator(context);
@@ -457,8 +431,7 @@ class FirebaseAuthMethod {
           });
 
           // fetching current userId info from "users" collection.
-          final currentUserInfo =
-              await _db.collection("users").doc(_auth.currentUser!.uid).get();
+          final currentUserInfo = await _db.collection("users").doc(_auth.currentUser!.uid).get();
 
           final userData = currentUserInfo.data();
 
@@ -480,9 +453,7 @@ class FirebaseAuthMethod {
 
         //? Handling Excetion for Storing user info at FireStore DB.
         on FirebaseAuthException catch (error) {
-          if (error.message ==
-                  "A network error (such as timeout, interrupted connection or unreachable host) has occurred." &&
-              context.mounted) {
+          if (error.message == "A network error (such as timeout, interrupted connection or unreachable host) has occurred." && context.mounted) {
             SnackBars.normalSnackBar(context, "Please turn on your Internet");
           } else {
             if (context.mounted) {
@@ -523,8 +494,7 @@ class FirebaseAuthMethod {
         //! if User Does Nothngs and continues to Google O Auth Sign In then this under code will executed.
         else {
           //* 2nd When user clicks on the Pop Google Account then this code retirve the GoogleSignInTokenData (accesToken/IdToken)
-          final GoogleSignInAuthentication? googleAuth =
-              await googleUser?.authentication;
+          final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
 
           // if accessToken or idToken null the return nothing. ( accessToken get null when user dismis the Google account Pop Menu)
           if (googleAuth?.accessToken == null && googleAuth?.idToken == null) {
@@ -542,8 +512,7 @@ class FirebaseAuthMethod {
             //* 4th This code help user to singIn/SingUp the user with Google Account.
             // when user click on the Popup google id's then this code will return all the User google account information
             // (Info like : Google account user name, user IMG, user email is verfied etc)
-            UserCredential userCredential =
-                await _auth.signInWithCredential(credential);
+            UserCredential userCredential = await _auth.signInWithCredential(credential);
 
             //* 5th stroing user info inside the FireStore "users" collection.
             // ? Try & catch block for storing user info at Firestore in "users" collections
@@ -554,8 +523,7 @@ class FirebaseAuthMethod {
                 "userName": "empty",
                 "email": userCredential.additionalUserInfo!.profile!["email"],
                 "phoneNumber": "empty",
-                "imageUrl":
-                    userCredential.additionalUserInfo!.profile!["picture"],
+                "imageUrl": userCredential.additionalUserInfo!.profile!["picture"],
                 "provider": "Google",
                 "userID": _auth.currentUser!.uid,
               }).then((value) {
@@ -565,16 +533,12 @@ class FirebaseAuthMethod {
               });
 
               // fetching current userId info from "users" collection.
-              final currentUserInfo = await _db
-                  .collection("users")
-                  .doc(_auth.currentUser!.uid)
-                  .get();
+              final currentUserInfo = await _db.collection("users").doc(_auth.currentUser!.uid).get();
 
               final userData = currentUserInfo.data();
 
               // creating instace of Shared Preferences.
-              final SharedPreferences prefs =
-                  await SharedPreferences.getInstance();
+              final SharedPreferences prefs = await SharedPreferences.getInstance();
 
               //* 6th writing current User info data to SharedPreferences.
               await prefs.setString("name", userData!["name"]);
@@ -591,11 +555,8 @@ class FirebaseAuthMethod {
 
             //? Handling Excetion for Storing user info at FireStore DB.
             on FirebaseAuthException catch (error) {
-              if (error.message ==
-                      "A network error (such as timeout, interrupted connection or unreachable host) has occurred." &&
-                  context.mounted) {
-                SnackBars.normalSnackBar(
-                    context, "Please turn on your Internet");
+              if (error.message == "A network error (such as timeout, interrupted connection or unreachable host) has occurred." && context.mounted) {
+                SnackBars.normalSnackBar(context, "Please turn on your Internet");
               } else {
                 if (context.mounted) {
                   SnackBars.normalSnackBar(context, error.message!);
@@ -620,9 +581,7 @@ class FirebaseAuthMethod {
     }
     //? Handling Error Related Google SignIn/SignUp.
     on FirebaseAuthException catch (error) {
-      if (error.message ==
-              "A network error (such as timeout, interrupted connection or unreachable host) has occurred." &&
-          context.mounted) {
+      if (error.message == "A network error (such as timeout, interrupted connection or unreachable host) has occurred." && context.mounted) {
         Navigator.pop(context);
         SnackBars.normalSnackBar(context, "Please turn on your Internet");
       } else {
@@ -639,8 +598,7 @@ class FirebaseAuthMethod {
   // ----------------------------
 
   //! Method for Facebook SingIn/SignUp
-  static Future<void> signInwithFacebook(
-      {required BuildContext context}) async {
+  static Future<void> signInwithFacebook({required BuildContext context}) async {
     try {
       //* 1st this code pop the Facebook signIn/signUp page in browser On Android
       //* and if we are web app then open Pop-Up Facebook signIn/signUp interface/UI In web browser
@@ -659,9 +617,7 @@ class FirebaseAuthMethod {
       //! if User Does Nothngs and continues to Facebook Auth browser Sign In then this under code will executed.
       else {
         //* 2nd When user get login after entering their login password then this code retirve the FacebookTokenData.
-        final OAuthCredential facebookAuthCredential =
-            FacebookAuthProvider.credential(
-                loginResult.accessToken!.tokenString);
+        final OAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken!.tokenString);
 
         // if accessToken or idToken null the return nothing.
         if (loginResult.accessToken == null) {
@@ -670,8 +626,7 @@ class FirebaseAuthMethod {
         // if accessToken and idToken is not null only then we process to login
         else {
           //* 3rd this method singIn the user with credetial
-          final UserCredential userCredentail =
-              await _auth.signInWithCredential(facebookAuthCredential);
+          final UserCredential userCredentail = await _auth.signInWithCredential(facebookAuthCredential);
 
           //* 4th stroing user info inside the FireStore "users" collection.
           // ? Try & catch block for storing user info at Firestore in "users" collections
@@ -682,8 +637,7 @@ class FirebaseAuthMethod {
               "userName": "empty",
               "email": userCredentail.additionalUserInfo!.profile!["email"],
               "phoneNumber": "empty",
-              "imageUrl": userCredentail.additionalUserInfo!.profile!["picture"]
-                  ["data"]["url"],
+              "imageUrl": userCredentail.additionalUserInfo!.profile!["picture"]["data"]["url"],
               "provider": "Facebook",
               "userID": _auth.currentUser!.uid,
             }).then((value) {
@@ -693,14 +647,12 @@ class FirebaseAuthMethod {
             });
 
             // fetching current userId info from "users" collection.
-            final currentUserInfo =
-                await _db.collection("users").doc(_auth.currentUser!.uid).get();
+            final currentUserInfo = await _db.collection("users").doc(_auth.currentUser!.uid).get();
 
             final userData = currentUserInfo.data();
 
             // creating instace of Shared Preferences.
-            final SharedPreferences prefs =
-                await SharedPreferences.getInstance();
+            final SharedPreferences prefs = await SharedPreferences.getInstance();
 
             //* 5th writing current User info data to SharedPreferences.
             await prefs.setString("name", userData!["name"]);
@@ -717,9 +669,7 @@ class FirebaseAuthMethod {
 
           //? Handling Excetion for Storing user info at FireStore DB.
           on FirebaseAuthException catch (error) {
-            if (error.message ==
-                    "A network error (such as timeout, interrupted connection or unreachable host) has occurred." &&
-                context.mounted) {
+            if (error.message == "A network error (such as timeout, interrupted connection or unreachable host) has occurred." && context.mounted) {
               SnackBars.normalSnackBar(context, "Please turn on your Internet");
             } else {
               if (context.mounted) {
@@ -739,15 +689,10 @@ class FirebaseAuthMethod {
 
     //? Handling Error Related Facebook SignIn/SignUp.
     on FirebaseAuthException catch (error) {
-      if (error.message ==
-              "A network error (such as timeout, interrupted connection or unreachable host) has occurred." &&
-          context.mounted) {
+      if (error.message == "A network error (such as timeout, interrupted connection or unreachable host) has occurred." && context.mounted) {
         SnackBars.normalSnackBar(context, "Please turn on your Internet");
-      } else if (error.message ==
-              "[firebase_auth/account-exists-with-different-credential] An account already exists with the same email address but different sign-in credentials. Sign in using a provider associated with this email address." &&
-          context.mounted) {
-        SnackBars.normalSnackBar(
-            context, "The email address is already in use by another account.");
+      } else if (error.message == "[firebase_auth/account-exists-with-different-credential] An account already exists with the same email address but different sign-in credentials. Sign in using a provider associated with this email address." && context.mounted) {
+        SnackBars.normalSnackBar(context, "The email address is already in use by another account.");
       } else {
         if (context.mounted) {
           SnackBars.normalSnackBar(context, error.message!);
@@ -783,9 +728,7 @@ class FirebaseAuthMethod {
     }
     //? Handling Error Related Google SignIn/SignUp.
     on FirebaseAuthException catch (error) {
-      if (error.message ==
-              "A network error (such as timeout, interrupted connection or unreachable host) has occurred." &&
-          context.mounted) {
+      if (error.message == "A network error (such as timeout, interrupted connection or unreachable host) has occurred." && context.mounted) {
         SnackBars.normalSnackBar(context, "Please turn on your Internet");
       } else {
         if (context.mounted) {

@@ -1,3 +1,4 @@
+import 'package:colored_print/colored_print.dart';
 import 'package:flutter/material.dart';
 import 'package:note_application/helper/snackbar.dart';
 import 'package:note_application/helper/form_validators.dart';
@@ -63,7 +64,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         if (constraints.maxWidth >= 1024) {
           return PopScope(
             canPop: true,
-            onPopInvoked: (value) {
+            onPopInvokedWithResult: (value, result) {
               if (value) {
                 //! This method is called when the user presses the back button in the middle of filling OTP on the OTP Page. We need to cancel the current timer and disable
                 //! the Resend Button again. If we don't do that, the timer() will overlap, and the timer will run very fast, enabling the resend button even though
@@ -118,36 +119,27 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         const SizedBox(height: 15),
                         Center(
                           child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              padding: const EdgeInsets.symmetric(horizontal: 16.0),
                               //! Provider Selector is used
                               child: Selector<OtpTimerProvider, bool>(
-                                selector: (context, emailForgotLinkBtn) =>
-                                    emailForgotLinkBtn.forgotLinkBtbEnable,
+                                selector: (context, emailForgotLinkBtn) => emailForgotLinkBtn.forgotLinkBtbEnable,
                                 builder: (context, value, child) {
                                   return SizedBox(
                                     width: 400,
                                     child: ButtonWidget(
                                       onTap: () async {
                                         // Storing internet state in a variable
-                                        bool isInternet = await InternetChecker
-                                            .checkInternet();
+                                        bool isInternet = await InternetChecker.checkInternet();
 
                                         // If form validation is completed, only then call the forgot link method
-                                        if (forgotpasswordKey.currentState!
-                                                .validate() &&
-                                            context.mounted) {
+                                        if (forgotpasswordKey.currentState!.validate() && context.mounted) {
                                           // If there is no internet
                                           if (isInternet) {
-                                            SnackBars.normalSnackBar(context,
-                                                "Please turn on your Internet");
+                                            SnackBars.normalSnackBar(context, "Please turn on your Internet");
                                           }
                                           // If internet connection is available
-                                          else if (!isInternet &&
-                                              context.mounted) {
-                                            if (context
-                                                .read<OtpTimerProvider>()
-                                                .forgotLinkBtbEnable) {
+                                          else if (!isInternet && context.mounted) {
+                                            if (context.read<OtpTimerProvider>().forgotLinkBtbEnable) {
                                               resentOTP();
                                             }
                                             // Else return nothing
@@ -157,18 +149,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                           }
                                         }
                                       },
-                                      color: context
-                                              .read<OtpTimerProvider>()
-                                              .forgotLinkBtbEnable
-                                          ? myColors!.buttonColor!
-                                          : Theme.of(context).splashColor,
+                                      color: context.read<OtpTimerProvider>().forgotLinkBtbEnable ? myColors!.buttonColor! : Theme.of(context).splashColor,
                                       text: "Send Forgot Password Link",
-                                      textColor: context
-                                              .read<OtpTimerProvider>()
-                                              .forgotLinkBtbEnable
-                                          ? Colors.white
-                                          : const Color.fromARGB(
-                                              255, 115, 114, 114),
+                                      textColor: context.read<OtpTimerProvider>().forgotLinkBtbEnable ? Colors.white : const Color.fromARGB(255, 115, 114, 114),
                                     ),
                                   );
                                 },
@@ -184,13 +167,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                 const Text("Send OTP again in"),
                                 //! Provider Selector is used
                                 Selector<OtpTimerProvider, Duration>(
-                                  selector: (context, otptimer) =>
-                                      otptimer.duration,
+                                  selector: (context, otptimer) => otptimer.duration,
                                   builder: (context, duration, child) {
                                     return Text(
                                       " 00:${duration.inSeconds.toString()}",
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold),
+                                      style: const TextStyle(fontWeight: FontWeight.bold),
                                     );
                                   },
                                 ),
@@ -211,7 +192,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         else {
           return PopScope(
             canPop: true,
-            onPopInvoked: (value) {
+            onPopInvokedWithResult: (value, result) {
               if (value) {
                 //! This method is called when the user presses the back button in the middle of filling OTP on the OTP Page. We need to cancel the current timer and disable
                 //! the Resend Button again. If we don't do that, the timer() will overlap, and the timer will run very fast, enabling the resend button even though
@@ -258,33 +239,26 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       const SizedBox(height: 40),
                       Center(
                         child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            padding: const EdgeInsets.symmetric(horizontal: 16.0),
                             //! Provider Selector is used
                             child: Selector<OtpTimerProvider, bool>(
-                              selector: (context, emailForgotLinkBtn) =>
-                                  emailForgotLinkBtn.forgotLinkBtbEnable,
+                              selector: (context, emailForgotLinkBtn) => emailForgotLinkBtn.forgotLinkBtbEnable,
                               builder: (context, value, child) {
                                 return ButtonWidget(
                                   onTap: () async {
                                     // Storing internet state in a variable
-                                    bool isInternet =
-                                        await InternetChecker.checkInternet();
+                                    bool isInternet = await InternetChecker.checkInternet();
 
                                     // If form validation is completed, only then call the forgot link method
-                                    if (forgotpasswordKey.currentState!
-                                            .validate() &&
-                                        context.mounted) {
+                                    if (forgotpasswordKey.currentState!.validate() && context.mounted) {
                                       // If there is no internet
                                       if (isInternet) {
-                                        SnackBars.normalSnackBar(context,
-                                            "Please turn on your Internet");
+                                        SnackBars.normalSnackBar(context, "Please turn on your Internet");
                                       }
                                       // If internet connection is available
                                       else if (!isInternet && context.mounted) {
-                                        if (context
-                                            .read<OtpTimerProvider>()
-                                            .forgotLinkBtbEnable) {
+                                        if (context.read<OtpTimerProvider>().forgotLinkBtbEnable) {
+                                          ColoredPrint.warning("running");
                                           resentOTP();
                                         }
                                         // Else return nothing
@@ -294,18 +268,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                       }
                                     }
                                   },
-                                  color: context
-                                          .read<OtpTimerProvider>()
-                                          .forgotLinkBtbEnable
-                                      ? myColors!.buttonColor!
-                                      : Theme.of(context).splashColor,
+                                  color: context.read<OtpTimerProvider>().forgotLinkBtbEnable ? myColors!.buttonColor! : Theme.of(context).splashColor,
                                   text: "Send Forgot Password Link",
-                                  textColor: context
-                                          .read<OtpTimerProvider>()
-                                          .forgotLinkBtbEnable
-                                      ? Colors.white
-                                      : const Color.fromARGB(
-                                          255, 115, 114, 114),
+                                  textColor: context.read<OtpTimerProvider>().forgotLinkBtbEnable ? Colors.white : const Color.fromARGB(255, 115, 114, 114),
                                 );
                               },
                             )),
@@ -320,13 +285,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                               const Text("Send OTP again in"),
                               //! Provider Selector is used
                               Selector<OtpTimerProvider, Duration>(
-                                selector: (context, otptimer) =>
-                                    otptimer.duration,
+                                selector: (context, otptimer) => otptimer.duration,
                                 builder: (context, duration, child) {
                                   return Text(
                                     " 00:${duration.inSeconds.toString()}",
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold),
+                                    style: const TextStyle(fontWeight: FontWeight.bold),
                                   );
                                 },
                               ),
