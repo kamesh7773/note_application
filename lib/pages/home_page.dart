@@ -15,6 +15,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  // Declare ZoomDrawerController
+  final ZoomDrawerController _drawerController = ZoomDrawerController();
+
   // Declaring Current Menu Item
   MenuItem currentMenuItem = MenuItems.notesPage;
 
@@ -22,6 +25,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     //! Access Theme Extension Colors.
     final myColors = Theme.of(context).extension<MyColors>();
+
     //! Method to get the selected page
     Widget getSelectedPage() {
       switch (currentMenuItem) {
@@ -40,28 +44,30 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       body: ZoomDrawer(
-        menuScreen: Builder(
-          builder: (context) {
-            return DrawerMenu(
-              currentMenuItem: currentMenuItem,
-              onMenuItemSelected: (MenuItem item) {
-                setState(() {
-                  currentMenuItem = item;
-                  // after selecting the item, close the drawer
-                  ZoomDrawer.of(context)!.close();
-                });
+        controller: _drawerController,
+        menuScreen: DrawerMenu(
+          currentMenuItem: currentMenuItem,
+          //! This method contain the selected ListTile propertie and we assigne that selected ListTile to CurrrentMenuItem so our Drawer Page
+          //! get changed/updated.
+          onMenuItemSelected: (MenuItem item) {
+            setState(
+              () {
+                currentMenuItem = item;
+                // after selecting the item, close the drawer
+                _drawerController.close!();
               },
             );
           },
-          ),
+        ),
         mainScreen: getSelectedPage(),
         closeCurve: Curves.easeInOut,
         angle: 00,
-        mainScreenScale: 0.1,
+        mainScreenScale: 0.14,
         borderRadius: 20,
         slideHeight: 10,
         slideWidth: 250,
         menuScreenWidth: 240,
+        mainScreenTapClose: true,
         menuBackgroundColor: myColors!.appBar!,
       ),
     );

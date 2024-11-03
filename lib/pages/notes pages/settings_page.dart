@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:note_application/pages/drawer%20menu/drawer_menu.dart';
 import 'package:note_application/pages/home_page.dart';
 import 'package:note_application/providers/theme_provider.dart';
 import 'package:note_application/theme/Extensions/my_colors.dart';

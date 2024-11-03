@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:note_application/pages/auth%20pages/login_page.dart';
 import 'package:note_application/services/auth/firebase_auth_methods.dart';
 import 'package:note_application/theme/Extensions/my_colors.dart';
@@ -44,14 +45,19 @@ class _DrawerMenuState extends State<DrawerMenu> {
             builder: (context, snapshot) {
               //! Drawer Header
               return SizedBox(
-                width: double.infinity,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const SizedBox(height: 22),
+                    const SizedBox(height: 36),
+                    IconButton(
+                      onPressed: () {
+                        ZoomDrawer.of(context)!.close();
+                      },
+                      icon: const Icon(Icons.arrow_back),
+                    ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 18, bottom: 16, top: 20),
+                      padding: const EdgeInsets.only(left: 18, bottom: 16, top: 10),
                       child: SizedBox(
                         width: 70,
                         height: 70,
@@ -92,14 +98,20 @@ class _DrawerMenuState extends State<DrawerMenu> {
               children: [
                 ...MenuItems.all.map(
                   (MenuItem item) {
-                    return ListTile(
-                      selected: widget.currentMenuItem == item,
-                      selectedTileColor: myColors!.buttonColor,
-                      selectedColor: Colors.white,
-                      titleTextStyle: const TextStyle(fontSize: 18.5),
-                      leading: Icon(item.icon),
-                      title: Text(item.title),
-                      onTap: () => widget.onMenuItemSelected(item)  ,
+                    return ListTileTheme(
+                      selectedTileColor: myColors!.drawerListTileColor,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 8, left: 8),
+                        child: ListTile(
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                          selected: widget.currentMenuItem == item,
+                          selectedColor: widget.currentMenuItem == item ? Colors.black : Colors.white,
+                          leading: Icon(item.icon),
+                          title: Text(item.title),
+                          //! when we click on any ListTile then the propertie of that ListTile we passed to onMenuItemSelected() method.
+                          onTap: () => widget.onMenuItemSelected(item),
+                        ),
+                      ),
                     );
                   },
                 ),
@@ -112,7 +124,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
             child: InkWell(
               borderRadius: BorderRadius.circular(8),
               onTap: () {
-                //! Logout the user from any Logined Firebase Provider.
+                // ! Logout the user from any Logined Firebase Provider.
                 FirebaseAuthMethod.singOut(context: context);
 
                 //! pushing user to login Screen of the application.s
@@ -168,7 +180,6 @@ class MenuItems {
     settingsPage,
     helpAndFeedbackPage,
   ];
-
 }
 
 // ! Menu Item Class
@@ -176,5 +187,8 @@ class MenuItems {
 class MenuItem {
   final String title;
   final IconData icon;
-  const MenuItem({required this.title, required this.icon});
+  const MenuItem({
+    required this.title,
+    required this.icon,
+  });
 }
