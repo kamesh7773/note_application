@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drag_select_grid_view/drag_select_grid_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:note_application/pages/drawer%20page/drawer.dart';
+import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:note_application/pages/home_page.dart';
 import 'package:note_application/providers/layout_change_provider.dart';
 import 'package:note_application/providers/toggle_provider.dart';
@@ -20,12 +20,10 @@ class TrashPage extends StatefulWidget {
 
 class _TrashPageState extends State<TrashPage> {
   //! Geting FireStore Collection
-  final CollectionReference users =
-      FirebaseFirestore.instance.collection("users");
+  final CollectionReference users = FirebaseFirestore.instance.collection("users");
 
   //! Controllar for DragSelectGridView
-  final DragSelectGridViewController controller =
-      DragSelectGridViewController();
+  final DragSelectGridViewController controller = DragSelectGridViewController();
 
   //! Set for Notes Document ID's [creating Set because it will be initlized with duplicate same type of document.id's]
   Set<String> documentIdList = {};
@@ -61,7 +59,7 @@ class _TrashPageState extends State<TrashPage> {
 
     return PopScope(
       canPop: false,
-      onPopInvoked: (value) {
+      onPopInvokedWithResult: (value, result) {
         if (!value) {
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
@@ -98,20 +96,16 @@ class _TrashPageState extends State<TrashPage> {
                               onPressed: () {
                                 //! we itrat through set of documentIdList and delete each notes with docID.
                                 for (var element in documentIdList) {
-                                  FireStoreCurdMethods.deleteTrashNote(
-                                      docID: element);
+                                  FireStoreCurdMethods.deleteTrashNote(docID: element);
                                 }
 
                                 //! Moveing List of Trash notes to Notes Data base.
                                 try {
                                   // Reference to a CurrentUserID document in the main collection
-                                  DocumentReference currentUserID = users.doc(
-                                      FirebaseAuth.instance.currentUser!.uid
-                                          .toString());
+                                  DocumentReference currentUserID = users.doc(FirebaseAuth.instance.currentUser!.uid.toString());
 
                                   // Creating Reference Trash  Sub-Collection insdie currentUserID Users Document.
-                                  CollectionReference notes =
-                                      currentUserID.collection('notes');
+                                  CollectionReference notes = currentUserID.collection('notes');
 
                                   // Adding deleted Notes to trash.
                                   for (var element in deletedNotes) {
@@ -134,13 +128,11 @@ class _TrashPageState extends State<TrashPage> {
                               itemBuilder: (context) {
                                 return <PopupMenuEntry<String>>[
                                   PopupMenuItem(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 12),
+                                    padding: const EdgeInsets.symmetric(horizontal: 12),
                                     onTap: () {
                                       //! we itrat through set of documentIdList and delete each notes with docID.
                                       for (var element in documentIdList) {
-                                        FireStoreCurdMethods.deleteTrashNote(
-                                            docID: element);
+                                        FireStoreCurdMethods.deleteTrashNote(docID: element);
                                       }
 
                                       //! After deleting we clear the documentIdList set() data type.
@@ -163,11 +155,13 @@ class _TrashPageState extends State<TrashPage> {
                 ],
               )
             : AppBar(
+                leading: IconButton(
+                  //! Zoom Drawer
+                  onPressed: () => ZoomDrawer.of(context)!.toggle(),
+                  icon: const Icon(Icons.menu),
+                ),
                 title: const Text("T R A S H"),
               ),
-        drawer: const DrawerWidget(
-          iconNumber: 2,
-        ),
         body: StreamBuilder(
           stream: FireStoreCurdMethods.readTrashNotes(),
           builder: (context, snapshot) {
@@ -202,8 +196,7 @@ class _TrashPageState extends State<TrashPage> {
                 //* When We select the Trash Notes then SetState get called and LinearProgressIndicator
                 //* will show every time when we select the Trash Notes that's why we are using Selector.
                 return Selector<LayoutChangeProvider, bool>(
-                  selector: (context, isGridView) =>
-                      isGridView.isGridViewForTrash,
+                  selector: (context, isGridView) => isGridView.isGridViewForTrash,
                   builder: (context, value, child) {
                     return SizedBox(
                       width: double.infinity,
@@ -211,16 +204,13 @@ class _TrashPageState extends State<TrashPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Selector<ToggleProvider, bool>(
-                              selector: (context, autoDelete) =>
-                                  autoDelete.notesAutoDelete,
+                              selector: (context, autoDelete) => autoDelete.notesAutoDelete,
                               builder: (context, value, child) {
                                 return value
                                     ? Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 14),
+                                        padding: const EdgeInsets.symmetric(horizontal: 14),
                                         child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
                                             const Text(
                                               "Notes auto-delete after 7 days.",
@@ -231,9 +221,7 @@ class _TrashPageState extends State<TrashPage> {
                                             IconButton(
                                               padding: EdgeInsets.zero,
                                               onPressed: () {
-                                                context
-                                                    .read<ToggleProvider>()
-                                                    .autoDeleteNotes();
+                                                context.read<ToggleProvider>().autoDeleteNotes();
                                               },
                                               icon: const Icon(
                                                 Icons.close,
@@ -245,16 +233,13 @@ class _TrashPageState extends State<TrashPage> {
                                     : const SizedBox.shrink();
                               }),
                           Selector<ToggleProvider, bool>(
-                              selector: (context, longPress) =>
-                                  longPress.longPressToSelect,
+                              selector: (context, longPress) => longPress.longPressToSelect,
                               builder: (context, value, child) {
                                 return value
                                     ? Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 14),
+                                        padding: const EdgeInsets.symmetric(horizontal: 14),
                                         child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
                                             const Text(
                                               "Long press to select notes.",
@@ -265,9 +250,7 @@ class _TrashPageState extends State<TrashPage> {
                                             IconButton(
                                               padding: EdgeInsets.zero,
                                               onPressed: () {
-                                                context
-                                                    .read<ToggleProvider>()
-                                                    .longPressToSelectNotes();
+                                                context.read<ToggleProvider>().longPressToSelectNotes();
                                               },
                                               icon: const Icon(
                                                 Icons.close,
@@ -287,15 +270,13 @@ class _TrashPageState extends State<TrashPage> {
                               crossAxisCount: 2,
                               itemBuilder: (context, index, isSelected) {
                                 // geting indivisual document from List of Document's
-                                DocumentSnapshot document =
-                                    listOfTrashDocs[index];
+                                DocumentSnapshot document = listOfTrashDocs[index];
 
                                 // getting indivsual document ID
                                 String docID = document.id;
 
                                 // getting Map Data of each Document
-                                Map<String, dynamic> data =
-                                    document.data() as Map<String, dynamic>;
+                                Map<String, dynamic> data = document.data() as Map<String, dynamic>;
 
                                 // retiveing Data Map<String,Dynamic>
                                 String title = data['title'];
@@ -312,8 +293,7 @@ class _TrashPageState extends State<TrashPage> {
 
                                   //! Storing List of Selected Notes docID into Set()
                                   for (var element in set) {
-                                    DocumentSnapshot document =
-                                        listOfTrashDocs[element];
+                                    DocumentSnapshot document = listOfTrashDocs[element];
                                     //! Here we are storing selected notes DocId into Declared Set() Data Type. (WE ARE USED SET() DATATYPE BECAUSE THIS METHOD CALLED SEVRAL TIMES AND IF WE USE LIST THEN IT WILL BE FILLED THE LIST WITH DUPLICATE DOCID'S)
                                     documentIdList.add(document.id);
                                   }
@@ -325,15 +305,12 @@ class _TrashPageState extends State<TrashPage> {
                                   deletedNotes.clear();
 
                                   //! this will return the selected notes number in the form of set() data type.
-                                  var list =
-                                      controller.value.selectedIndexes.toList();
+                                  var list = controller.value.selectedIndexes.toList();
 
                                   for (var element in list) {
-                                    DocumentSnapshot document =
-                                        listOfTrashDocs[element];
+                                    DocumentSnapshot document = listOfTrashDocs[element];
                                     // getting Map Data of each Document
-                                    Map<String, dynamic> data =
-                                        document.data() as Map<String, dynamic>;
+                                    Map<String, dynamic> data = document.data() as Map<String, dynamic>;
 
                                     deletedNotes.add(
                                       {
@@ -364,10 +341,8 @@ class _TrashPageState extends State<TrashPage> {
             //! If Snapshot is fetching Data then we show LinearProgressIndicator.
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const LinearProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(
-                    Colors.grey), // Change the color here
-                backgroundColor:
-                    Colors.white, // Optional: Change the background color
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.grey), // Change the color here
+                backgroundColor: Colors.white, // Optional: Change the background color
               );
             }
 

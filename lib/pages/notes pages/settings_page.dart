@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:note_application/pages/drawer%20page/drawer.dart';
+import 'package:note_application/pages/drawer%20menu/drawer_menu.dart';
 import 'package:note_application/pages/home_page.dart';
 import 'package:note_application/providers/theme_provider.dart';
 import 'package:note_application/theme/Extensions/my_colors.dart';
@@ -67,9 +68,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       children: [
                         InkWell(
                           onTap: () {
-                            context
-                                .read<ThemeProvider>()
-                                .toggleRadiobtn("System");
+                            context.read<ThemeProvider>().toggleRadiobtn("System");
                           },
                           child: Row(
                             children: [
@@ -77,9 +76,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                 value: "System",
                                 groupValue: context.read<ThemeProvider>().level,
                                 onChanged: (value) {
-                                  context
-                                      .read<ThemeProvider>()
-                                      .toggleRadiobtn(value);
+                                  context.read<ThemeProvider>().toggleRadiobtn(value);
                                 },
                               ),
                               const SizedBox(width: 15),
@@ -94,9 +91,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         ),
                         InkWell(
                           onTap: () {
-                            context
-                                .read<ThemeProvider>()
-                                .toggleRadiobtn("Light");
+                            context.read<ThemeProvider>().toggleRadiobtn("Light");
                           },
                           child: Row(
                             children: [
@@ -104,9 +99,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                 value: "Light",
                                 groupValue: context.read<ThemeProvider>().level,
                                 onChanged: (value) {
-                                  context
-                                      .read<ThemeProvider>()
-                                      .toggleRadiobtn(value);
+                                  context.read<ThemeProvider>().toggleRadiobtn(value);
                                 },
                               ),
                               const SizedBox(width: 15),
@@ -121,9 +114,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         ),
                         InkWell(
                           onTap: () {
-                            context
-                                .read<ThemeProvider>()
-                                .toggleRadiobtn("Dark");
+                            context.read<ThemeProvider>().toggleRadiobtn("Dark");
                           },
                           child: Row(
                             children: [
@@ -131,9 +122,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                 value: "Dark",
                                 groupValue: context.read<ThemeProvider>().level,
                                 onChanged: (value) {
-                                  context
-                                      .read<ThemeProvider>()
-                                      .toggleRadiobtn(value);
+                                  context.read<ThemeProvider>().toggleRadiobtn(value);
                                 },
                               ),
                               const SizedBox(width: 15),
@@ -192,7 +181,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
     return PopScope(
       canPop: false,
-      onPopInvoked: (value) {
+      onPopInvokedWithResult: (value, result) {
         if (!value) {
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
@@ -206,9 +195,13 @@ class _SettingsPageState extends State<SettingsPage> {
       },
       child: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            //! Zoom Drawer
+            onPressed: () => ZoomDrawer.of(context)!.toggle(),
+            icon: const Icon(Icons.menu),
+          ),
           title: const Text("S E T T I N G S"),
         ),
-        drawer: const DrawerWidget(iconNumber: 3),
         body: SingleChildScrollView(
           padding: const EdgeInsets.all(9.0),
           child: Column(
@@ -256,8 +249,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               ),
                             ),
                             Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
+                              padding: const EdgeInsets.symmetric(horizontal: 10),
                               child: Chip(
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 14,
@@ -297,20 +289,15 @@ class _SettingsPageState extends State<SettingsPage> {
                     children: [
                       const Text(
                         'Application Information',
-                        style: TextStyle(
-                            fontSize: 22, fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 16.0),
-                      const ListTile(
-                          leading: Icon(Icons.info_outline),
-                          title: Text('App Version'),
-                          subtitle: Text('1.0.0')),
+                      const ListTile(leading: Icon(Icons.info_outline), title: Text('App Version'), subtitle: Text('1.0.0')),
                       InkWell(
                         borderRadius: BorderRadius.circular(8),
                         onTap: () {
                           _launchURL(
-                            Uri.parse(
-                                "https://github.com/kamesh7773/note_application"),
+                            Uri.parse("https://github.com/kamesh7773/note_application"),
                             true,
                           );
                         },
@@ -346,10 +333,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         ),
                       ),
                       const SizedBox(height: 16.0),
-                      const ListTile(
-                          leading: FaIcon(FontAwesomeIcons.user),
-                          title: Text('Name'),
-                          subtitle: Text('Kamesh Singh Sisodiya')),
+                      const ListTile(leading: FaIcon(FontAwesomeIcons.user), title: Text('Name'), subtitle: Text('Kamesh Singh Sisodiya')),
                       InkWell(
                         borderRadius: BorderRadius.circular(8),
                         onTap: () {
@@ -367,8 +351,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         borderRadius: BorderRadius.circular(8),
                         onTap: () {
                           _launchURL(
-                            Uri.parse(
-                                "https://www.linkedin.com/in/kamesh-singh-5baab51ba/"),
+                            Uri.parse("https://www.linkedin.com/in/kamesh-singh-5baab51ba/"),
                             true,
                           );
                         },
@@ -381,8 +364,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         borderRadius: BorderRadius.circular(8),
                         onTap: () {
                           _launchURL(
-                            Uri.parse(
-                                "https://www.instagram.com/kamesh_singh22?igsh=YzljYTk1ODg3Zg=="),
+                            Uri.parse("https://www.instagram.com/kamesh_singh22?igsh=YzljYTk1ODg3Zg=="),
                             true,
                           );
                         },
@@ -408,8 +390,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     children: [
                       Text(
                         'Disclaimer',
-                        style: TextStyle(
-                            fontSize: 24, fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                       ),
                       SizedBox(height: 16.0),
                       ListTile(

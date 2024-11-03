@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:note_application/pages/drawer%20page/drawer.dart';
+import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:note_application/pages/home_page.dart';
 import 'package:note_application/theme/Extensions/my_colors.dart';
 
@@ -18,7 +18,7 @@ class _HelpAndFeedbackPageState extends State<HelpAndFeedbackPage> {
 
     return PopScope(
       canPop: false,
-      onPopInvoked: (value) {
+      onPopInvokedWithResult: (value, result) {
         if (!value) {
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
@@ -32,10 +32,14 @@ class _HelpAndFeedbackPageState extends State<HelpAndFeedbackPage> {
       },
       child: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            //! Zoom Drawer
+            onPressed: () => ZoomDrawer.of(context)!.toggle(),
+            icon: const Icon(Icons.menu),
+          ),
           title: const Text("H E L P  &  F E E D B A C K"),
           centerTitle: true,
         ),
-        drawer: const DrawerWidget(iconNumber: 4),
         body: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -52,8 +56,7 @@ class _HelpAndFeedbackPageState extends State<HelpAndFeedbackPage> {
                 title: const Text('How do I create, update, or delete notes?'),
                 children: const <Widget>[
                   ListTile(
-                    title: Text(
-                        'To create a note, use the floating action button located at the bottom right of the application. Once created, you can update or delete notes as needed.'),
+                    title: Text('To create a note, use the floating action button located at the bottom right of the application. Once created, you can update or delete notes as needed.'),
                   ),
                 ],
               ),
@@ -62,8 +65,7 @@ class _HelpAndFeedbackPageState extends State<HelpAndFeedbackPage> {
                 title: const Text('How do I create an account?'),
                 children: const <Widget>[
                   ListTile(
-                    title: Text(
-                        'You can create an account using Email & Password, or by continuing with Google or Facebook. If you forget your password, you can easily reset it using the "Forgot Password" option.'),
+                    title: Text('You can create an account using Email & Password, or by continuing with Google or Facebook. If you forget your password, you can easily reset it using the "Forgot Password" option.'),
                   ),
                 ],
               ),
@@ -72,8 +74,7 @@ class _HelpAndFeedbackPageState extends State<HelpAndFeedbackPage> {
                 title: const Text('What happens when I delete a note?'),
                 children: const <Widget>[
                   ListTile(
-                    title: Text(
-                        'When you delete a note, it moves to the Trash page and is not permanently deleted. Notes in the Trash will be automatically deleted after 7 days.'),
+                    title: Text('When you delete a note, it moves to the Trash page and is not permanently deleted. Notes in the Trash will be automatically deleted after 7 days.'),
                   ),
                 ],
               ),
@@ -82,19 +83,16 @@ class _HelpAndFeedbackPageState extends State<HelpAndFeedbackPage> {
                 title: const Text('How do I change the app theme?'),
                 children: const <Widget>[
                   ListTile(
-                    title: Text(
-                        'You can change the theme (Light or Dark Mode) of the application from the Settings page.'),
+                    title: Text('You can change the theme (Light or Dark Mode) of the application from the Settings page.'),
                   ),
                 ],
               ),
               ExpansionTile(
                 iconColor: myColors.commanColor,
-                title: const Text(
-                    'What information is available in the Settings page?'),
+                title: const Text('What information is available in the Settings page?'),
                 children: const <Widget>[
                   ListTile(
-                    title: Text(
-                        'The Settings page contains information about the application such as version info, developer info, and the changelog of the application.'),
+                    title: Text('The Settings page contains information about the application such as version info, developer info, and the changelog of the application.'),
                   ),
                 ],
               ),
@@ -109,8 +107,7 @@ class _HelpAndFeedbackPageState extends State<HelpAndFeedbackPage> {
                 title: const Text('The app is not loading properly'),
                 children: const <Widget>[
                   ListTile(
-                    title: Text(
-                        'Try restarting the app and ensure you have a stable internet connection. If the issue persists, please contact support.'),
+                    title: Text('Try restarting the app and ensure you have a stable internet connection. If the issue persists, please contact support.'),
                   ),
                 ],
               ),
@@ -119,8 +116,7 @@ class _HelpAndFeedbackPageState extends State<HelpAndFeedbackPage> {
                 title: const Text('I found a bug'),
                 children: const <Widget>[
                   ListTile(
-                    title: Text(
-                        'Please report any bugs using the feedback form below. Provide as much detail as possible to help us resolve the issue.'),
+                    title: Text('Please report any bugs using the feedback form below. Provide as much detail as possible to help us resolve the issue.'),
                   ),
                 ],
               ),
@@ -142,13 +138,11 @@ class _HelpAndFeedbackPageState extends State<HelpAndFeedbackPage> {
                     borderRadius: const BorderRadius.all(
                       Radius.circular(8),
                     ),
-                    borderSide:
-                        BorderSide(width: 1.6, color: myColors.commanColor!),
+                    borderSide: BorderSide(width: 1.6, color: myColors.commanColor!),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: const BorderRadius.all(Radius.circular(8)),
-                    borderSide:
-                        BorderSide(width: 1.6, color: myColors.commanColor!),
+                    borderSide: BorderSide(width: 1.6, color: myColors.commanColor!),
                   ),
                 ),
               ),

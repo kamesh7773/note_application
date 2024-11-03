@@ -30,9 +30,7 @@ class _AddNotePageState extends State<AddNotePage> {
   // ------------------------------------------------------------
   void addingNote1(didPop) {
     // if TextFeild's are not empty
-    if (!didPop &&
-        textEditingController1.text.isNotEmpty &&
-        textEditingController2.text.isNotEmpty) {
+    if (!didPop && textEditingController1.text.isNotEmpty && textEditingController2.text.isNotEmpty) {
       FireStoreCurdMethods.addNote(
         title: textEditingController1.text,
         note: textEditingController2.text,
@@ -57,9 +55,7 @@ class _AddNotePageState extends State<AddNotePage> {
     }
 
     // if TextFeild 1 & TextFeild 2 are empty
-    if (!didPop &&
-        textEditingController1.text.isEmpty &&
-        textEditingController2.text.isEmpty) {
+    if (!didPop && textEditingController1.text.isEmpty && textEditingController2.text.isEmpty) {
       // Deleting Empty Note
       FireStoreCurdMethods.deleteNote(docID: widget.docID);
 
@@ -83,8 +79,7 @@ class _AddNotePageState extends State<AddNotePage> {
   // --------------------------------------------------------------------
   void addingNote2() {
     // if Textfeild's are not empty
-    if (textEditingController1.text.isNotEmpty ||
-        textEditingController2.text.isNotEmpty) {
+    if (textEditingController1.text.isNotEmpty || textEditingController2.text.isNotEmpty) {
       FireStoreCurdMethods.addNote(
         title: textEditingController1.text,
         note: textEditingController2.text,
@@ -93,8 +88,7 @@ class _AddNotePageState extends State<AddNotePage> {
     }
 
     // if Textfeild's are empty
-    if (textEditingController1.text.isEmpty &&
-        textEditingController2.text.isEmpty) {
+    if (textEditingController1.text.isEmpty && textEditingController2.text.isEmpty) {
       // Deleting Empty Note
       FireStoreCurdMethods.deleteNote(docID: widget.docID);
 
@@ -103,9 +97,10 @@ class _AddNotePageState extends State<AddNotePage> {
 
       // Showing SnackBar
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          duration: Duration(milliseconds: 800),
-          content: Text("Empty note discarded"),
+        SnackBar(
+          key: UniqueKey(),
+          duration: const Duration(milliseconds: 800),
+          content: const Text("Empty note discarded"),
         ),
       );
     }
@@ -142,7 +137,7 @@ class _AddNotePageState extends State<AddNotePage> {
 
     return PopScope(
       canPop: false,
-      onPopInvoked: (didPop) {
+      onPopInvokedWithResult: (didPop, result) {
         addingNote1(didPop);
       },
       child: Scaffold(
