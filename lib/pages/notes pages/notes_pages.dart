@@ -20,37 +20,37 @@ class NotesPage extends StatefulWidget {
 }
 
 class NotesPageState extends State<NotesPage> {
-  //! Geting FireStore Collection
+  //! Getting Firestore Collection
   final CollectionReference users = FirebaseFirestore.instance.collection("users");
 
-  //! Controllar for DragSelectGridView
+  //! Controller for DragSelectGridView
   final DragSelectGridViewController controller = DragSelectGridViewController();
 
-  //! Create object of SharedPreferences
+  //! SharedPreferences object
   late final SharedPreferences prefs;
 
-  //! Set for Notes Document ID's [creating Set because it will be initlized with duplicate same type of document.id's]
+  //! Set for storing unique Note Document IDs
   Set<String> documentIdList = {};
 
-  //! List of Map of Deleted Notes.
+  //! List of Maps for Deleted Notes
   List<Map<String, dynamic>> deletedNotes = [];
 
-  //! varibles for file data.
+  //! Variable for file data
   String? imageUrl;
 
-  //! Method for fetching current Provider user Data
+  //! Method for fetching current user data from Provider
   Future<void> getUserData() async {
-    // creating instace of Shared Preferences.
+    // Creating an instance of SharedPreferences
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     imageUrl = prefs.getString('imageUrl');
   }
 
-  //! ethid for initlized SharedPrefernce Object
+  //! Method to initialize SharedPreferences object
   Future<void> initSharePref() async {
     prefs = await SharedPreferences.getInstance();
   }
 
-  //! Method that Rebuild the UI Based on the Selection.
+  //! Method to rebuild the UI based on selection
   void listener() {
     setState(() {});
   }
@@ -70,15 +70,15 @@ class NotesPageState extends State<NotesPage> {
 
   @override
   Widget build(BuildContext context) {
-    //! Access Theme Extension Colors.
+    //! Access Theme Extension Colors
     final myColors = Theme.of(context).extension<MyColors>();
 
-    //! Notes are selected or not Selected.
+    //! Check if notes are selected
     final isSelected = controller.value.isSelecting;
     int selectedItems = controller.value.amount;
 
     return Scaffold(
-      //? AppBar() widget
+      //? AppBar widget
       appBar: isSelected
           ? AppBar(
               title: selectedItems > 1
@@ -106,22 +106,21 @@ class NotesPageState extends State<NotesPage> {
                 isSelected
                     ? IconButton(
                         onPressed: () {
-                          //! we itrat through set of documentIdList and delete each notes with docID.
+                          //! Iterate through documentIdList and delete each note with docID
                           for (var element in documentIdList) {
                             FireStoreCurdMethods.deleteNote(docID: element);
                           }
 
-                          //! Moveing List of Deleted notes to Trash Data base.
-                          // Adding deleted Notes to trash.
+                          //! Move list of deleted notes to Trash database
                           for (var element in deletedNotes) {
                             FireStoreCurdMethods.addNoteToTrash(deletedNotes: element);
                           }
 
-                          //! After Moving deleteNotes to Trash we clear our the deletedNotes list[].
+                          //! Clear the deletedNotes list after moving to Trash
                           deletedNotes.clear();
-                          //! After deleting we clear the documentIdList set() data type.
+                          //! Clear the documentIdList set after deletion
                           documentIdList.clear();
-                          //! Also clear our the Selcted Notes so selection AppBar get Removed.
+                          //! Clear selected notes to remove the selection AppBar
                           controller.clear();
                         },
                         icon: const Icon(Icons.delete))
@@ -181,13 +180,13 @@ class NotesPageState extends State<NotesPage> {
                 FutureBuilder(
                   future: getUserData(),
                   builder: (context, snapshot) {
-                    // snapshot begin loading
+                    // Snapshot is loading
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Center(
                         child: Container(),
                       );
                     }
-                    // If snapshot has Data
+                    // If snapshot has data
                     else {
                       return GestureDetector(
                         onTap: () {
@@ -195,7 +194,7 @@ class NotesPageState extends State<NotesPage> {
                         },
                         child: Padding(
                           padding: const EdgeInsets.only(right: 10, left: 4, bottom: 2),
-                          //! for Image caching
+                          //! For image caching
                           child: SizedBox(
                             width: 32,
                             height: 32,
@@ -214,24 +213,23 @@ class NotesPageState extends State<NotesPage> {
                 ),
               ],
             ),
-      //? Drawer() widget
+      //? Drawer widget
       // drawer: const DrawerWidget(iconNumber: 1),
-      //? Body() of App
+      //? Body of App
       body: StreamBuilder(
         stream: FireStoreCurdMethods.read(),
         builder: (context, snapshot) {
-          //! IF SnapShot Has Data.
+          //! If snapshot has data
           if (snapshot.hasData) {
-            // Storeing List of Document from Collection
-            // Here "snapshot.data!.docs" -> data == Collection & docs == List of Document
+            // Storing list of documents from collection
             List listOfDocs = snapshot.data!.docs;
 
             return Selector<LayoutChangeProvider, bool>(
               selector: (context, isGridView) => isGridView.isGridView,
               builder: (context, value, child) {
-                //! If Grid Layout == TRUE (SHOW GRIDVIEW LAYOUT)
+                //! If Grid Layout is TRUE (SHOW GRIDVIEW LAYOUT)
                 if (value) {
-                  //* DragSelectGridView [This Package is modified do not update this package updation will broke the code]
+                  //* DragSelectGridView [This package is modified; do not update as it will break the code]
                   return DragSelectGridView(
                     gridController: controller,
                     itemCount: listOfDocs.length,
@@ -239,47 +237,47 @@ class NotesPageState extends State<NotesPage> {
                     physics: const BouncingScrollPhysics(),
                     crossAxisCount: 2,
                     itemBuilder: (context, index, isSelected) {
-                      // geting indivisual document from List of Document's
+                      // Getting individual document from list of documents
                       DocumentSnapshot document = listOfDocs[index];
 
-                      // getting indivsual document ID
+                      // Getting individual document ID
                       String docID = document.id;
 
-                      // getting Map Data of each Document
+                      // Getting map data of each document
                       Map<String, dynamic> data = document.data() as Map<String, dynamic>;
 
-                      // retiveing Data Map<String,Dynamic>
+                      // Retrieving data Map<String, Dynamic>
                       String title = data['title'];
                       String note = data['note'];
 
-                      //? THIS UNDER CODE IS LOGIC FOR DELETE NOTES WHILE SELECTING MULTIPLE NOTES.
-                      // if Notes are selected then retrive there docID
+                      //? Logic for deleting notes while selecting multiple notes
+                      // If notes are selected, retrieve their docID
                       if (controller.value.isSelecting) {
-                        // It is very imp to clear the documentIdList becuase when we select and again deselecte then deSeleect docID not removed.
+                        // Important to clear documentIdList because when we select and deselect, the deselected docID is not removed
                         documentIdList.clear();
 
-                        // this will return the selected notes number in the form of set() data type.
+                        // This will return the selected notes number in the form of a set
                         var set = controller.value.selectedIndexes;
 
-                        // Storing List of Selected Notes docID into Set()
+                        // Storing list of selected notes docID into a set
                         for (var element in set) {
                           DocumentSnapshot document = listOfDocs[element];
-                          //! Here we are storing selected notes DocId into Declared Set() Data Type. (WE ARE USED SET() DATATYPE BECAUSE THIS METHOD CALLED SEVRAL TIMES AND IF WE USE LIST THEN IT WILL BE FILLED THE LIST WITH DUPLICATE DOCID'S)
+                          //! Storing selected notes docID into declared set (using set to avoid duplicates)
                           documentIdList.add(document.id);
                         }
                       }
 
-                      // //? THIS UNDER CODE IS LOGIC FOR TRASH NOTES.
+                      // //? Logic for trash notes
                       if (controller.value.isSelecting) {
-                        // It is very imp to clear the deletedNotes becuase when we select and again deselecte then deSeleect Notes not removed.
+                        // Important to clear deletedNotes because when we select and deselect, the deselected notes are not removed
                         deletedNotes.clear();
 
-                        // this will return the selected notes number in the form of set() data type.
+                        // This will return the selected notes number in the form of a list
                         var list = controller.value.selectedIndexes.toList();
 
                         for (var element in list) {
                           DocumentSnapshot document = listOfDocs[element];
-                          // getting Map Data of each Document
+                          // Getting map data of each document
                           Map<String, dynamic> data = document.data() as Map<String, dynamic>;
 
                           deletedNotes.add(
@@ -314,10 +312,10 @@ class NotesPageState extends State<NotesPage> {
                   );
                 }
 
-                //! If Grid Layout == FALSE (SHOW LISTVIEW LAYOUT)
-                //? (It is not ListView we are mimiking GridView As ListView by providing "crossAxisCount: 1" )
+                //! If Grid Layout is FALSE (SHOW LISTVIEW LAYOUT)
+                //? (Mimicking GridView as ListView by setting "crossAxisCount: 1")
                 else {
-                  //* DragSelectGridView [This Package is modified do not update this package updation will broke the code]
+                  //* DragSelectGridView [This package is modified; do not update as it will break the code]
                   return DragSelectGridView(
                     gridController: controller,
                     itemCount: listOfDocs.length,
@@ -325,47 +323,47 @@ class NotesPageState extends State<NotesPage> {
                     physics: const BouncingScrollPhysics(),
                     crossAxisCount: 1,
                     itemBuilder: (context, index, isSelected) {
-                      // geting indivisual document from List of Document's
+                      // Getting individual document from list of documents
                       DocumentSnapshot document = listOfDocs[index];
 
-                      // getting indivsual document ID
+                      // Getting individual document ID
                       String docID = document.id;
 
-                      // getting Map Data of each Document
+                      // Getting map data of each document
                       Map<String, dynamic> data = document.data() as Map<String, dynamic>;
 
-                      // retiveing Data Map<String,Dynamic>
+                      // Retrieving data Map<String, Dynamic>
                       String title = data['title'];
                       String note = data['note'];
 
-                      //? THIS UNDER CODE IS LOGIC FOR DELETE NOTES WHILE SELECTING MULTIPLE NOTES.
-                      // if Notes are selected then retrive there docID
+                      //? Logic for deleting notes while selecting multiple notes
+                      // If notes are selected, retrieve their docID
                       if (controller.value.isSelecting) {
-                        // It is very imp to clear the documentIdList becuase when we select and again deselecte then deSeleect docID not removed.
+                        // Important to clear documentIdList because when we select and deselect, the deselected docID is not removed
                         documentIdList.clear();
 
-                        // this will return the selected notes number in the form of set() data type.
+                        // This will return the selected notes number in the form of a set
                         var set = controller.value.selectedIndexes;
 
-                        // Storing List of Selected Notes docID into Set()
+                        // Storing list of selected notes docID into a set
                         for (var element in set) {
                           DocumentSnapshot document = listOfDocs[element];
-                          // Here we are storing selected notes DocId into Declared Set() Data Type. (WE ARE USED SET() DATATYPE BECAUSE THIS METHOD CALLED SEVRAL TIMES AND IF WE USE LIST THEN IT WILL BE FILLED THE LIST WITH DUPLICATE DOCID'S)
+                          // Storing selected notes docID into declared set (using set to avoid duplicates)
                           documentIdList.add(document.id);
                         }
                       }
 
-                      // //? THIS UNDER CODE IS LOGIC FOR TRASH NOTES.
+                      // //? Logic for trash notes
                       if (controller.value.isSelecting) {
-                        // It is very imp to clear the deletedNotes becuase when we select and again deselecte then deSeleect Notes not removed.
+                        // Important to clear deletedNotes because when we select and deselect, the deselected notes are not removed
                         deletedNotes.clear();
 
-                        // this will return the selected notes number in the form of set() data type.
+                        // This will return the selected notes number in the form of a list
                         var list = controller.value.selectedIndexes.toList();
 
                         for (var element in list) {
                           DocumentSnapshot document = listOfDocs[element];
-                          // getting Map Data of each Document
+                          // Getting map data of each document
                           Map<String, dynamic> data = document.data() as Map<String, dynamic>;
 
                           deletedNotes.add(
@@ -403,7 +401,7 @@ class NotesPageState extends State<NotesPage> {
             );
           }
 
-          // while snapshot fetching Data showing Loading Indicator
+          // While snapshot is fetching data, show loading indicator
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const LinearProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(Colors.grey), // Change the color here
@@ -411,13 +409,13 @@ class NotesPageState extends State<NotesPage> {
             );
           }
 
-          // if there is no Data then return no Notes
+          // If there is no data, return "No Notes"
           if (snapshot.hasError) {
             return const Center(
               child: Text("No Notes..."),
             );
           }
-          // else condition
+          // Else condition
           else {
             return const Center(
               child: Text("else Condition"),

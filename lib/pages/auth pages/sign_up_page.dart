@@ -18,17 +18,17 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  // Creating Key for TextFromFeild()'s presents in SignUp Screen
+  // Create a key for the TextFormField widgets present in the SignUp screen
   final GlobalKey<FormState> _signUpFormKey = GlobalKey<FormState>();
 
-  // Creating TextEditing Controller's
+  // Create TextEditingControllers
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  // Method for Register
+  // Method for registration
   void signUpMethod() {
     FirebaseAuthMethod.signUpWithEmail(
       fname: _firstNameController.text.trim(),
@@ -42,12 +42,12 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
-    //! Access Theme Extension Colors.
+    //! Access theme extension colors.
     final myColors = Theme.of(context).extension<MyColors>();
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        //! For Desktop & Tablets.
+        //! For desktops and tablets.
         if (constraints.maxWidth >= 1024) {
           return PopScope(
             canPop: false,
@@ -91,7 +91,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
                         const SizedBox(height: 20),
 
-                        // app name
+                        // App name
                         const Text(
                           "Welcome! Let's get you started.",
                           style: TextStyle(
@@ -106,7 +106,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           child: Row(
                             children: [
                               // ----------------------------
-                              // TextFormField for First Name
+                              // TextFormField for first name
                               // ----------------------------
                               Expanded(
                                 child: TextFormFeildWidget(
@@ -118,7 +118,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               ),
                               const SizedBox(width: 10),
                               // ----------------------------
-                              // TextFormField for last Name
+                              // TextFormField for last name
                               // ----------------------------
                               Expanded(
                                 child: TextFormFeildWidget(
@@ -135,7 +135,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         const SizedBox(height: 10),
 
                         // -------------------
-                        // UserName textfeild
+                        // Username text field
                         // -------------------
                         SizedBox(
                           width: 400,
@@ -150,7 +150,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         const SizedBox(height: 10),
 
                         // ---------------
-                        // email textfeild
+                        // Email text field
                         // ---------------
                         SizedBox(
                           width: 400,
@@ -165,7 +165,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         const SizedBox(height: 10),
 
                         // ------------------
-                        // password textfeild
+                        // Password text field
                         // ------------------
                         //! Provider Selector is used
                         Selector<ToggleProvider, bool>(
@@ -202,7 +202,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           width: 400,
                           child: Row(
                             children: [
-                              // Sizebox is used to set the alignment of checkbox
+                              // SizedBox is used to set the alignment of the checkbox
                               SizedBox(
                                 width: 26,
                                 height: 24,
@@ -227,7 +227,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               const SizedBox(width: 10),
                               const Text("I agree to "),
                               const Text(
-                                "Privicy Policy ",
+                                "Privacy Policy ",
                                 style: TextStyle(
                                   color: Colors.blue,
                                   decoration: TextDecoration.underline,
@@ -236,7 +236,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               ),
                               const Text("and "),
                               const Text(
-                                "Term of use",
+                                "Terms of Use",
                                 style: TextStyle(
                                   color: Colors.blue,
                                   decoration: TextDecoration.underline,
@@ -248,24 +248,24 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
 
                         const SizedBox(height: 20),
-                        // SignUp in button
+                        // Sign up button
                         SizedBox(
                           width: 400,
                           child: ButtonWidget(
                             onTap: () {
-                              // First we check the Form Validation
+                              // First, check the form validation
                               _signUpFormKey.currentState!.validate();
 
-                              // if FormValidation is checked & Privicy Policy checkbox is not checked
+                              // If form validation is successful and the Privacy Policy checkbox is not checked
                               if (_signUpFormKey.currentState!.validate() &&
                                   !context.read<ToggleProvider>().isChecked) {
                                 SnackBars.normalSnackBar(
                                   context,
-                                  "Please accept the Privicy Policy & Term of use",
+                                  "Please accept the Privacy Policy & Terms of Use",
                                 );
                               }
 
-                              // If FormValidation is checked & Privicy Policy checkbox is also checked then only we fire the SignUP method.
+                              // If form validation is successful and the Privacy Policy checkbox is also checked, then fire the sign-up method.
                               if (_signUpFormKey.currentState!.validate() &&
                                   context.read<ToggleProvider>().isChecked) {
                                 signUpMethod();
@@ -278,7 +278,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
                         const SizedBox(height: 20),
 
-                        // don't have an account ? Register here
+                        // Already have an account? Login here
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -306,7 +306,7 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
           );
         }
-        //! For Mobile Phone
+        //! For mobile phones
         else {
           return PopScope(
             canPop: false,
@@ -344,7 +344,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
                           const SizedBox(height: 50),
 
-                          // app name
+                          // App name
                           const Text(
                             "Welcome! Let's get you started.",
                             style: TextStyle(
@@ -357,7 +357,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           Row(
                             children: [
                               // ----------------------------
-                              // TextFormField for First Name
+                              // TextFormField for first name
                               // ----------------------------
                               Expanded(
                                 child: TextFormFeildWidget(
@@ -369,7 +369,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               ),
                               const SizedBox(width: 10),
                               // ----------------------------
-                              // TextFormField for last Name
+                              // TextFormField for last name
                               // ----------------------------
                               Expanded(
                                 child: TextFormFeildWidget(
@@ -385,7 +385,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           const SizedBox(height: 10),
 
                           // -------------------
-                          // UserName textfeild
+                          // Username text field
                           // -------------------
                           TextFormFeildWidget(
                             hintText: "Username",
@@ -397,7 +397,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           const SizedBox(height: 10),
 
                           // ---------------
-                          // email textfeild
+                          // Email text field
                           // ---------------
                           TextFormFeildWidget(
                             hintText: "Email",
@@ -409,7 +409,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           const SizedBox(height: 10),
 
                           // ------------------
-                          // password textfeild
+                          // Password text field
                           // ------------------
                           //! Provider Selector is used
                           Selector<ToggleProvider, bool>(
@@ -441,7 +441,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
                           Row(
                             children: [
-                              // Sizebox is used to set the alignment of checkbox
+                              // SizedBox is used to set the alignment of the checkbox
                               SizedBox(
                                 width: 26,
                                 height: 24,
@@ -466,7 +466,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               const SizedBox(width: 10),
                               const Text("I agree to "),
                               const Text(
-                                "Privicy Policy ",
+                                "Privacy Policy ",
                                 style: TextStyle(
                                   color: Colors.blue,
                                   decoration: TextDecoration.underline,
@@ -475,7 +475,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               ),
                               const Text("and "),
                               const Text(
-                                "Term of use",
+                                "Terms of Use",
                                 style: TextStyle(
                                   color: Colors.blue,
                                   decoration: TextDecoration.underline,
@@ -486,22 +486,22 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
 
                           const SizedBox(height: 20),
-                          // SignUp in button
+                          // Sign up button
                           ButtonWidget(
                             onTap: () async {
-                              // storeing interent state in veriable
+                              // Store internet state in a variable
                               bool isInternet =
                                   await InternetChecker.checkInternet();
 
-                              // if there is no internet
+                              // If there is no internet
                               if (isInternet && context.mounted) {
                                 SnackBars.normalSnackBar(
                                     context, "Please turn on your Internet");
                               }
-                              // if there is internet
+                              // If there is internet
                               else {
                                 if (context.mounted) {
-                                  // if FormValidation is checked & Privicy Policy checkbox is not checked
+                                  // If form validation is successful and the Privacy Policy checkbox is not checked
                                   if (_signUpFormKey.currentState!.validate() &&
                                       !context
                                           .read<ToggleProvider>()
@@ -509,10 +509,10 @@ class _SignUpPageState extends State<SignUpPage> {
                                       context.mounted) {
                                     SnackBars.normalSnackBar(
                                       context,
-                                      "Please accept the Privicy Policy & Term of use",
+                                      "Please accept the Privacy Policy & Terms of Use",
                                     );
                                   }
-                                  // If FormValidation is checked & Privicy Policy checkbox is also checked then only we fire the SignUP method.
+                                  // If form validation is successful and the Privacy Policy checkbox is also checked, then fire the sign-up method.
                                   if (_signUpFormKey.currentState!.validate() &&
                                       context
                                           .read<ToggleProvider>()
@@ -528,7 +528,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
                           const SizedBox(height: 20),
 
-                          // don't have an account ? Register here
+                          // Already have an account? Login here
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [

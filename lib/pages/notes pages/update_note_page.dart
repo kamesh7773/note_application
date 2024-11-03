@@ -14,11 +14,11 @@ class UpdateNotePage extends StatefulWidget {
 }
 
 class _UpdateNotePageState extends State<UpdateNotePage> {
-  // Textfeild Controller's
+  // TextField Controllers
   TextEditingController textEditingController1 = TextEditingController();
   TextEditingController textEditingController2 = TextEditingController();
 
-  // dispoing textEditingControllar's
+  // Disposing TextEditingControllers
   @override
   void dispose() {
     textEditingController1.dispose();
@@ -26,9 +26,9 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
     super.dispose();
   }
 
-  // ------------------------------------------------------------
-  // Method for adding Note when user clickback button of Android
-  // ------------------------------------------------------------
+  // --------------------------------------------------------------------
+  // Method for updating the note when the Android back button is pressed
+  // --------------------------------------------------------------------
   void updatingNote1(didPop) async {
     if (!didPop) {
       FireStoreCurdMethods.updateNote(
@@ -41,8 +41,8 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
     }
   }
 
-  // --------------------------------------------------------------------
-  // Method for adding Note when user click arrow back button of AppBar()
+  // -------------------------------------------------------------------------    
+  // Method for updating the note when the AppBar back arrow button is pressed
   // --------------------------------------------------------------------
   void updatingNote2() {
     FireStoreCurdMethods.updateNote(
@@ -55,7 +55,7 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
   }
 
   // ------------------------
-  // Method for deleting Note
+  // Method for deleting the note
   // ------------------------
   void deletingNote() {
     FireStoreCurdMethods.addNoteToTrash(
@@ -67,7 +67,7 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
     );
     FireStoreCurdMethods.deleteNote(docID: widget.docID);
     Navigator.of(context).pop();
-    // Showing SnackBar
+    // Show a SnackBar
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         duration: Duration(milliseconds: 800),
@@ -80,30 +80,30 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
 
   @override
   Widget build(BuildContext context) {
-    //! Access Theme Extension Colors.
+    //! Access theme extension colors.
     final myColors = Theme.of(context).extension<MyColors>();
 
-    //! Assigning the FireStore Data to textEditingController's.
+    //! Assign Firestore data to TextEditingControllers.
     textEditingController1.text = widget.title!;
     textEditingController2.text = widget.note!;
 
     return PopScope(
       canPop: false,
       onPopInvoked: (didPop) {
-        // Updating Note By PopScope()
+        // Update the note using PopScope()
         updatingNote1(didPop);
       },
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: myColors!.notePage,
-          // Add the Note when user Press Back arrow button of AppBar()
+          // Update the note when the AppBar back arrow button is pressed
           leading: IconButton(
             onPressed: updatingNote2,
             icon: const Icon(Icons.arrow_back),
           ),
           actions: [
             IconButton(
-              // Updating Note By AppBar() Arrow back button
+              // Delete the note using the AppBar delete button
               onPressed: deletingNote,
               icon: Icon(
                 Icons.delete,
@@ -152,7 +152,7 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
                       borderSide: BorderSide.none,
                     ),
                     contentPadding: EdgeInsets.symmetric(horizontal: 18),
-                    hintText: "Note : ",
+                    hintText: "Note:",
                     hintStyle: TextStyle(fontSize: 18),
                   ),
                 ),

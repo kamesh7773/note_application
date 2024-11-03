@@ -274,7 +274,7 @@ class FirebaseAuthMethod {
   }
 
   //! Email & Password Login Method
-  static Future<void> singInWithEmail({
+  static Future<void> signInWithEmail({
     required String email,
     required String password,
     required bool rememberMe,

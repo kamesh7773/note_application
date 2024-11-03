@@ -16,17 +16,17 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  // Creating Key for From Widget
+  // Create a key for the Form widget
   final GlobalKey<FormState> _loginFormKey = GlobalKey<FormState>();
 
-  // Creating TextEditing Controller's
+  // Create TextEditingControllers
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   // Remember me variable
-  bool remeberMe = false;
+  bool rememberMe = false;
 
-  // disposing TextEditingController's
+  // Dispose of TextEditingControllers
   @override
   void dispose() {
     _emailController.dispose();
@@ -34,24 +34,24 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  // Method for login user
+  // Method to log in the user
   void loginUser() {
-    FirebaseAuthMethod.singInWithEmail(
+    FirebaseAuthMethod.signInWithEmail(
       email: _emailController.text.trim(),
       password: _passwordController.text.trim(),
-      rememberMe: remeberMe,
+      rememberMe: rememberMe,
       context: context,
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    //! Access Theme Extension Colors.
+    // Access theme extension colors
     final myColors = Theme.of(context).extension<MyColors>();
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        //! For Desktop & Tablets.
+        // For Desktop & Tablets
         if (constraints.maxWidth >= 1024) {
           return Scaffold(
             backgroundColor: Theme.of(context).colorScheme.surface,
@@ -74,9 +74,9 @@ class _LoginPageState extends State<LoginPage> {
 
                         const SizedBox(height: 25),
 
-                        // app name
+                        // App name
                         const Text(
-                          "Welcome back you've been missed!",
+                          "Welcome back, you've been missed!",
                           style: TextStyle(
                             fontSize: 17,
                             fontWeight: FontWeight.w500,
@@ -85,7 +85,7 @@ class _LoginPageState extends State<LoginPage> {
 
                         const SizedBox(height: 30),
 
-                        // email textfeild
+                        // Email text field
                         SizedBox(
                           width: 400,
                           child: TextFormFeildWidget(
@@ -98,7 +98,7 @@ class _LoginPageState extends State<LoginPage> {
 
                         const SizedBox(height: 10),
 
-                        // password textfeild
+                        // Password text field
                         //! Provider Selector is used
                         Selector<ToggleProvider, bool>(
                           selector: (context, password) =>
@@ -129,7 +129,7 @@ class _LoginPageState extends State<LoginPage> {
 
                         const SizedBox(height: 20),
 
-                        // forgot password
+                        // Forgot password
                         SizedBox(
                           width: 400,
                           child: Row(
@@ -153,7 +153,7 @@ class _LoginPageState extends State<LoginPage> {
                                           value: value,
                                           onChanged: (value) {
                                             //! Remember me varible initlization
-                                            remeberMe = value ?? false;
+                                            rememberMe = value ?? false;
 
                                             context
                                                 .read<ToggleProvider>()
@@ -186,7 +186,7 @@ class _LoginPageState extends State<LoginPage> {
 
                         const SizedBox(height: 20),
 
-                        // sign in button
+                        // Sign in button
                         SizedBox(
                           width: 400,
                           child: ButtonWidget(
@@ -209,7 +209,7 @@ class _LoginPageState extends State<LoginPage> {
 
                         const SizedBox(height: 20),
 
-                        // continue with Google or fackbook
+                        // Continue with Google or fackbook
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -282,7 +282,7 @@ class _LoginPageState extends State<LoginPage> {
 
                         const SizedBox(height: 20),
 
-                        // don't have an account ? Register here
+                        // Don't have an account ? Register here
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -406,7 +406,7 @@ class _LoginPageState extends State<LoginPage> {
                                         value: value,
                                         onChanged: (value) {
                                           //! Remember me varible initlization
-                                          remeberMe = value ?? false;
+                                          rememberMe = value ?? false;
 
                                           context
                                               .read<ToggleProvider>()

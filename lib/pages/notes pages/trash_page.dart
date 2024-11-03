@@ -19,19 +19,19 @@ class TrashPage extends StatefulWidget {
 }
 
 class _TrashPageState extends State<TrashPage> {
-  //! Geting FireStore Collection
+  //! Getting Firestore Collection
   final CollectionReference users = FirebaseFirestore.instance.collection("users");
 
-  //! Controllar for DragSelectGridView
+  //! Controller for DragSelectGridView
   final DragSelectGridViewController controller = DragSelectGridViewController();
 
-  //! Set for Notes Document ID's [creating Set because it will be initlized with duplicate same type of document.id's]
+  //! Set for Note Document IDs [using Set to avoid duplicate document IDs]
   Set<String> documentIdList = {};
 
-  //! List of Map of Selected Trash Notes Notes.
+  //! List of Maps for Selected Trash Notes
   List<Map<String, dynamic>> deletedNotes = [];
 
-  //! Method that Rebuild the UI Based on the Selection.
+  //! Method to Rebuild the UI Based on Selection
   void listener() {
     setState(() {});
   }
@@ -44,16 +44,16 @@ class _TrashPageState extends State<TrashPage> {
 
   @override
   void dispose() {
-    controller.addListener(listener);
+    controller.removeListener(listener);
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    //! Access Theme Extension Colors.
+    //! Access Theme Extension Colors
     final myColors = Theme.of(context).extension<MyColors>();
 
-    //! Notes are selected or not Selected.
+    //! Check if Notes are Selected
     final isSelected = controller.value.isSelecting;
     int selectedItems = controller.value.amount;
 
@@ -94,20 +94,20 @@ class _TrashPageState extends State<TrashPage> {
                           children: [
                             IconButton(
                               onPressed: () {
-                                //! we itrat through set of documentIdList and delete each notes with docID.
+                                //! Iterate through documentIdList and delete each note with docID
                                 for (var element in documentIdList) {
                                   FireStoreCurdMethods.deleteTrashNote(docID: element);
                                 }
 
-                                //! Moveing List of Trash notes to Notes Data base.
+                                //! Move List of Trash Notes to Notes Database
                                 try {
-                                  // Reference to a CurrentUserID document in the main collection
+                                  // Reference to the current user's document in the main collection
                                   DocumentReference currentUserID = users.doc(FirebaseAuth.instance.currentUser!.uid.toString());
 
-                                  // Creating Reference Trash  Sub-Collection insdie currentUserID Users Document.
+                                  // Creating Reference to Trash Sub-Collection inside currentUserID Users Document
                                   CollectionReference notes = currentUserID.collection('notes');
 
-                                  // Adding deleted Notes to trash.
+                                  // Adding deleted Notes to trash
                                   for (var element in deletedNotes) {
                                     notes.add(element);
                                   }
@@ -115,11 +115,11 @@ class _TrashPageState extends State<TrashPage> {
                                   throw error.toString();
                                 }
 
-                                //! After Moving TrashNotes to Notes we clear our the TrashNotes list[].
+                                //! After Moving Trash Notes to Notes, clear the Trash Notes list
                                 deletedNotes.clear();
-                                //! After deleting we clear the documentIdList set() data type.
+                                //! After deleting, clear the documentIdList set
                                 documentIdList.clear();
-                                //! Also clear out the Selcted Notes so selection AppBar get Removed.
+                                //! Also clear the Selected Notes so the selection AppBar is removed
                                 controller.clear();
                               },
                               icon: const Icon(Icons.history),
@@ -130,14 +130,14 @@ class _TrashPageState extends State<TrashPage> {
                                   PopupMenuItem(
                                     padding: const EdgeInsets.symmetric(horizontal: 12),
                                     onTap: () {
-                                      //! we itrat through set of documentIdList and delete each notes with docID.
+                                      //! Iterate through documentIdList and delete each note with docID
                                       for (var element in documentIdList) {
                                         FireStoreCurdMethods.deleteTrashNote(docID: element);
                                       }
 
-                                      //! After deleting we clear the documentIdList set() data type.
+                                      //! After deleting, clear the documentIdList set
                                       documentIdList.clear();
-                                      //! Also clear our the Selcted Notes so selection AppBar get Removed.
+                                      //! Also clear the Selected Notes so the selection AppBar is removed
                                       controller.clear();
                                     },
                                     child: const Center(
@@ -165,13 +165,13 @@ class _TrashPageState extends State<TrashPage> {
         body: StreamBuilder(
           stream: FireStoreCurdMethods.readTrashNotes(),
           builder: (context, snapshot) {
-            //! if SnapShot is has Data.
+            //! If Snapshot has Data
             if (snapshot.hasData) {
-              // Storeing List of trash documents from Collection
+              // Storing List of trash documents from Collection
               // Here "snapshot.data!.docs" -> data == Collection & docs == List of Document
               List listOfTrashDocs = snapshot.data!.docs;
 
-              //! IF listOfTrashDocs is Empty then.
+              //! If listOfTrashDocs is Empty
               if (listOfTrashDocs.isEmpty) {
                 return Center(
                   child: Column(
@@ -192,9 +192,7 @@ class _TrashPageState extends State<TrashPage> {
                   ),
                 );
               } else {
-                //* Here we are useing Selector provider even we don't need this because
-                //* When We select the Trash Notes then SetState get called and LinearProgressIndicator
-                //* will show every time when we select the Trash Notes that's why we are using Selector.
+                //* Using Selector provider to avoid showing LinearProgressIndicator every time when selecting Trash Notes
                 return Selector<LayoutChangeProvider, bool>(
                   selector: (context, isGridView) => isGridView.isGridViewForTrash,
                   builder: (context, value, child) {
@@ -269,47 +267,47 @@ class _TrashPageState extends State<TrashPage> {
                               physics: const BouncingScrollPhysics(),
                               crossAxisCount: 2,
                               itemBuilder: (context, index, isSelected) {
-                                // geting indivisual document from List of Document's
+                                // Getting individual document from List of Documents
                                 DocumentSnapshot document = listOfTrashDocs[index];
 
-                                // getting indivsual document ID
+                                // Getting individual document ID
                                 String docID = document.id;
 
-                                // getting Map Data of each Document
+                                // Getting Map Data of each Document
                                 Map<String, dynamic> data = document.data() as Map<String, dynamic>;
 
-                                // retiveing Data Map<String,Dynamic>
+                                // Retrieving Data Map<String,Dynamic>
                                 String title = data['title'];
                                 String note = data['note'];
 
-                                //? THIS UNDER CODE IS LOGIC FOR DELETE NOTES WHILE SELECTING MULTIPLE NOTES.
-                                //! if Notes are selected then retrive there docID
+                                //? Logic for Deleting Notes while Selecting Multiple Notes
+                                //! If Notes are selected, retrieve their docID
                                 if (controller.value.isSelecting) {
-                                  //! It is very imp to clear the documentIdList becuase when we select and again deselecte then deSeleect docID not removed.
+                                  //! Important to clear the documentIdList because when we select and deselect, the deselected docID is not removed
                                   documentIdList.clear();
 
-                                  //! this will return the selected notes number in the form of set() data type.
+                                  //! This will return the selected notes number in the form of a set
                                   var set = controller.value.selectedIndexes;
 
-                                  //! Storing List of Selected Notes docID into Set()
+                                  //! Storing List of Selected Notes docID into Set
                                   for (var element in set) {
                                     DocumentSnapshot document = listOfTrashDocs[element];
-                                    //! Here we are storing selected notes DocId into Declared Set() Data Type. (WE ARE USED SET() DATATYPE BECAUSE THIS METHOD CALLED SEVRAL TIMES AND IF WE USE LIST THEN IT WILL BE FILLED THE LIST WITH DUPLICATE DOCID'S)
+                                    //! Storing selected notes DocId into Declared Set (Using Set because this method is called several times and using List would fill it with duplicate docIDs)
                                     documentIdList.add(document.id);
                                   }
                                 }
 
-                                // //? THIS UNDER CODE IS LOGIC FOR TRASH NOTES.
+                                // //? Logic for Trash Notes
                                 if (controller.value.isSelecting) {
-                                  //! It is very imp to clear the deletedNotes becuase when we select and again deselecte then deSeleect Notes not removed.
+                                  //! Important to clear the deletedNotes because when we select and deselect, the deselected Notes are not removed
                                   deletedNotes.clear();
 
-                                  //! this will return the selected notes number in the form of set() data type.
+                                  //! This will return the selected notes number in the form of a list
                                   var list = controller.value.selectedIndexes.toList();
 
                                   for (var element in list) {
                                     DocumentSnapshot document = listOfTrashDocs[element];
-                                    // getting Map Data of each Document
+                                    // Getting Map Data of each Document
                                     Map<String, dynamic> data = document.data() as Map<String, dynamic>;
 
                                     deletedNotes.add(
@@ -338,7 +336,7 @@ class _TrashPageState extends State<TrashPage> {
               }
             }
 
-            //! If Snapshot is fetching Data then we show LinearProgressIndicator.
+            //! If Snapshot is fetching Data, show LinearProgressIndicator
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const LinearProgressIndicator(
                 valueColor: AlwaysStoppedAnimation<Color>(Colors.grey), // Change the color here
@@ -346,17 +344,17 @@ class _TrashPageState extends State<TrashPage> {
               );
             }
 
-            //! if there is no Data then return no Notes
+            //! If there is no Data, return no Notes
             if (snapshot.hasError) {
               return const Center(
                 child: Text("No Notes..."),
               );
             }
 
-            //! else condition
+            //! Else condition
             else {
               return const Center(
-                child: Text("This Condition will never execute."),
+                child: Text("This condition will never execute."),
               );
             }
           },

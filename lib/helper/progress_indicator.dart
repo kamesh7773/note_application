@@ -4,7 +4,7 @@ import 'package:note_application/theme/Extensions/my_colors.dart';
 
 class ProgressIndicators {
   static void showProgressIndicator(BuildContext context) {
-    //! Access Theme Extension Colors.
+    //! Access theme extension colors.
     final myColors = Theme.of(context).extension<MyColors>();
 
     showDialog(
@@ -12,7 +12,7 @@ class ProgressIndicators {
       context: context,
       builder: (context) {
         return PopScope(
-          canPop: true, //! Please set this to false once you debug your code
+          canPop: true, //! Set this to false once you debug your code.
           child: Center(
             child: LoadingAnimationWidget.prograssiveDots(
               color: myColors!.commanColor!,

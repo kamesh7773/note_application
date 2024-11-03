@@ -17,25 +17,25 @@ class ForgotPasswordPage extends StatefulWidget {
 }
 
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
-  // declaring forgot password controllar
+  // Declaring forgot password controller
   TextEditingController _forgotPasswordController = TextEditingController();
 
-  // Creating Key for forgot password FormTextFeild()
+  // Creating a key for the forgot password FormTextField()
   final GlobalKey<FormState> forgotpasswordKey = GlobalKey<FormState>();
 
-  // variables
-  String btnText = "Sent Forgot Password Link";
+  // Variables
+  String btnText = "Send Forgot Password Link";
 
-  // resent OTP Method
+  // Resend OTP method
   void resentOTP() async {
-    // send the fortgot passoword link
+    // Send the forgot password link
     bool result = await FirebaseAuthMethod.forgotEmailPassword(
       email: _forgotPasswordController.text,
       context: context,
     );
 
     if (result) {
-      // Restarting the TImer again & and disabling the OTP resent btn
+      // Restart the timer and disable the OTP resend button
       if (mounted) {
         context.read<OtpTimerProvider>().startTimer();
         context.read<OtpTimerProvider>().changeForgotLinkBtnValue = false;
@@ -45,7 +45,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     }
   }
 
-  // initlizing forgotpassword controllers
+  // Initializing forgot password controllers
   @override
   void initState() {
     super.initState();
@@ -54,20 +54,20 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
 
   @override
   Widget build(BuildContext context) {
-    //! Access Theme Extension Colors.
+    //! Access theme extension colors.
     final myColors = Theme.of(context).extension<MyColors>();
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        //! For Desktop & Tablets.
+        //! For desktop & tablets.
         if (constraints.maxWidth >= 1024) {
           return PopScope(
             canPop: true,
             onPopInvoked: (value) {
               if (value) {
-                //! This method is called when user press back button in middle of filling otp on OTP Page so we have cancel the current timer and disable
-                //! Resent Button again if we don't do that the timer() get overlape and timer will run very fast and resent btn will get enable even though
-                //! timer is runing.
+                //! This method is called when the user presses the back button in the middle of filling OTP on the OTP Page. We need to cancel the current timer and disable
+                //! the Resend Button again. If we don't do that, the timer() will overlap, and the timer will run very fast, enabling the resend button even though
+                //! the timer is running.
                 context.read<OtpTimerProvider>().resetTimerAndBtn();
               }
             },
@@ -96,7 +96,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                           child: SizedBox(
                             width: 400,
                             child: Text(
-                              "Don't worray sometimes people can forgot too.enter your email and we will send you a password reset link.",
+                              "Don't worry, sometimes people forget too. Enter your email, and we will send you a password reset link.",
                               textAlign: TextAlign.center,
                             ),
                           ),
@@ -129,20 +129,20 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                     width: 400,
                                     child: ButtonWidget(
                                       onTap: () async {
-                                        // storeing interent state in veriable
+                                        // Storing internet state in a variable
                                         bool isInternet = await InternetChecker
                                             .checkInternet();
 
-                                        // If Form Validation get completed only then call the forgot link method
+                                        // If form validation is completed, only then call the forgot link method
                                         if (forgotpasswordKey.currentState!
                                                 .validate() &&
                                             context.mounted) {
-                                          // if there is no internet
+                                          // If there is no internet
                                           if (isInternet) {
                                             SnackBars.normalSnackBar(context,
                                                 "Please turn on your Internet");
                                           }
-                                          // if Internet connection is avaible
+                                          // If internet connection is available
                                           else if (!isInternet &&
                                               context.mounted) {
                                             if (context
@@ -150,7 +150,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                                 .forgotLinkBtbEnable) {
                                               resentOTP();
                                             }
-                                            // else return nothing
+                                            // Else return nothing
                                             else {
                                               return;
                                             }
@@ -207,15 +207,15 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             ),
           );
         }
-        //! For Mobile Phone
+        //! For mobile phones
         else {
           return PopScope(
             canPop: true,
             onPopInvoked: (value) {
               if (value) {
-                //! This method is called when user press back button in middle of filling otp on OTP Page so we have cancel the current timer and disable
-                //! Resent Button again if we don't do that the timer() get overlape and timer will run very fast and resent btn will get enable even though
-                //! timer is runing.
+                //! This method is called when the user presses the back button in the middle of filling OTP on the OTP Page. We need to cancel the current timer and disable
+                //! the Resend Button again. If we don't do that, the timer() will overlap, and the timer will run very fast, enabling the resend button even though
+                //! the timer is running.
                 context.read<OtpTimerProvider>().resetTimerAndBtn();
               }
             },
@@ -241,7 +241,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       const Padding(
                         padding: EdgeInsets.symmetric(horizontal: 16.0),
                         child: Text(
-                          "Don't worray sometimes people can forgot too.enter your email and we will send you a password reset link.",
+                          "Don't worry, sometimes people forget too. Enter your email, and we will send you a password reset link.",
                         ),
                       ),
                       const SizedBox(height: 20),
@@ -267,27 +267,27 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                               builder: (context, value, child) {
                                 return ButtonWidget(
                                   onTap: () async {
-                                    // storeing interent state in veriable
+                                    // Storing internet state in a variable
                                     bool isInternet =
                                         await InternetChecker.checkInternet();
 
-                                    // If Form Validation get completed only then call the forgot link method
+                                    // If form validation is completed, only then call the forgot link method
                                     if (forgotpasswordKey.currentState!
                                             .validate() &&
                                         context.mounted) {
-                                      // if there is not internet
+                                      // If there is no internet
                                       if (isInternet) {
                                         SnackBars.normalSnackBar(context,
                                             "Please turn on your Internet");
                                       }
-                                      // if Internet connection is avaible
+                                      // If internet connection is available
                                       else if (!isInternet && context.mounted) {
                                         if (context
                                             .read<OtpTimerProvider>()
                                             .forgotLinkBtbEnable) {
                                           resentOTP();
                                         }
-                                        // else return nothing
+                                        // Else return nothing
                                         else {
                                           return;
                                         }

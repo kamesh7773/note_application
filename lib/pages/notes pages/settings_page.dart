@@ -15,7 +15,7 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  //! Method that Launch URL's.
+  //! Method to launch URLs.
   Future<void> _launchURL(Uri uri, bool inApp) async {
     try {
       if (await canLaunchUrl(uri)) {
@@ -36,7 +36,7 @@ class _SettingsPageState extends State<SettingsPage> {
     }
   }
 
-  //! Method for Showing Diolog box For Selected Themes.
+  //! Method for showing a dialog box for selecting themes.
   void showThemeDiologBox({required commanColor}) {
     showDialog(
       context: context,
@@ -143,7 +143,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 InkWell(
                   borderRadius: BorderRadius.circular(20),
                   onTap: () {
-                    //! This Method reset the Radio Selection value when user Dismis or press back btn.
+                    //! This method resets the radio selection value when the user dismisses or presses the back button.
                     context.read<ThemeProvider>().resetRadiobtn();
                     Navigator.of(context).pop();
                   },
@@ -175,7 +175,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    //! Access Theme Extension Colors.
+    //! Access theme extension colors.
     final myColors = Theme.of(context).extension<MyColors>();
 
     return PopScope(
@@ -195,7 +195,7 @@ class _SettingsPageState extends State<SettingsPage> {
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
-            //! Zoom Drawer
+            //! Toggle the Zoom Drawer
             onPressed: () => ZoomDrawer.of(context)!.toggle(),
             icon: const Icon(Icons.menu),
           ),

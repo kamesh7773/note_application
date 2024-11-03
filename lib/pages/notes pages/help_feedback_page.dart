@@ -13,7 +13,7 @@ class HelpAndFeedbackPage extends StatefulWidget {
 class _HelpAndFeedbackPageState extends State<HelpAndFeedbackPage> {
   @override
   Widget build(BuildContext context) {
-    //! Access Theme Extension Colors.
+    // Access theme extension colors.
     final myColors = Theme.of(context).extension<MyColors>();
 
     return PopScope(
@@ -33,7 +33,7 @@ class _HelpAndFeedbackPageState extends State<HelpAndFeedbackPage> {
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
-            //! Zoom Drawer
+            // Toggle the Zoom Drawer
             onPressed: () => ZoomDrawer.of(context)!.toggle(),
             icon: const Icon(Icons.menu),
           ),

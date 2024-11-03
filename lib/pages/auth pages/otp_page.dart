@@ -28,19 +28,17 @@ class EmailOtpPage extends StatefulWidget {
 }
 
 class EmailOtpPageOtpPageState extends State<EmailOtpPage> {
-  // Creating Key for phoneOtpTextfiledFormKey
+  // Creating a key for the email OTP text field form
   final GlobalKey<FormState> _emailOtpTextfiledFormKey = GlobalKey<FormState>();
 
-  // Declaring Texediting controller for Phone OTP Textfeild globally so it can also be used by Phone OTP ShowDiologBox
+  // Declaring a TextEditingController for the email OTP text field globally so it can also be used by the email OTP dialog box
   final TextEditingController _emailOtpController = TextEditingController();
 
-  // variables
+  // Variables
   String? errorText;
   late String _emailOtp;
 
-// getting the otpBtnvalue from provider
-
-  // verify OTP Method
+  // Verify OTP method
   void verifyOTP() {
     FirebaseAuthMethod.verifyEmailOTP(
       email: widget.email,
@@ -53,9 +51,9 @@ class EmailOtpPageOtpPageState extends State<EmailOtpPage> {
     );
   }
 
-  // resent OTP Method
+  // Resend OTP method
   void resentOTP() {
-    // Restarting the TImer again & and disabling the OTP resent btn
+    // Restart the timer and disable the OTP resend button
     context.read<OtpTimerProvider>().startTimer();
     context.read<OtpTimerProvider>().changeEmailOtpBtnValue = false;
 
@@ -73,20 +71,20 @@ class EmailOtpPageOtpPageState extends State<EmailOtpPage> {
 
   @override
   Widget build(BuildContext context) {
-    //! Access Theme Extension Colors.
+    //! Access theme extension colors.
     final myColors = Theme.of(context).extension<MyColors>();
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        //! For Desktop & Tablets.
+        //! For desktops and tablets.
         if (constraints.maxWidth >= 1024) {
           return PopScope(
             canPop: true,
             onPopInvoked: (value) {
               if (value) {
-                //! This method is called when user press back button in middle of filling otp on OTP Page so we have cancel the current timer and disable
-                //! Resent Button again if we don't do that the timer() get overlape and timer will run very fast and resent btn will get enable even though
-                //! timer is runing.
+                //! This method is called when the user presses the back button while filling the OTP on the OTP page. We need to cancel the current timer and disable
+                //! the resend button again. If we don't do that, the timer will overlap, run very fast, and the resend button will be enabled even though
+                //! the timer is running.
                 context.read<OtpTimerProvider>().resetTimerAndBtn();
               }
             },
@@ -134,14 +132,14 @@ class EmailOtpPageOtpPageState extends State<EmailOtpPage> {
                           child: Padding(
                             padding: EdgeInsets.symmetric(horizontal: 16.0),
                             child: Text(
-                              "Check your mail box, we sent you a OTP on your email for verification.Once you verify your email, your account will be successfully created.",
+                              "Check your mailbox. We sent you an OTP on your email for verification. Once you verify your email, your account will be successfully created.",
                               style: TextStyle(fontSize: 16),
                               textAlign: TextAlign.center,
                             ),
                           ),
                         ),
                         const SizedBox(height: 20),
-                        // OTP TextFeild for Phone number OTP feild ( Pinput )
+                        // OTP text field for email OTP (Pinput)
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Pinput(
@@ -151,49 +149,49 @@ class EmailOtpPageOtpPageState extends State<EmailOtpPage> {
                             hapticFeedbackType: HapticFeedbackType.lightImpact,
                             errorText: errorText,
                             validator: (value) {
-                              // if Textfield is empty
+                              // If the text field is empty
                               if (value!.isEmpty) {
                                 errorText = "OTP required";
                                 return "OTP required";
                               }
-                              // if otp is lower then 6 digit's
+                              // If OTP is less than 6 digits
                               else if (value.length < 6) {
                                 errorText =
                                     "Make sure all OTP fields are filled in";
                                 return "Make sure all OTP fields are filled in";
                               }
-                              // validating Phone number
+                              // Validating OTP
                               else if (!RegExp(r"^[0-9]{1,6}$")
                                   .hasMatch(value)) {
-                                errorText = "Only digit are allowed";
-                                return "Only digit are allowed";
+                                errorText = "Only digits are allowed";
+                                return "Only digits are allowed";
                               }
 
-                              // else return nothing
+                              // Else return nothing
                               else {
                                 errorText = null;
                                 return null;
                               }
                             },
                             onCompleted: (value) async {
-                              // storeing interent state in veriable
+                              // Storing internet state in a variable
                               bool isInternet =
                                   await InternetChecker.checkInternet();
 
-                              // if OTP Validation Not done then return nothing means nothing will happen
+                              // If OTP validation is not done, then return nothing, meaning nothing will happen
                               if (errorText != null) {
                                 return;
                               }
-                              // If Internet is not there then...
+                              // If there is no internet...
                               else if (isInternet && context.mounted) {
                                 SnackBars.normalSnackBar(
                                     context, "Please turn on your Internet");
                               }
-                              // if Internt is there & validation is also completed
+                              // If internet is available and validation is also completed
                               else if (errorText == null) {
-                                // assigning OTP to _emailOtp variable.
+                                // Assigning OTP to _emailOtp variable
                                 _emailOtp = _emailOtpController.text.trim();
-                                // call the verify OTP Method
+                                // Call the verify OTP method
                                 verifyOTP();
                               }
                             },
@@ -251,18 +249,18 @@ class EmailOtpPageOtpPageState extends State<EmailOtpPage> {
                                   otpBtn.emailOtpSendBtnEnable,
                               builder: (context, value, child) {
                                 return TextButton(
-                                  // Method that call resent OTP
+                                  // Method that calls resend OTP
                                   onPressed: () async {
-                                    // storeing interent state in veriable
+                                    // Storing internet state in a variable
                                     bool isInternet =
                                         await InternetChecker.checkInternet();
 
-                                    // if there is not internet
+                                    // If there is no internet
                                     if (isInternet && context.mounted) {
                                       SnackBars.normalSnackBar(context,
                                           "Please turn on your Internet");
                                     }
-                                    // if Internet connection is avaible
+                                    // If internet connection is available
                                     else {
                                       if (context.mounted) {
                                         if (value) {
@@ -295,15 +293,15 @@ class EmailOtpPageOtpPageState extends State<EmailOtpPage> {
             ),
           );
         }
-        //! For Mobile Phone
+        //! For mobile phones
         else {
           return PopScope(
             canPop: true,
             onPopInvoked: (value) {
               if (value) {
-                //! This method is called when user press back button in middle of filling otp on OTP Page so we have cancel the current timer and disable
-                //! Resent Button again if we don't do that the timer() get overlape and timer will run very fast and resent btn will get enable even though
-                //! timer is runing.
+                //! This method is called when the user presses the back button while filling the OTP on the OTP page. We need to cancel the current timer and disable
+                //! the resend button again. If we don't do that, the timer will overlap, run very fast, and the resend button will be enabled even though
+                //! the timer is running.
                 context.read<OtpTimerProvider>().resetTimerAndBtn();
               }
             },
@@ -344,12 +342,12 @@ class EmailOtpPageOtpPageState extends State<EmailOtpPage> {
                         const Padding(
                           padding: EdgeInsets.symmetric(horizontal: 16.0),
                           child: Text(
-                            "Check your mail box, we sent you a OTP on your email for verification.Once you verify your email, your account will be successfully created.",
+                            "Check your mailbox. We sent you an OTP on your email for verification. Once you verify your email, your account will be successfully created.",
                             textAlign: TextAlign.center,
                           ),
                         ),
                         const SizedBox(height: 50),
-                        // OTP TextFeild for Phone number OTP feild ( Pinput )
+                        // OTP text field for email OTP (Pinput)
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Pinput(
@@ -359,49 +357,49 @@ class EmailOtpPageOtpPageState extends State<EmailOtpPage> {
                             hapticFeedbackType: HapticFeedbackType.lightImpact,
                             errorText: errorText,
                             validator: (value) {
-                              // if Textfield is empty
+                              // If the text field is empty
                               if (value!.isEmpty) {
                                 errorText = "OTP required";
                                 return "OTP required";
                               }
-                              // if otp is lower then 6 digit's
+                              // If OTP is less than 6 digits
                               else if (value.length < 6) {
                                 errorText =
                                     "Make sure all OTP fields are filled in";
                                 return "Make sure all OTP fields are filled in";
                               }
-                              // validating Phone number
+                              // Validating OTP
                               else if (!RegExp(r"^[0-9]{1,6}$")
                                   .hasMatch(value)) {
-                                errorText = "Only digit are allowed";
-                                return "Only digit are allowed";
+                                errorText = "Only digits are allowed";
+                                return "Only digits are allowed";
                               }
 
-                              // else return nothing
+                              // Else return nothing
                               else {
                                 errorText = null;
                                 return null;
                               }
                             },
                             onCompleted: (value) async {
-                              // storeing interent state in veriable
+                              // Storing internet state in a variable
                               bool isInternet =
                                   await InternetChecker.checkInternet();
 
-                              // if OTP Validation Not done then return nothing means nothing will happen
+                              // If OTP validation is not done, then return nothing, meaning nothing will happen
                               if (errorText != null) {
                                 return;
                               }
-                              // If Internet is not there then...
+                              // If there is no internet...
                               else if (isInternet && context.mounted) {
                                 SnackBars.normalSnackBar(
                                     context, "Please turn on your Internet");
                               }
-                              // if Internt is there & validation is also completed
+                              // If internet is available and validation is also completed
                               else if (errorText == null) {
-                                // assigning OTP to _emailOtp variable.
+                                // Assigning OTP to _emailOtp variable
                                 _emailOtp = _emailOtpController.text.trim();
-                                // call the verify OTP Method
+                                // Call the verify OTP method
                                 verifyOTP();
                               }
                             },
@@ -457,18 +455,18 @@ class EmailOtpPageOtpPageState extends State<EmailOtpPage> {
                                   otpBtn.emailOtpSendBtnEnable,
                               builder: (context, value, child) {
                                 return TextButton(
-                                  // Method that call resent OTP
+                                  // Method that calls resend OTP
                                   onPressed: () async {
-                                    // storeing interent state in veriable
+                                    // Storing internet state in a variable
                                     bool isInternet =
                                         await InternetChecker.checkInternet();
 
-                                    // if there is not internet
+                                    // If there is no internet
                                     if (isInternet && context.mounted) {
                                       SnackBars.normalSnackBar(context,
                                           "Please turn on your Internet");
                                     }
-                                    // if Internet connection is avaible
+                                    // If internet connection is available
                                     else {
                                       if (context.mounted) {
                                         if (value) {

@@ -18,11 +18,11 @@ import 'package:note_application/services/firebase/firebase_options.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
-  // Initlizing FireBase for Current Platform
+  // Initializing Firebase for the current platform
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  // Imp code for facebook signIn/singUp for flutter web app only
+  // Important code for Facebook sign-in/sign-up for Flutter web apps only
   if (kIsWeb) {
     await FacebookAuth.i.webAndDesktopInitialize(
       appId: "974432697808622",
@@ -32,11 +32,11 @@ void main() async {
     );
   }
 
-  // checking user is already login or not.
+  // Checking if the user is already logged in
   bool isLogin = await FirebaseAuthMethod.isUserLogin();
-  // checking user applied ThemeMode from Shared Preferences.
+  // Retrieving the user's saved ThemeMode from Shared Preferences
   String savedLevel = await ThemeProvider.currentTheme();
-  // Checking user applied Layout From Share Preferences.
+  // Retrieving the user's saved layout preference from Shared Preferences
   bool isGridView = await LayoutChangeProvider.currentLayout();
 
   runApp(NoteApp(

@@ -16,14 +16,14 @@ class DrawerMenu extends StatefulWidget {
 }
 
 class _DrawerMenuState extends State<DrawerMenu> {
-  //! varibles declartion.
+  //! Variable declarations.
   String? name;
   String? email;
   String? imageUrl;
 
-  //! Method for fetching current Provider user Data
+  //! Method for fetching current user data from the provider
   Future<void> getUserData() async {
-    // creating instace of Shared Preferences.
+    // Creating an instance of SharedPreferences.
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     name = prefs.getString('name');
@@ -33,7 +33,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
 
   @override
   Widget build(BuildContext context) {
-    //! Access Theme Extension Colors.
+    //! Access theme extension colors.
     final myColors = Theme.of(context).extension<MyColors>();
 
     return Scaffold(
@@ -43,7 +43,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
           FutureBuilder(
             future: getUserData(),
             builder: (context, snapshot) {
-              //! Drawer Header
+              //! Drawer header
               return SizedBox(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,7 +63,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
                         height: 70,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(50),
-                          // User Image saction
+                          // User image section
                           child: CachedNetworkImage(
                             imageUrl: imageUrl ?? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQq6gaTf6N93kzolH98ominWZELW881HqCgw&s",
                             errorWidget: (context, url, error) => const Icon(Icons.error),
@@ -71,7 +71,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
                         ),
                       ),
                     ),
-                    // User Name
+                    // User name
                     Padding(
                       padding: const EdgeInsets.only(left: 18, bottom: 0),
                       child: Text(
@@ -79,7 +79,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
                         style: const TextStyle(fontSize: 17),
                       ),
                     ),
-                    // User Email
+                    // User email
                     Padding(
                       padding: const EdgeInsets.only(left: 18, bottom: 12),
                       child: Text(
@@ -92,7 +92,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
               );
             },
           ),
-          //! Drawer Menu Item List
+          //! Drawer menu item list
           Expanded(
             child: Column(
               children: [
@@ -108,7 +108,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
                           selectedColor: widget.currentMenuItem == item ? Colors.black : Colors.white,
                           leading: Icon(item.icon),
                           title: Text(item.title),
-                          //! when we click on any ListTile then the propertie of that ListTile we passed to onMenuItemSelected() method.
+                          //! When we click on any ListTile, the properties of that ListTile are passed to the onMenuItemSelected() method.
                           onTap: () => widget.onMenuItemSelected(item),
                         ),
                       ),
@@ -118,16 +118,16 @@ class _DrawerMenuState extends State<DrawerMenu> {
               ],
             ),
           ),
-          //! Logout Button.
+          //! Logout button.
           Padding(
             padding: const EdgeInsets.only(left: 2.5),
             child: InkWell(
               borderRadius: BorderRadius.circular(8),
               onTap: () {
-                // ! Logout the user from any Logined Firebase Provider.
+                // ! Log out the user from any logged-in Firebase provider.
                 FirebaseAuthMethod.singOut(context: context);
 
-                //! pushing user to login Screen of the application.s
+                //! Navigate the user to the login screen of the application.
                 Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(
                     builder: (context) {

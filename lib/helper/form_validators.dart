@@ -1,188 +1,168 @@
-//! This Class hold's All Form validators.
+//! This class holds all form validators.
 
 class FormValidator {
 // -------------------------------
-// Method for validating firstName
+// Method for validating first name
 // -------------------------------
 
   static String? firstNameValidator(String? value) {
-    // if textfield is Empty
+    // If the text field is empty
     if (value!.isEmpty) {
-      return "please enter first name";
+      return "Please enter a first name";
     }
-    // for UserName validation
+    // For first name validation
     else if (!RegExp(r"^[a-zA-Z0-9]").hasMatch(value)) {
-      return "Enter corrent first name";
+      return "Enter a correct first name";
     }
-    // username must be no longer than 12 characters
+    // First name must be no longer than 15 characters
     else if (RegExp(r"^.{15}").hasMatch(value)) {
-      return "first name must be no longer than 15 characters";
+      return "First name must be no longer than 15 characters";
     }
-    // username should not contains special characters
+    // First name should not contain special characters
     else if (RegExp(r"^(?=.*[#?!@$%^&*-+()/':;])").hasMatch(value)) {
-      return "first name should not contains special characters";
+      return "First name should not contain special characters";
     }
-    // else return nothing
+    // Else return nothing
     else {
       return null;
     }
   }
 
 // --------------------------------
-// Method for validating secondname
+// Method for validating second name
 // --------------------------------
 
   static String? secondNameValidator(String? value) {
-    // if textfield is Empty
+    // If the text field is empty
     if (value!.isEmpty) {
-      return "please enter second name";
+      return "Please enter a second name";
     }
-    // for UserName validation
+    // For second name validation
     else if (!RegExp(r"^[a-zA-Z0-9]").hasMatch(value)) {
-      return "Enter corrent second name";
+      return "Enter a correct second name";
     }
-    // username must be no longer than 12 characters
+    // Second name must be no longer than 15 characters
     else if (RegExp(r"^.{15}").hasMatch(value)) {
-      return "second name must be no longer than 15 characters";
+      return "Second name must be no longer than 15 characters";
     }
-    // username should not contains special characters
+    // Second name should not contain special characters
     else if (RegExp(r"^(?=.*[#?!@$%^&*-+()/':;])").hasMatch(value)) {
-      return "second name should not contains special characters";
+      return "Second name should not contain special characters";
     }
-    // else return nothing
+    // Else return nothing
     else {
       return null;
     }
   }
 
 // ------------------------------
-// Method for validating UserName
+// Method for validating username
 // ------------------------------
 
   static String? userNameValidator(String? value) {
-    // if textfield is Empty
+    // If the text field is empty
     if (value!.isEmpty) {
-      return "please enter username";
+      return "Please enter a username";
     }
-    // for UserName validation
+    // For username validation
     else if (!RegExp(r"^[a-zA-Z0-9]").hasMatch(value)) {
-      return "Enter corrent username";
+      return "Enter a correct username";
     }
-    // username must be no longer than 12 characters
+    // Username must be no longer than 15 characters
     else if (RegExp(r"^.{15}").hasMatch(value)) {
-      return "username must be no longer than 15 characters";
+      return "Username must be no longer than 15 characters";
     }
-    // username should not contains special characters
+    // Username should not contain special characters
     else if (RegExp(r"^(?=.*[#?!@$%^&*-+()/':;])").hasMatch(value)) {
-      return "username should not contains special characters";
+      return "Username should not contain special characters";
     }
-    // else return nothing
+    // Else return nothing
     else {
       return null;
     }
   }
 
 // ----------------------------
-// Method for Validating E-mail
+// Method for validating email
 // ----------------------------
 
   static String? emailValidator(String? value) {
-    // if textfield is Empty
+    // If the text field is empty
     if (value!.isEmpty) {
-      return "Please enter a email";
-      // RegExp for Email validation
-    } else if (!RegExp(
+      return "Please enter an email";
+    }
+    // RegExp for email validation
+    else if (!RegExp(
             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+$")
         .hasMatch(value)) {
-      return "Enter corrent email";
+      return "Enter a correct email";
     }
-    // else return nothing
+    // Else return nothing
     else {
       return null;
     }
   }
 
 // ------------------------------
-// Method for Validating Password
+// Method for validating password
 // ------------------------------
 
   static String? passwordValidator(String? value) {
-    // If TextFeild is Empty
+    // If the text field is empty
     if (value!.isEmpty) {
       return "Please enter a password";
     }
 
-    // At least one upper case English letter
-    // else if (!RegExp(r"^(?=.*[A-Z])").hasMatch(value)) {
-    //   return "At least one upper case English letter";
-    // }
-
-    // At least one lower case English letter
-    // else if (!RegExp(r"^(?=.*[a-z])").hasMatch(value)) {
-    //   return "At least one lower case English letter";
-    // }
-
-    // At least one digit
-    // else if (!RegExp(r"^(?=.*[0-9])").hasMatch(value)) {
-    //   return "At least one digit,";
-    // }
-
-    // At least one special character
-    // else if (!RegExp(r"^(?=.*[#?!@$%^&*-])")
-    //     .hasMatch(value)) {
-    //   return "At least one special character";
-    // }
-
-    // Minimum eight in length
+    // Minimum six in length
     else if (!RegExp(r"^.{6}").hasMatch(value)) {
       return "Minimum six in length";
     }
-    // else return nothing
+    // Else return nothing
     else {
       return null;
     }
   }
 
 // ----------------------------------
-// Method for Validating Phone Number
+// Method for validating phone number
 // ----------------------------------
 
   static String? phoneNumberValidator(String? value) {
-    // if Textfield is empty
+    // If the text field is empty
     if (value!.isEmpty) {
       return "Please enter a number";
     }
-    // validating Phone number
+    // Validating phone number
     else if (!RegExp(r"^(?:(?:\+|0{0,2})91(\s*[\-]\s*)?|[0]?)?[789]\d{9}$")
         .hasMatch(value)) {
-      return "Please enter valid number";
+      return "Please enter a valid number";
     }
 
-    // else return nothing
+    // Else return nothing
     else {
       return null;
     }
   }
 
 // ---------------------------
-// Method for Validating OTP's
+// Method for validating OTPs
 // ---------------------------
 
   static String? otpValidator(String? value) {
-    // if Textfield is empty
+    // If the text field is empty
     if (value!.isEmpty) {
       return "OTP required";
     }
-    // if otp is lower then 6 digit's
+    // If OTP is less than 6 digits
     else if (value.length < 6) {
       return "Make sure all OTP fields are filled in";
     }
-    // validating Phone number
+    // Validating OTP
     else if (!RegExp(r"^[0-9]{1,6}$").hasMatch(value)) {
-      return "Only digit are allowed";
+      return "Only digits are allowed";
     }
 
-    // else return nothing
+    // Else return nothing
     else {
       return null;
     }

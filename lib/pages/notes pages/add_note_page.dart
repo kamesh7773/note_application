@@ -13,11 +13,11 @@ class AddNotePage extends StatefulWidget {
 }
 
 class _AddNotePageState extends State<AddNotePage> {
-  // Textfeild Controller's
+  // TextField Controllers
   TextEditingController textEditingController1 = TextEditingController();
   TextEditingController textEditingController2 = TextEditingController();
 
-  // dispoing textEditingControllar's
+  // Disposing TextEditingControllers
   @override
   void dispose() {
     textEditingController1.dispose();
@@ -26,10 +26,10 @@ class _AddNotePageState extends State<AddNotePage> {
   }
 
   // ------------------------------------------------------------
-  // Method for adding Note when user clickback button of Android
+  // Method for adding a note when the user clicks the back button on Android
   // ------------------------------------------------------------
   void addingNote1(didPop) {
-    // if TextFeild's are not empty
+    // If TextFields are not empty
     if (!didPop && textEditingController1.text.isNotEmpty && textEditingController2.text.isNotEmpty) {
       FireStoreCurdMethods.addNote(
         title: textEditingController1.text,
@@ -37,7 +37,7 @@ class _AddNotePageState extends State<AddNotePage> {
       );
       Navigator.of(context).pop();
     }
-    // if TextFeild 1 is Not Empty
+    // If TextField 1 is not empty
     else if (!didPop && textEditingController1.text.isNotEmpty) {
       FireStoreCurdMethods.addNote(
         title: textEditingController1.text,
@@ -45,7 +45,7 @@ class _AddNotePageState extends State<AddNotePage> {
       );
       Navigator.of(context).pop();
     }
-    // if TextFeild 2 is Not Empty
+    // If TextField 2 is not empty
     else if (!didPop && textEditingController2.text.isNotEmpty) {
       FireStoreCurdMethods.addNote(
         title: textEditingController1.text,
@@ -54,12 +54,12 @@ class _AddNotePageState extends State<AddNotePage> {
       Navigator.of(context).pop();
     }
 
-    // if TextFeild 1 & TextFeild 2 are empty
+    // If both TextField 1 and TextField 2 are empty
     if (!didPop && textEditingController1.text.isEmpty && textEditingController2.text.isEmpty) {
-      // Deleting Empty Note
+      // Deleting empty note
       FireStoreCurdMethods.deleteNote(docID: widget.docID);
 
-      // Poping out from Note Page
+      // Popping out from the note page
       Navigator.of(context).pop();
 
       // Showing SnackBar
@@ -75,10 +75,10 @@ class _AddNotePageState extends State<AddNotePage> {
   }
 
   // --------------------------------------------------------------------
-  // Method for adding Note when user click arrow back button of AppBar()
+  // Method for adding a note when the user clicks the arrow back button of AppBar()
   // --------------------------------------------------------------------
   void addingNote2() {
-    // if Textfeild's are not empty
+    // If TextFields are not empty
     if (textEditingController1.text.isNotEmpty || textEditingController2.text.isNotEmpty) {
       FireStoreCurdMethods.addNote(
         title: textEditingController1.text,
@@ -87,12 +87,12 @@ class _AddNotePageState extends State<AddNotePage> {
       Navigator.of(context).pop();
     }
 
-    // if Textfeild's are empty
+    // If TextFields are empty
     if (textEditingController1.text.isEmpty && textEditingController2.text.isEmpty) {
-      // Deleting Empty Note
+      // Deleting empty note
       FireStoreCurdMethods.deleteNote(docID: widget.docID);
 
-      // Poping out from Note Page
+      // Popping out from the note page
       Navigator.of(context).pop();
 
       // Showing SnackBar
@@ -107,7 +107,7 @@ class _AddNotePageState extends State<AddNotePage> {
   }
 
   // ------------------------
-  // Method for deleting Note
+  // Method for deleting a note
   // ------------------------
   void deletingNote() {
     FireStoreCurdMethods.addNoteToTrash(

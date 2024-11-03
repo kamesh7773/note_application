@@ -18,15 +18,15 @@ class _HomePageState extends State<HomePage> {
   // Declare ZoomDrawerController
   final ZoomDrawerController _drawerController = ZoomDrawerController();
 
-  // Declaring Current Menu Item
+  // Declare the current menu item
   MenuItem currentMenuItem = MenuItems.notesPage;
 
   @override
   Widget build(BuildContext context) {
-    //! Access Theme Extension Colors.
+    // Access theme extension colors
     final myColors = Theme.of(context).extension<MyColors>();
 
-    //! Method to get the selected page
+    // Method to get the selected page
     Widget getSelectedPage() {
       switch (currentMenuItem) {
         case MenuItems.notesPage:
@@ -47,13 +47,12 @@ class _HomePageState extends State<HomePage> {
         controller: _drawerController,
         menuScreen: DrawerMenu(
           currentMenuItem: currentMenuItem,
-          //! This method contain the selected ListTile propertie and we assigne that selected ListTile to CurrrentMenuItem so our Drawer Page
-          //! get changed/updated.
+          // This method contains the selected ListTile property and assigns it to the currentMenuItem, so our drawer page gets updated.
           onMenuItemSelected: (MenuItem item) {
             setState(
               () {
                 currentMenuItem = item;
-                // after selecting the item, close the drawer
+                // After selecting the item, close the drawer
                 _drawerController.close!();
               },
             );
@@ -61,7 +60,7 @@ class _HomePageState extends State<HomePage> {
         ),
         mainScreen: getSelectedPage(),
         closeCurve: Curves.easeInOut,
-        angle: 00,
+        angle: 0,
         mainScreenScale: 0.14,
         borderRadius: 20,
         slideHeight: 10,
