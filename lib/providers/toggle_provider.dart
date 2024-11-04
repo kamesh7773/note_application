@@ -1,37 +1,37 @@
 import 'package:flutter/material.dart';
 
 class ToggleProvider extends ChangeNotifier {
-  // variable's delcartion.
+  // Variable declarations
   bool _showPassword = true;
   bool _isChecked = false;
   bool _notesAutoDelete = true;
   bool _longPressToSelect = true;
 
-  // declaring getters.
+  // Getters
   bool get showPassword => _showPassword;
   bool get isChecked => _isChecked;
   bool get notesAutoDelete => _notesAutoDelete;
   bool get longPressToSelect => _longPressToSelect;
 
-  // Method that hide/show the password.
+  // Method to toggle password visibility
   void showPasswordMethod() {
     _showPassword = !_showPassword;
     notifyListeners();
   }
 
-  // Method that checked/unchecked the RadioBtn.
+  // Method to toggle radio button state
   void isCheckedMethod() {
     _isChecked = !_isChecked;
     notifyListeners();
   }
 
-  // Method that Hide the Auto Delete Notes after 7 days.
+  // Method to disable auto-deletion of notes after 7 days
   void autoDeleteNotes() {
     _notesAutoDelete = false;
     notifyListeners();
   }
 
-  // Method that checked/unchecked the RadioBtn.
+  // Method to disable long-press note selection
   void longPressToSelectNotes() {
     _longPressToSelect = false;
     notifyListeners();

@@ -14,20 +14,20 @@ import 'package:note_application/helper/progress_indicator.dart';
 import 'package:note_application/helper/snackbar.dart';
 
 class FirebaseAuthMethod {
-  // varible related Firebase instance related
+  // Variables related to Firebase instances
   static final FirebaseAuth _auth = FirebaseAuth.instance;
   static final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  // variable's for Phone Auth
+  // Variables for Phone Authentication
   static late String _phoneOtpVerficationID;
 
-  // creating getter for verficationID  veriable so it can be read by PhoneOTP Page also
-  // (makeing verficationId id getter so it can be read by phoneOTP Page so when we resend the OTP then vericationID also genrated new so we have to pass again to
-  //  OTP Page by Consturtor so if we do that again then Because we already present on OTP Page so OTP Page will again will redirected (Pop to user) and we don't wnat that)
+  // Getter for verification ID that can be accessed by PhoneOTP Page
+  // When resending OTP, a new verification ID is generated. We don't pass it through 
+  // the constructor to avoid redirecting to a new OTP Page
   static String get phoneotpVerficatoinID => _phoneOtpVerficationID;
 
   // ---------------------------
-  // Method's Related Email Auth
+  // Email Authentication Methods
   // ---------------------------
 
   //! Email & Password SignUp Method
@@ -39,16 +39,17 @@ class FirebaseAuthMethod {
     required String password,
     required BuildContext context,
   }) async {
-    //? Try & catch block for checking email address already present & its provider is "Email & Password" in Firebase "users" collection.
     try {
-      // showing Progress Indigator
+      // Show Progress Indicator
       ProgressIndicators.showProgressIndicator(context);
-      //* 1st We check if the entered email address is already present & its provider is "Email & Password" in the "users" collection by querying FireStore's "users" Collection.
-      // searching for Email Address & "Email & Password" provider in "users" collection at once
-      QuerySnapshot queryForEmailAndProvider = await _db.collection('users').where("email", isEqualTo: email).where("provider", isEqualTo: "Email & Password").get();
 
-      // if the entered Email address already present in "users" collection and Provider is "Email & Password"
-      // it's means that entered email is already have account in Fireabase.
+      // Check if email exists with "Email & Password" provider in users collection
+      QuerySnapshot queryForEmailAndProvider = await _db.collection('users')
+          .where("email", isEqualTo: email)
+          .where("provider", isEqualTo: "Email & Password")
+          .get();
+
+      // If email already exists with Email & Password provider
       if (queryForEmailAndProvider.docs.isNotEmpty && context.mounted) {
         Navigator.of(context).pop();
         SnackBars.normalSnackBar(
@@ -56,42 +57,32 @@ class FirebaseAuthMethod {
           "The email address is already in use by another account.",
         );
       }
-      // if the entered Email address is not present in "users" collection or Entered email is present in "users" collection but
-      // provider is not "Email & password" only then...
+      // If email doesn't exist or uses different provider
       else {
         if (context.mounted) {
-          //? Try & catch block for sending OTP to user Email Address.
           try {
-            //* 2nd sentOTP Method gets called.
+            // Send OTP to user's email address
             await EmailOtpAuth.sendOTP(email: email);
-            // Poping out Progress Indicator
+            
             if (context.mounted) {
               Navigator.pop(context);
             }
-          }
-          //? Handling E-mail OTP error's
-          catch (error) {
+          } catch (error) {
             if (context.mounted) {
               ColoredPrint.warning(error.toString());
-              // poping out the progress indicator
               Navigator.pop(context);
               SnackBars.normalSnackBar(context, error.toString());
             }
           }
 
-          //* 3rd after sending OTP we redirect the user to the Email OTP PAGE.
-          //*     (we are also sending the fname, lname, userName & password to the OTP Page so when the verifyOTP method gets called then we pass these values to the verifyOTP method because
-          //*      the verifyOTP Method is also responsible for storing userForm Data in FireStore DB. You will be wondering why we are passing this information to the OTP page then we again
-          //*      pass this info to verify the OTP method why taking too much hustle? why don't we simply store userForm info into some variable and use them? because we cannot do this when
-          //*      the verfy otp method gets called from the OTP page FirebaseAUthMethod reinitlized and when we try to store user form data into variables and when we use these variables then
-          //*      this variable only contains null values.)
-          // storeing interent state in veriable
+          // Check internet connection before proceeding
           bool isInternet = await InternetChecker.checkInternet();
-          // if Internet connection is Not presented then..
+          
+          // Show error if no internet connection
           if (isInternet && context.mounted) {
             SnackBars.normalSnackBar(context, "Please turn on your Internet");
           }
-          // if Internet connect is presented then..
+          // If internet is available, redirect to OTP page
           else if (!isInternet && context.mounted) {
             Navigator.of(context).push(MaterialPageRoute(
               builder: (context) {
@@ -108,15 +99,13 @@ class FirebaseAuthMethod {
         }
       }
     }
-    //? Handling Exceptions of  email address already present & its provider is "Email & Password" in Firebase "users" collection.
+    // Handle Firebase Auth exceptions
     on FirebaseAuthException catch (error) {
       if (error.message == "A network error (such as timeout, interrupted connection or unreachable host) has occurred." && context.mounted) {
-        // Navigator.pop(context);
         Navigator.popUntil(context, ModalRoute.withName("/SignUpPage"));
         SnackBars.normalSnackBar(context, "Please turn on your Internet");
       } else {
         if (context.mounted) {
-          // Navigator.pop(context);
           Navigator.popUntil(context, ModalRoute.withName("/SignUpPage"));
           SnackBars.normalSnackBar(context, error.message!);
         }
@@ -124,7 +113,7 @@ class FirebaseAuthMethod {
     }
   }
 
-  //! Verifying Email OTP & if OTP get succesfully get verfied then create user account on firebase and store user info on FireStore DB
+  //! Verify Email OTP and create user account
   static Future<void> verifyEmailOTP({
     required email,
     required emailOTP,
@@ -136,22 +125,22 @@ class FirebaseAuthMethod {
   }) async {
     try {
       ProgressIndicators.showProgressIndicator(context);
-      //! Method that verify Email OTP
+      
+      // Verify the email OTP
       var res = await EmailOtpAuth.verifyOtp(
         otp: emailOTP,
       );
 
-      //* 4th if user get verified with Email OTP then we create their account on Firebase Auth & Save the User Info on Firebase Store.
+      // If OTP verification is successful, create user account and store data
       if (res["message"] == "OTP Verified") {
-        //? Try & catch block for (creating the user account with Email-Password and storing user info at firebase auth server)
         try {
-          // creating user account on Firebase auth
+          // Create user account in Firebase Auth
           await _auth.createUserWithEmailAndPassword(
             email: email,
             password: password,
           );
 
-          // storing user's auth data into "users" collection in FireStore for storing user spefic data
+          // Store user data in Firestore
           await _db.collection("users").doc(_auth.currentUser!.uid).set({
             "name": "$firstName $lastName",
             "userName": userName,
@@ -160,21 +149,14 @@ class FirebaseAuthMethod {
             "imageUrl": "https://p7.hiclipart.com/preview/782/114/405/5bbc3519d674c.jpg",
             "provider": "Email & Password",
             "userID": _auth.currentUser!.uid,
-          }).then((value) {
-            debugPrint("User data saved in Firestore users collection");
-          }).catchError((error) {
-            debugPrint("User data not saved!");
           });
 
-          // fetching current userId info from "users" collection.
+          // Fetch current user info from Firestore
           final currentUserInfo = await _db.collection("users").doc(_auth.currentUser!.uid).get();
-
           final userData = currentUserInfo.data();
 
-          // creating instance of Shared Preferences.
+          // Store user data in SharedPreferences
           final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-          // writing current User info data to SharedPreferences.
           await prefs.setString("name", userData!["name"]);
           await prefs.setString("userName", userData["userName"]);
           await prefs.setString("email", userData["email"]);
@@ -183,28 +165,25 @@ class FirebaseAuthMethod {
           await prefs.setString("provider", userData["provider"]);
           await prefs.setString("userID", userData["userID"]);
 
-          // setting isLogin to "true"
+          // Set login status
           await prefs.setBool('isLogin', true);
 
-          //* 5th Redircting user to Verification completed Screen.
+          // Redirect to HomePage after successful signup
           if (context.mounted) {
-            if (context.mounted) {
-              Navigator.pop(context);
-            }
+            Navigator.pop(context);
             SnackBars.normalSnackBar(context, "Your email account has been created successfully!");
             Navigator.of(context).popAndPushNamed("/HomePage");
           }
         }
-
-        //? handling createUserWithEmailAndPassword & Storing user info at firebase.
+        // Handle Firebase Auth exceptions during account creation
         on FirebaseAuthException catch (error) {
           if (error.message == "A network error (such as timeout, interrupted connection or unreachable host) has occurred." && context.mounted) {
-            // Navigator.pop(context);
+            Navigator.pop(context);
             Navigator.popUntil(context, ModalRoute.withName("/SignUpPage"));
             SnackBars.normalSnackBar(context, "Please turn on your Internet");
           } else {
             if (context.mounted) {
-              // Navigator.pop(context);
+              Navigator.pop(context);
               Navigator.popUntil(context, ModalRoute.withName("/SignUpPage"));
               SnackBars.normalSnackBar(context, error.message!);
             }
@@ -216,7 +195,7 @@ class FirebaseAuthMethod {
         SnackBars.normalSnackBar(context, "OTP Expired");
       }
     }
-    //? Handling E-mail OTP error's
+    // Handle OTP verification errors
     catch (error) {
       if (error == "ClientException with SocketException: Failed host lookup: 'direct-robbi-kamesh-cc8a724a.koyeb.app' (OS Error: No address associated with hostname, errno = 7), uri=https://direct-robbi-kamesh-cc8a724a.koyeb.app/_emailOtp-login") {
         if (context.mounted) {

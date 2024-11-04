@@ -2,18 +2,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class FireStoreCurdMethods {
-  // Geting FireStore Collection
+  // Getting FireStore Collection
   static final CollectionReference users =
       FirebaseFirestore.instance.collection("users");
 
-  //! CREATE: create a new "Note" at FireStore
+  //! CREATE: Create a new "Note" in FireStore
   static Future<void> addNote({String? title, String? note}) {
     try {
-      // Reference to a CurrentUserID document in the main collection
+      // Reference to the current user's document in the main collection
       DocumentReference currentUserID =
           users.doc(FirebaseAuth.instance.currentUser!.uid.toString());
 
-      // Creating Reference of notes Sub-Collection insdie currentUserID Users Document.
+      // Creating reference to notes sub-collection inside current user's document
       CollectionReference notes = currentUserID.collection('notes');
 
       return notes.add(
@@ -28,15 +28,15 @@ class FireStoreCurdMethods {
     }
   }
 
-  //! CREATE: Move deleted Note to Trash at FireStore
+  //! CREATE: Move deleted Note to Trash in FireStore
   static Future<void> addNoteToTrash(
       {required Map<String, dynamic> deletedNotes}) {
     try {
-      // Reference to a CurrentUserID document in the main collection
+      // Reference to the current user's document in the main collection
       DocumentReference currentUserID =
           users.doc(FirebaseAuth.instance.currentUser!.uid.toString());
 
-      // Creating Reference Trash  Sub-Collection insdie currentUserID Users Document.
+      // Creating reference to trash sub-collection inside current user's document
       CollectionReference trash = currentUserID.collection('trash');
 
       return trash.add(deletedNotes);
@@ -45,15 +45,15 @@ class FireStoreCurdMethods {
     }
   }
 
-  //! UPDATE: updating "Note" at FireStore
+  //! UPDATE: Update "Note" in FireStore
   static Future<void> updateNote({String? docID, String? title, String? note}) {
     try {
-      // Reference to a CurrentUserID document in the main collection
+      // Reference to the current user's document in the main collection
       DocumentReference currentUserID = users.doc(
         FirebaseAuth.instance.currentUser!.uid.toString(),
       );
 
-      // Creating Reference of Sub-Collection insdie currentUserID Document.
+      // Creating reference to notes sub-collection inside current user's document
       CollectionReference notes = currentUserID.collection('notes');
 
       return notes.doc(docID).update({
@@ -66,15 +66,15 @@ class FireStoreCurdMethods {
     }
   }
 
-  //! READ: get notes from FireStore
+  //! READ: Get notes from FireStore
   static Stream<QuerySnapshot> read() {
     try {
-      // Reference to a CurrentUserID document in the main collection
+      // Reference to the current user's document in the main collection
       DocumentReference currentUserID = users.doc(
         FirebaseAuth.instance.currentUser!.uid.toString(),
       );
 
-      // Creating Reference of Sub-Collection insdie currentUserID Document.
+      // Creating reference to notes sub-collection inside current user's document
       CollectionReference notes = currentUserID.collection('notes');
 
       final notesStream = notes.snapshots();
@@ -84,15 +84,15 @@ class FireStoreCurdMethods {
     }
   }
 
-  //! READ: get trash notes from FireStore
+  //! READ: Get trash notes from FireStore
   static Stream<QuerySnapshot> readTrashNotes() {
     try {
-      // Reference to a CurrentUserID document in the main collection
+      // Reference to the current user's document in the main collection
       DocumentReference currentUserID = users.doc(
         FirebaseAuth.instance.currentUser!.uid.toString(),
       );
 
-      // Creating Reference of Sub-Collection insdie currentUserID Document.
+      // Creating reference to trash sub-collection inside current user's document
       CollectionReference notes = currentUserID.collection('trash');
 
       final notesStream = notes.snapshots();
@@ -102,15 +102,15 @@ class FireStoreCurdMethods {
     }
   }
 
-  //! DELETE: deleting "Note" at FireStore
+  //! DELETE: Delete "Note" from FireStore
   static Future<void> deleteNote({String? docID}) {
     try {
-      // Reference to a CurrentUserID document in the main collection
+      // Reference to the current user's document in the main collection
       DocumentReference currentUserID = users.doc(
         FirebaseAuth.instance.currentUser!.uid.toString(),
       );
 
-      // Creating Reference of Sub-Collection insdie currentUserID Document.
+      // Creating reference to notes sub-collection inside current user's document
       CollectionReference notes = currentUserID.collection('notes');
 
       return notes.doc(docID).delete();
@@ -119,15 +119,15 @@ class FireStoreCurdMethods {
     }
   }
 
-  //! DELETE: deleting "TrashNote" at FireStore
+  //! DELETE: Delete "TrashNote" from FireStore
   static Future<void> deleteTrashNote({String? docID}) {
     try {
-      // Reference to a CurrentUserID document in the main collection
+      // Reference to the current user's document in the main collection
       DocumentReference currentUserID = users.doc(
         FirebaseAuth.instance.currentUser!.uid.toString(),
       );
 
-      // Creating Reference of Sub-Collection insdie currentUserID Document.
+      // Creating reference to trash sub-collection inside current user's document
       CollectionReference notes = currentUserID.collection('trash');
 
       return notes.doc(docID).delete();

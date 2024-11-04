@@ -10,20 +10,20 @@ class LayoutChangeProvider extends ChangeNotifier {
 
   LayoutChangeProvider(this._isGridView);
 
-  //! Change the Layout based on User Selection.
+  //! Change the layout based on user selection
   void changeLayout() {
     _isGridView = !_isGridView;
     _saveToPrefs();
     notifyListeners();
   }
 
-  //! This Method save user selected current Layout in SharedPreferences.
+  //! Save the user's selected layout in SharedPreferences
   Future<void> _saveToPrefs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool('isGridView', _isGridView);
   }
 
-  //! Retriving the Current Theme From SharedPreferences.
+  //! Retrieve the current layout from SharedPreferences
   static Future<bool> currentLayout() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getBool('isGridView') ?? false;

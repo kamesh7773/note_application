@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'dart:async';
 
 class OtpTimerProvider extends ChangeNotifier {
-  // variable's delcartion.
+  // Variable declarations
   bool _emailOtpSendBtnEnable = false;
   bool _forgotLinkBtbEnable = true;
   Duration _duration = const Duration(seconds: 60);
@@ -13,13 +13,13 @@ class OtpTimerProvider extends ChangeNotifier {
     _forgotLinkBtbEnable = true;
   }
 
-  // declaring getters.
+  // Getters
   bool get emailOtpSendBtnEnable => _emailOtpSendBtnEnable;
   bool get forgotLinkBtbEnable => _forgotLinkBtbEnable;
   Duration get duration => _duration;
   Timer? get timer => _timer;
 
-  // declarting setters.
+  // Setters
   set changeEmailOtpBtnValue(bool value) {
     _emailOtpSendBtnEnable = value;
     notifyListeners();
@@ -30,7 +30,7 @@ class OtpTimerProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Method that for OTP Timer.
+  // Method for OTP Timer
   void startTimer() {
     _duration = const Duration(seconds: 60);
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -47,7 +47,8 @@ class OtpTimerProvider extends ChangeNotifier {
     });
   }
 
-  //! Method reset the Timer & Button to default when click back button for chnage value or he/she by mistake press the back button.
+  // Method to reset the Timer and Buttons to default when user clicks back button
+  // This handles cases where the user accidentally presses the back button
   void resetTimerAndBtn() {
     _timer!.cancel();
     _emailOtpSendBtnEnable = false;
