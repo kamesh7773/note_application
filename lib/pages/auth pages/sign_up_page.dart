@@ -51,7 +51,7 @@ class _SignUpPageState extends State<SignUpPage> {
         if (constraints.maxWidth >= 1024) {
           return PopScope(
             canPop: false,
-            onPopInvoked: (value) {
+            onPopInvokedWithResult: (value, result) {
               if (!value) {
                 Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(
@@ -169,8 +169,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         // ------------------
                         //! Provider Selector is used
                         Selector<ToggleProvider, bool>(
-                          selector: (context, password) =>
-                              password.showPassword,
+                          selector: (context, password) => password.showPassword,
                           builder: (context, value, child) {
                             return SizedBox(
                               width: 400,
@@ -178,15 +177,9 @@ class _SignUpPageState extends State<SignUpPage> {
                                 hintText: "Password",
                                 obscureText: value,
                                 suffixIcon: IconButton(
-                                  icon: Icon(
-                                      color: myColors.commanColor,
-                                      value
-                                          ? Icons.visibility_off
-                                          : Icons.visibility),
+                                  icon: Icon(color: myColors.commanColor, value ? Icons.visibility_off : Icons.visibility),
                                   onPressed: () {
-                                    context
-                                        .read<ToggleProvider>()
-                                        .showPasswordMethod();
+                                    context.read<ToggleProvider>().showPasswordMethod();
                                   },
                                 ),
                                 validator: FormValidator.passwordValidator,
@@ -208,17 +201,13 @@ class _SignUpPageState extends State<SignUpPage> {
                                 height: 24,
                                 //! Provider Selector is used
                                 child: Selector<ToggleProvider, bool>(
-                                  selector: (context, raidoValue) =>
-                                      raidoValue.isChecked,
-                                  builder: (BuildContext context, value,
-                                      Widget? child) {
+                                  selector: (context, raidoValue) => raidoValue.isChecked,
+                                  builder: (BuildContext context, value, Widget? child) {
                                     return Checkbox(
                                       activeColor: myColors.commanColor,
                                       value: value,
                                       onChanged: (value) {
-                                        context
-                                            .read<ToggleProvider>()
-                                            .isCheckedMethod();
+                                        context.read<ToggleProvider>().isCheckedMethod();
                                       },
                                     );
                                   },
@@ -257,8 +246,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               _signUpFormKey.currentState!.validate();
 
                               // If form validation is successful and the Privacy Policy checkbox is not checked
-                              if (_signUpFormKey.currentState!.validate() &&
-                                  !context.read<ToggleProvider>().isChecked) {
+                              if (_signUpFormKey.currentState!.validate() && !context.read<ToggleProvider>().isChecked) {
                                 SnackBars.normalSnackBar(
                                   context,
                                   "Please accept the Privacy Policy & Terms of Use",
@@ -266,8 +254,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               }
 
                               // If form validation is successful and the Privacy Policy checkbox is also checked, then fire the sign-up method.
-                              if (_signUpFormKey.currentState!.validate() &&
-                                  context.read<ToggleProvider>().isChecked) {
+                              if (_signUpFormKey.currentState!.validate() && context.read<ToggleProvider>().isChecked) {
                                 signUpMethod();
                               }
                             },
@@ -285,8 +272,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             const Text("Already have an account? "),
                             GestureDetector(
                               onTap: () {
-                                Navigator.of(context)
-                                    .popAndPushNamed("/LoginPage");
+                                Navigator.of(context).popAndPushNamed("/LoginPage");
                               },
                               child: const Text(
                                 "Login Here",
@@ -413,22 +399,15 @@ class _SignUpPageState extends State<SignUpPage> {
                           // ------------------
                           //! Provider Selector is used
                           Selector<ToggleProvider, bool>(
-                            selector: (context, password) =>
-                                password.showPassword,
+                            selector: (context, password) => password.showPassword,
                             builder: (context, value, child) {
                               return TextFormFeildWidget(
                                 hintText: "Password",
                                 obscureText: value,
                                 suffixIcon: IconButton(
-                                  icon: Icon(
-                                      color: myColors.commanColor,
-                                      value
-                                          ? Icons.visibility_off
-                                          : Icons.visibility),
+                                  icon: Icon(color: myColors.commanColor, value ? Icons.visibility_off : Icons.visibility),
                                   onPressed: () {
-                                    context
-                                        .read<ToggleProvider>()
-                                        .showPasswordMethod();
+                                    context.read<ToggleProvider>().showPasswordMethod();
                                   },
                                 ),
                                 validator: FormValidator.passwordValidator,
@@ -447,17 +426,13 @@ class _SignUpPageState extends State<SignUpPage> {
                                 height: 24,
                                 //! Provider Selector is used
                                 child: Selector<ToggleProvider, bool>(
-                                  selector: (context, raidoValue) =>
-                                      raidoValue.isChecked,
-                                  builder: (BuildContext context, value,
-                                      Widget? child) {
+                                  selector: (context, raidoValue) => raidoValue.isChecked,
+                                  builder: (BuildContext context, value, Widget? child) {
                                     return Checkbox(
                                       activeColor: myColors.commanColor,
                                       value: value,
                                       onChanged: (value) {
-                                        context
-                                            .read<ToggleProvider>()
-                                            .isCheckedMethod();
+                                        context.read<ToggleProvider>().isCheckedMethod();
                                       },
                                     );
                                   },
@@ -490,33 +465,24 @@ class _SignUpPageState extends State<SignUpPage> {
                           ButtonWidget(
                             onTap: () async {
                               // Store internet state in a variable
-                              bool isInternet =
-                                  await InternetChecker.checkInternet();
+                              bool isInternet = await InternetChecker.checkInternet();
 
                               // If there is no internet
                               if (isInternet && context.mounted) {
-                                SnackBars.normalSnackBar(
-                                    context, "Please turn on your Internet");
+                                SnackBars.normalSnackBar(context, "Please turn on your Internet");
                               }
                               // If there is internet
                               else {
                                 if (context.mounted) {
                                   // If form validation is successful and the Privacy Policy checkbox is not checked
-                                  if (_signUpFormKey.currentState!.validate() &&
-                                      !context
-                                          .read<ToggleProvider>()
-                                          .isChecked &&
-                                      context.mounted) {
+                                  if (_signUpFormKey.currentState!.validate() && !context.read<ToggleProvider>().isChecked && context.mounted) {
                                     SnackBars.normalSnackBar(
                                       context,
                                       "Please accept the Privacy Policy & Terms of Use",
                                     );
                                   }
                                   // If form validation is successful and the Privacy Policy checkbox is also checked, then fire the sign-up method.
-                                  if (_signUpFormKey.currentState!.validate() &&
-                                      context
-                                          .read<ToggleProvider>()
-                                          .isChecked) {
+                                  if (_signUpFormKey.currentState!.validate() && context.read<ToggleProvider>().isChecked) {
                                     signUpMethod();
                                   }
                                 }
@@ -535,8 +501,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               const Text("Already have an account? "),
                               GestureDetector(
                                 onTap: () {
-                                  Navigator.of(context)
-                                      .popAndPushNamed("/LoginPage");
+                                  Navigator.of(context).popAndPushNamed("/LoginPage");
                                 },
                                 child: const Text(
                                   "Login Here",

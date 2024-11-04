@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:note_application/helper/snackbar.dart';
 import 'package:note_application/helper/form_validators.dart';
 import 'package:note_application/helper/internet_checker.dart';
+import 'package:note_application/pages/auth%20pages/login_page.dart';
 import 'package:note_application/providers/otp_timer_provider.dart';
 import 'package:note_application/services/auth/firebase_auth_methods.dart';
 import 'package:note_application/theme/Extensions/my_colors.dart';
@@ -191,9 +192,19 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         //! For mobile phones
         else {
           return PopScope(
-            canPop: true,
+            canPop: false,
             onPopInvokedWithResult: (value, result) {
-              if (value) {
+              if (!value) {
+                //! Navigating user to Login Page.
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return const LoginPage();
+                    },
+                  ),
+                  (Route<dynamic> route) => false,
+                );
+
                 //! This method is called when the user presses the back button in the middle of filling OTP on the OTP Page. We need to cancel the current timer and disable
                 //! the Resend Button again. If we don't do that, the timer() will overlap, and the timer will run very fast, enabling the resend button even though
                 //! the timer is running.
@@ -201,7 +212,22 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               }
             },
             child: Scaffold(
-              appBar: AppBar(),
+              appBar: AppBar(
+                leading: IconButton(
+                  onPressed: () {
+                    //! Navigating user to Login Page.
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return const LoginPage();
+                        },
+                      ),
+                      (Route<dynamic> route) => false,
+                    );
+                  },
+                  icon: const Icon(Icons.arrow_back),
+                ),
+              ),
               backgroundColor: Theme.of(context).colorScheme.surface,
               body: SafeArea(
                 child: Form(
