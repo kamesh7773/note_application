@@ -44,9 +44,13 @@
 
 ## 📸 Screenshots
 
-| Login page | Sing Up Page | Trash Bin |
+| Home Page | Login page | Sing Up Page |
 |-----------------|-----------|-----------|
-| ![Grid View](https://github.com/kamesh7773/note_application/blob/main/readme/screenshots/Login%20Page.png?raw=true) | ![Dark Mode](https://github.com/kamesh7773/note_application/blob/main/readme/screenshots/Login%20Page.png?raw=true) | ![Trash Bin](https://github.com/kamesh7773/note_application/blob/main/readme/screenshots/Login%20Page.png?raw=true) |
+| ![Home Page](https://github.com/kamesh7773/note_application/blob/main/readme/screenshots/Notes%20Page%20Grid%20View.png?raw=true) | ![Login page](https://github.com/kamesh7773/note_application/blob/main/readme/screenshots/Login%20Page.png?raw=true) | ![Sing Up Page](https://github.com/kamesh7773/note_application/blob/main/readme/screenshots/Sign%20up%20page.png?raw=true) |
+
+| Login & Sign up | Multiple Selectable Notes | Trash Bin |
+|-----------------|-----------|-----------|
+| ![Login & Sign up](https://github.com/kamesh7773/note_application/blob/main/readme/gifs/Login%20and%20Sign%20Up%20transition.gif?raw=true) | ![Multiple Selectable Notes](https://github.com/kamesh7773/note_application/blob/main/readme/gifs/Selected%20Multiple%20Notes%20and%20move%20to%20trash%20and%20trash%20to%20Notes.gif?raw=true) | ![Trash Bin](https://github.com/kamesh7773/note_application/blob/main/readme/gifs/Login%20and%20Create%20Note.gif?raw=true) |
 
 ---
 
