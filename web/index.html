@@ -36,11 +36,18 @@
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
-  <!-- Script for fixing the error when we fetch the User Profile Image from our Firestore DB -->
-  <script>
-    window.flutterWebRenderer = "html";
-  </script>
-
-  <script src="flutter_bootstrap.js" async></script>
+<!-- Script for fixing the error when we fetch the User Profile Image from our Firestore DB -->
+<script>
+  // If window.flutterWebRenderer was set manually, remove this block.
+  // Otherwise, you should not need to modify this script.
+  (function () {
+    var supportedRenderers = ['auto', 'html', 'canvaskit'];
+    var renderer = 'auto';  // Default to auto, letting Flutter choose the best.
+    if (supportedRenderers.indexOf(renderer) !== -1) {
+      window.flutterWebRenderer = renderer;
+    }
+  })();
+</script>   
+<script src="flutter_bootstrap.js" async></script>
 </body>
 </html>
