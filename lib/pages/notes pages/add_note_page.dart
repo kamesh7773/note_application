@@ -142,7 +142,6 @@ class _AddNotePageState extends State<AddNotePage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: myColors!.notePage,
           leading: IconButton(
             // Method for adding note
             onPressed: addingNote2,

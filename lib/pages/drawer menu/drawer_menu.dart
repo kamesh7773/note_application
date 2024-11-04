@@ -149,8 +149,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
                 title: const Text(
                   "Logout",
                   style: TextStyle(
-                    fontSize: 19,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
                   ),
                 ),
               ),

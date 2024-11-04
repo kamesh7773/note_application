@@ -41,7 +41,7 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
     }
   }
 
-  // -------------------------------------------------------------------------    
+  // -------------------------------------------------------------------------
   // Method for updating the note when the AppBar back arrow button is pressed
   // --------------------------------------------------------------------
   void updatingNote2() {
@@ -89,13 +89,12 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
 
     return PopScope(
       canPop: false,
-      onPopInvoked: (didPop) {
+      onPopInvokedWithResult: (didPop, result) {
         // Update the note using PopScope()
         updatingNote1(didPop);
       },
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: myColors!.notePage,
           // Update the note when the AppBar back arrow button is pressed
           leading: IconButton(
             onPressed: updatingNote2,
