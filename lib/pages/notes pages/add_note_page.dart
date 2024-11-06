@@ -2,20 +2,40 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:note_application/services/database/curd_methods.dart';
 import 'package:note_application/theme/Extensions/my_colors.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 class AddNotePage extends StatefulWidget {
   final String? docID;
 
-  const AddNotePage({super.key, required this.docID});
+  const AddNotePage({
+    super.key,
+    required this.docID,
+  });
 
   @override
   State<AddNotePage> createState() => _AddNotePageState();
 }
 
 class _AddNotePageState extends State<AddNotePage> {
+  // Declaration of Global Key's for showCaseView.
+  final GlobalKey globalKey3 = GlobalKey();
+  final GlobalKey globalKey4 = GlobalKey();
   // TextField Controllers
   TextEditingController textEditingController1 = TextEditingController();
   TextEditingController textEditingController2 = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    //! Initlization of ShowcaseView widget with provided global keys.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ShowCaseWidget.of(context).startShowCase([
+        globalKey3,
+        globalKey4,
+      ]);
+    });
+  }
 
   // Disposing TextEditingControllers
   @override
@@ -140,71 +160,80 @@ class _AddNotePageState extends State<AddNotePage> {
       onPopInvokedWithResult: (didPop, result) {
         addingNote1(didPop);
       },
-      child: Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            // Method for adding note
-            onPressed: addingNote2,
-            icon: const Icon(Icons.arrow_back),
-          ),
-          actions: [
-            IconButton(
-              onPressed: deletingNote,
-              icon: Icon(
-                Icons.delete,
-                color: Theme.of(context).colorScheme.inversePrimary,
+      //! We are wraping our scaffold with ShowCaseWidget();
+      child: ShowCaseWidget(
+        builder: (context) {
+          return Scaffold(
+            appBar: AppBar(
+              leading: IconButton(
+                // Method for adding note
+                onPressed: addingNote2,
+                icon: const Icon(Icons.arrow_back),
               ),
-            )
-          ],
-        ),
-        body: SizedBox(
-          width: double.infinity,
-          child: Column(
-            children: [
-              TextField(
-                controller: textEditingController1,
-                style: const TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
-                cursorColor: Theme.of(context).colorScheme.inversePrimary,
-                decoration: const InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide.none,
+              actions: [
+                IconButton(
+                  onPressed: deletingNote,
+                  icon: Icon(
+                    Icons.delete,
+                    color: Theme.of(context).colorScheme.inversePrimary,
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide.none,
+                )
+              ],
+            ),
+            body: SizedBox(
+              width: double.infinity,
+              child: Column(
+                children: [
+                  Showcase(
+                    key: globalKey3,
+                    description: "Title of note",
+                    child: TextField(
+                      controller: textEditingController1,
+                      style: const TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      cursorColor: Theme.of(context).colorScheme.inversePrimary,
+                      decoration: const InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                        hintText: "Title",
+                        hintStyle: TextStyle(fontSize: 22),
+                      ),
+                    ),
                   ),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 16),
-                  hintText: "Title",
-                  hintStyle: TextStyle(fontSize: 22),
-                ),
+                  Expanded(
+                    child: TextField(
+                      controller: textEditingController2,
+                      style: const TextStyle(
+                        fontSize: 18,
+                      ),
+                      maxLines: 100,
+                      // autofocus: true,
+                      cursorColor: Theme.of(context).colorScheme.inversePrimary,
+                      decoration: const InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding: EdgeInsets.symmetric(horizontal: 18),
+                        hintText: "Note : ",
+                        hintStyle: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                  )
+                ],
               ),
-              Expanded(
-                child: TextField(
-                  controller: textEditingController2,
-                  style: const TextStyle(
-                    fontSize: 18,
-                  ),
-                  maxLines: 100,
-                  autofocus: true,
-                  cursorColor: Theme.of(context).colorScheme.inversePrimary,
-                  decoration: const InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                    ),
-                    contentPadding: EdgeInsets.symmetric(horizontal: 18),
-                    hintText: "Note : ",
-                    hintStyle: TextStyle(fontSize: 18),
-                  ),
-                ),
-              )
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }

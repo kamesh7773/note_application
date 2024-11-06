@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:drag_select_grid_view/drag_select_grid_view.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 class NotesPage extends StatefulWidget {
   const NotesPage({super.key});
@@ -20,6 +21,10 @@ class NotesPage extends StatefulWidget {
 }
 
 class NotesPageState extends State<NotesPage> {
+  // Declaration of Global Key's for showCaseView.
+  final GlobalKey globalKey1 = GlobalKey();
+  final GlobalKey globalKey2 = GlobalKey();
+
   //! Getting Firestore Collection
   final CollectionReference users = FirebaseFirestore.instance.collection("users");
 
@@ -60,6 +65,13 @@ class NotesPageState extends State<NotesPage> {
     super.initState();
     controller.addListener(listener);
     initSharePref();
+    //! Initlization of ShowcaseView widget with provided global keys.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ShowCaseWidget.of(context).startShowCase([
+        globalKey1,
+        globalKey2,
+      ]);
+    });
   }
 
   @override
@@ -144,17 +156,37 @@ class NotesPageState extends State<NotesPage> {
                 Selector<LayoutChangeProvider, bool>(
                   selector: (context, isGridView) => isGridView.isGridView,
                   builder: (context, value, child) {
-                    return IconButton(
-                      onPressed: () {
-                        context.read<LayoutChangeProvider>().changeLayout();
-                      },
-                      icon: value
-                          ? Padding(
-                              padding: const EdgeInsets.only(top: 2),
-                              child: Transform.rotate(
-                                angle: 20.42,
+                    //! ShowCase for Changing Layout (Grid View & List View)
+                    return Showcase(
+                      key: globalKey1,
+                      blurValue: 0.1,
+                      description: "Tap to change Layout",
+                      targetShapeBorder: const CircleBorder(side: BorderSide(width: 6)),
+                      overlayOpacity: .75,
+                      showArrow: true,
+                      child: IconButton(
+                        onPressed: () {
+                          context.read<LayoutChangeProvider>().changeLayout();
+                        },
+                        icon: value
+                            ? Padding(
+                                padding: const EdgeInsets.only(top: 2),
+                                child: Transform.rotate(
+                                  angle: 20.42,
+                                  child: Image.asset(
+                                    "assets/images/ListView_logo.png",
+                                    fit: BoxFit.contain,
+                                    isAntiAlias: true,
+                                    width: 28,
+                                    cacheWidth: 100,
+                                    color: myColors!.commanColor,
+                                  ),
+                                ),
+                              )
+                            : Padding(
+                                padding: const EdgeInsets.only(top: 2),
                                 child: Image.asset(
-                                  "assets/images/ListView_logo.png",
+                                  "assets/images/GridView_logo.png",
                                   fit: BoxFit.contain,
                                   isAntiAlias: true,
                                   width: 28,
@@ -162,18 +194,7 @@ class NotesPageState extends State<NotesPage> {
                                   color: myColors!.commanColor,
                                 ),
                               ),
-                            )
-                          : Padding(
-                              padding: const EdgeInsets.only(top: 2),
-                              child: Image.asset(
-                                "assets/images/GridView_logo.png",
-                                fit: BoxFit.contain,
-                                isAntiAlias: true,
-                                width: 28,
-                                cacheWidth: 100,
-                                color: myColors!.commanColor,
-                              ),
-                            ),
+                      ),
                     );
                   },
                 ),
@@ -423,18 +444,38 @@ class NotesPageState extends State<NotesPage> {
           }
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        tooltip: "ADD NOTE",
-        onPressed: () {
+      //! Showcase widget for showing how to add a new note.
+      floatingActionButton: Showcase(
+        key: globalKey2,
+        blurValue: 0.1,
+        description: "Tap to create new Note",
+        targetShapeBorder: const RoundedRectangleBorder(),
+        overlayOpacity: .75,
+        showArrow: true,
+        disposeOnTap: true,
+        onTargetClick: () {
           Navigator.of(context).push(MaterialPageRoute(
             builder: (context) {
               return const AddNotePage(docID: null);
             },
           ));
         },
-        child: Icon(
-          Icons.add,
-          color: Theme.of(context).iconTheme.color,
+        child: FloatingActionButton(
+          tooltip: "ADD NOTE",
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) {
+                //! Wraping the AddNotePage() by ShowCaseWidget.
+                return ShowCaseWidget(builder: (context) {
+                  return const AddNotePage(docID: null);
+                });
+              },
+            ));
+          },
+          child: Icon(
+            Icons.add,
+            color: Theme.of(context).iconTheme.color,
+          ),
         ),
       ),
     );
