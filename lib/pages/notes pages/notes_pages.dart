@@ -211,10 +211,10 @@ class NotesPageState extends State<NotesPage> {
                     else {
                       return GestureDetector(
                         onTap: () {
-                          Scaffold.of(context).openDrawer();
+                          ZoomDrawer.of(context)!.open();
                         },
                         child: Padding(
-                          padding: const EdgeInsets.only(right: 10, left: 4, bottom: 2),
+                          padding: const EdgeInsets.only(right: 10, left: 4, bottom: 2, top: 4),
                           //! For image caching
                           child: SizedBox(
                             width: 32,
