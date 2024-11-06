@@ -161,7 +161,7 @@ class NotesPageState extends State<NotesPage> {
                       key: globalKey1,
                       blurValue: 0.1,
                       description: "Tap to change Layout",
-                      targetShapeBorder: const CircleBorder(side: BorderSide(width: 6)),
+                      targetShapeBorder: const CircleBorder(),
                       overlayOpacity: .75,
                       showArrow: true,
                       child: IconButton(
@@ -447,30 +447,36 @@ class NotesPageState extends State<NotesPage> {
       //! Showcase widget for showing how to add a new note.
       floatingActionButton: Showcase(
         key: globalKey2,
-        blurValue: 0.1,
         description: "Tap to create new Note",
         targetShapeBorder: const RoundedRectangleBorder(),
+        targetBorderRadius: BorderRadius.circular(16),
         overlayOpacity: .75,
         showArrow: true,
         disposeOnTap: true,
         onTargetClick: () {
           Navigator.of(context).push(MaterialPageRoute(
             builder: (context) {
-              return const AddNotePage(docID: null);
+              //! Here it is ensential to wrap our AddNotePage() with ShowCaseWidget Builder becuase AddNotePage() does not have the context of ShowCase.
+              return ShowCaseWidget(builder: (context) {
+                return const AddNotePage(
+                  docID: null,
+                );
+              });
             },
           ));
         },
         child: FloatingActionButton(
           tooltip: "ADD NOTE",
           onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) {
-                //! Wraping the AddNotePage() by ShowCaseWidget.
-                return ShowCaseWidget(builder: (context) {
-                  return const AddNotePage(docID: null);
-                });
-              },
-            ));
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) {
+                  return const AddNotePage(
+                    docID: null,
+                  );
+                },
+              ),
+            );
           },
           child: Icon(
             Icons.add,

@@ -20,6 +20,7 @@ class _AddNotePageState extends State<AddNotePage> {
   // Declaration of Global Key's for showCaseView.
   final GlobalKey globalKey3 = GlobalKey();
   final GlobalKey globalKey4 = GlobalKey();
+
   // TextField Controllers
   TextEditingController textEditingController1 = TextEditingController();
   TextEditingController textEditingController2 = TextEditingController();
@@ -27,7 +28,6 @@ class _AddNotePageState extends State<AddNotePage> {
   @override
   void initState() {
     super.initState();
-
     //! Initlization of ShowcaseView widget with provided global keys.
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ShowCaseWidget.of(context).startShowCase([
@@ -160,80 +160,95 @@ class _AddNotePageState extends State<AddNotePage> {
       onPopInvokedWithResult: (didPop, result) {
         addingNote1(didPop);
       },
-      //! We are wraping our scaffold with ShowCaseWidget();
-      child: ShowCaseWidget(
-        builder: (context) {
-          return Scaffold(
-            appBar: AppBar(
-              leading: IconButton(
-                // Method for adding note
-                onPressed: addingNote2,
-                icon: const Icon(Icons.arrow_back),
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            // Method for adding note
+            onPressed: addingNote2,
+            icon: const Icon(Icons.arrow_back),
+          ),
+          actions: [
+            IconButton(
+              onPressed: deletingNote,
+              icon: Icon(
+                Icons.delete,
+                color: Theme.of(context).colorScheme.inversePrimary,
               ),
-              actions: [
-                IconButton(
-                  onPressed: deletingNote,
-                  icon: Icon(
-                    Icons.delete,
-                    color: Theme.of(context).colorScheme.inversePrimary,
+            )
+          ],
+        ),
+        body: SizedBox(
+          width: double.infinity,
+          child: Column(
+            children: [
+              Showcase(
+                key: globalKey3,
+                blurValue: 0.1,
+                description: "Tap to add Title",
+                overlayOpacity: .75,
+                showArrow: true,
+                disposeOnTap: true,
+                onTargetClick: () {},
+                onBarrierClick: () {
+                  textEditingController1.text = "New Note.";
+                },
+                child: TextField(
+                  controller: textEditingController1,
+                  style: const TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
                   ),
-                )
-              ],
-            ),
-            body: SizedBox(
-              width: double.infinity,
-              child: Column(
-                children: [
-                  Showcase(
-                    key: globalKey3,
-                    description: "Title of note",
-                    child: TextField(
-                      controller: textEditingController1,
-                      style: const TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
+                  cursorColor: Theme.of(context).colorScheme.inversePrimary,
+                  decoration: const InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                    ),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                    hintText: "Title",
+                    hintStyle: TextStyle(fontSize: 22),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Showcase(
+                  key: globalKey4,
+                  blurValue: 0.1,
+                  description: "Tap to add note",
+                  overlayOpacity: .75,
+                  showArrow: true,
+                  disposeOnTap: true,
+                  onTargetClick: () {},
+                  onBarrierClick: () {
+                    textEditingController2.text = "This is a new Note.";
+                  },
+                  child: TextField(
+                    controller: textEditingController2,
+                    style: const TextStyle(
+                      fontSize: 18,
+                    ),
+                    maxLines: 100,
+                    // autofocus: true,
+                    cursorColor: Theme.of(context).colorScheme.inversePrimary,
+                    decoration: const InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide.none,
                       ),
-                      cursorColor: Theme.of(context).colorScheme.inversePrimary,
-                      decoration: const InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                        ),
-                        contentPadding: EdgeInsets.symmetric(horizontal: 16),
-                        hintText: "Title",
-                        hintStyle: TextStyle(fontSize: 22),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide.none,
                       ),
+                      contentPadding: EdgeInsets.symmetric(horizontal: 18),
+                      hintText: "Note : ",
+                      hintStyle: TextStyle(fontSize: 18),
                     ),
                   ),
-                  Expanded(
-                    child: TextField(
-                      controller: textEditingController2,
-                      style: const TextStyle(
-                        fontSize: 18,
-                      ),
-                      maxLines: 100,
-                      // autofocus: true,
-                      cursorColor: Theme.of(context).colorScheme.inversePrimary,
-                      decoration: const InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                        ),
-                        contentPadding: EdgeInsets.symmetric(horizontal: 18),
-                        hintText: "Note : ",
-                        hintStyle: TextStyle(fontSize: 18),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          );
-        },
+                ),
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
