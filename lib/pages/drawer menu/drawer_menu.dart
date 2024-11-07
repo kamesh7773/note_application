@@ -40,16 +40,16 @@ class _DrawerMenuState extends State<DrawerMenu> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          //! User Profile Image & Gmail info.
           FutureBuilder(
             future: getUserData(),
             builder: (context, snapshot) {
               //! Drawer header
-              return SizedBox(
+              return SafeArea(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const SizedBox(height: 36),
                     IconButton(
                       onPressed: () {
                         ZoomDrawer.of(context)!.close();
@@ -58,16 +58,12 @@ class _DrawerMenuState extends State<DrawerMenu> {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 18, bottom: 16, top: 10),
-                      child: SizedBox(
-                        width: 70,
-                        height: 70,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(50),
-                          // User image section
-                          child: CachedNetworkImage(
-                            imageUrl: imageUrl ?? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQq6gaTf6N93kzolH98ominWZELW881HqCgw&s",
-                            errorWidget: (context, url, error) => const Icon(Icons.error),
-                          ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(50),
+                        // User image section
+                        child: CachedNetworkImage(
+                          imageUrl: imageUrl ?? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQq6gaTf6N93kzolH98ominWZELW881HqCgw&s",
+                          errorWidget: (context, url, error) => const Icon(Icons.error),
                         ),
                       ),
                     ),
@@ -93,32 +89,31 @@ class _DrawerMenuState extends State<DrawerMenu> {
             },
           ),
           //! Drawer menu item list
-          Expanded(
-            child: Column(
-              children: [
-                ...MenuItems.all.map(
-                  (MenuItem item) {
-                    return ListTileTheme(
-                      selectedTileColor: myColors!.drawerListTileColor,
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 8, left: 8),
-                        child: ListTile(
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                          selected: widget.currentMenuItem == item,
-                          selectedColor: widget.currentMenuItem == item ? Colors.black : Colors.white,
-                          leading: Icon(item.icon),
-                          title: Text(item.title),
-                          //! When we click on any ListTile, the properties of that ListTile are passed to the onMenuItemSelected() method.
-                          onTap: () => widget.onMenuItemSelected(item),
-                        ),
+          Column(
+            children: [
+              ...MenuItems.all.map(
+                (MenuItem item) {
+                  return ListTileTheme(
+                    selectedTileColor: myColors!.drawerListTileColor,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 8, left: 8),
+                      child: ListTile(
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                        selected: widget.currentMenuItem == item,
+                        selectedColor: widget.currentMenuItem == item ? Colors.black : Colors.white,
+                        leading: Icon(item.icon),
+                        title: Text(item.title),
+                        //! When we click on any ListTile, the properties of that ListTile are passed to the onMenuItemSelected() method.
+                        onTap: () => widget.onMenuItemSelected(item),
                       ),
-                    );
-                  },
-                ),
-              ],
-            ),
+                    ),
+                  );
+                },
+              ),
+            ],
           ),
           //! Logout button.
+
           Padding(
             padding: const EdgeInsets.only(left: 2.5),
             child: InkWell(
@@ -165,8 +160,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
   }
 }
 
-// ! Menu Items Class
-
+//! Menu Items Class
 class MenuItems {
   static const notesPage = MenuItem(title: "Notes", icon: Icons.edit_outlined);
   static const trashPage = MenuItem(title: "Trash", icon: Icons.delete_outline);
@@ -181,8 +175,7 @@ class MenuItems {
   ];
 }
 
-// ! Menu Item Class
-
+//! Menu Item Class
 class MenuItem {
   final String title;
   final IconData icon;
