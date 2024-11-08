@@ -109,9 +109,10 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
     //! Access theme extension colors.
     final myColors = Theme.of(context).extension<MyColors>();
 
+    //* Also put condition here also
     //! Assign Firestore data to TextEditingControllers.
-    textEditingController1.text = widget.title!;
-    textEditingController2.text = widget.note!;
+    // textEditingController1.text = widget.title!;
+    // textEditingController2.text = widget.note!;
 
     return PopScope(
       canPop: false,
@@ -149,12 +150,11 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
                 showArrow: true,
                 disposeOnTap: false,
                 onTargetClick: () {
-                  ColoredPrint.warning("Updated Note.");
+                  ColoredPrint.warning("dafasdfsdaf Note.");
                   ShowCaseWidget.of(context).next();
                   textEditingController1.text = "Updated Note.";
                 },
                 onBarrierClick: () {
-                  ColoredPrint.warning("Updated Note.");
                   ShowCaseWidget.of(context).next();
                   textEditingController1.text = "Updated Note.";
                 },
@@ -187,16 +187,13 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
                   showArrow: true,
                   disposeOnTap: false,
                   onTargetClick: () {
-                    ColoredPrint.warning("This is a updated note.");
+                    ColoredPrint.warning("This is a updaadsfasdted note.");
                     ShowCaseWidget.of(context).next();
-                    textEditingController1.clear();
                     textEditingController2.text = "This is a updated note.";
                   },
                   onBarrierClick: () {
-                    ColoredPrint.warning("This is a updated note.");
                     ShowCaseWidget.of(context).next();
-                    textEditingController1.clear();
-                    textEditingController2.text = "This is a updated note.";
+                    textEditingController1.text = "This is a updated note.";
                   },
                   child: TextField(
                     controller: textEditingController2,

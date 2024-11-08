@@ -88,6 +88,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
               );
             },
           ),
+
           //! Drawer menu item list
           Column(
             children: [
@@ -112,8 +113,11 @@ class _DrawerMenuState extends State<DrawerMenu> {
               ),
             ],
           ),
-          //! Logout button.
 
+          //* Put the condition for when we are shoing the ShowcaseView and after showing the shoecase view.
+          const Spacer(),
+
+          //! Logout button.
           Padding(
             padding: const EdgeInsets.only(left: 2.5),
             child: InkWell(
@@ -150,6 +154,8 @@ class _DrawerMenuState extends State<DrawerMenu> {
               ),
             ),
           ),
+
+          //! App version text
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
             child: Text("version 1.0.0"),
