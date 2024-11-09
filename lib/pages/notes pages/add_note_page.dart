@@ -10,7 +10,7 @@ class AddNotePage extends StatefulWidget {
   final GlobalKey globalKey4;
   final GlobalKey globalKey5;
   final GlobalKey globalKey6;
-  final VoidCallback initlizationOfKeys;
+  final VoidCallback initlizationOfKeys1;
 
   const AddNotePage({
     super.key,
@@ -19,7 +19,7 @@ class AddNotePage extends StatefulWidget {
     required this.globalKey4,
     required this.globalKey5,
     required this.globalKey6,
-    required this.initlizationOfKeys,
+    required this.initlizationOfKeys1,
   });
 
   @override
@@ -170,6 +170,7 @@ class _AddNotePageState extends State<AddNotePage> {
       },
       child: Scaffold(
         appBar: AppBar(
+          //! Showcasing how to save note.
           leading: Showcase(
             key: widget.globalKey6,
             description: "Tap to save note",
@@ -177,11 +178,11 @@ class _AddNotePageState extends State<AddNotePage> {
             disposeOnTap: true,
             onTargetClick: () {
               addingNote2();
-              widget.initlizationOfKeys();
+              widget.initlizationOfKeys1();
             },
             onBarrierClick: () {
               addingNote2();
-              widget.initlizationOfKeys();
+              widget.initlizationOfKeys1();
             },
             child: IconButton(
               // Method for adding note

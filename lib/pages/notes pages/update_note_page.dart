@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:colored_print/colored_print.dart';
 import 'package:flutter/material.dart';
 import 'package:note_application/services/database/curd_methods.dart';
 import 'package:note_application/theme/Extensions/my_colors.dart';
@@ -12,6 +11,7 @@ class UpdateNotePage extends StatefulWidget {
   final GlobalKey globalKey8;
   final GlobalKey globalKey9;
   final GlobalKey globalKey10;
+  final VoidCallback initlizationOfKeys2;
   const UpdateNotePage({
     super.key,
     required this.docID,
@@ -20,6 +20,7 @@ class UpdateNotePage extends StatefulWidget {
     required this.globalKey8,
     required this.globalKey9,
     required this.globalKey10,
+    required this.initlizationOfKeys2,
   });
 
   @override
@@ -33,6 +34,10 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
 
   @override
   void initState() {
+    //! Assign Firestore data to TextEditingControllers.
+    textEditingController1.text = widget.title!;
+    textEditingController2.text = widget.note!;
+
     super.initState();
     //! Initlization of ShowcaseView widget with provided global keys.
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -109,11 +114,6 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
     //! Access theme extension colors.
     final myColors = Theme.of(context).extension<MyColors>();
 
-    //* Also put condition here also
-    //! Assign Firestore data to TextEditingControllers.
-    // textEditingController1.text = widget.title!;
-    // textEditingController2.text = widget.note!;
-
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, result) {
@@ -123,9 +123,23 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
       child: Scaffold(
         appBar: AppBar(
           // Update the note when the AppBar back arrow button is pressed
-          leading: IconButton(
-            onPressed: updatingNote2,
-            icon: const Icon(Icons.arrow_back),
+          leading: Showcase(
+            key: widget.globalKey10,
+            description: "Tap to save note",
+            targetShapeBorder: const CircleBorder(),
+            disposeOnTap: true,
+            onTargetClick: () {
+              updatingNote2();
+              widget.initlizationOfKeys2();
+            },
+            onBarrierClick: () {
+              updatingNote2();
+              widget.initlizationOfKeys2();
+            },
+            child: IconButton(
+              onPressed: updatingNote2,
+              icon: const Icon(Icons.arrow_back),
+            ),
           ),
           actions: [
             IconButton(
@@ -150,7 +164,6 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
                 showArrow: true,
                 disposeOnTap: false,
                 onTargetClick: () {
-                  ColoredPrint.warning("dafasdfsdaf Note.");
                   ShowCaseWidget.of(context).next();
                   textEditingController1.text = "Updated Note.";
                 },
@@ -187,7 +200,6 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
                   showArrow: true,
                   disposeOnTap: false,
                   onTargetClick: () {
-                    ColoredPrint.warning("This is a updaadsfasdted note.");
                     ShowCaseWidget.of(context).next();
                     textEditingController2.text = "This is a updated note.";
                   },

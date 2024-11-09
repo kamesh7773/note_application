@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:note_application/pages/notes%20pages/add_note_page.dart';
 import 'package:note_application/pages/notes%20pages/update_note_page.dart';
@@ -33,6 +32,10 @@ class NotesPageState extends State<NotesPage> {
   final GlobalKey globalKey8 = GlobalKey();
   final GlobalKey globalKey9 = GlobalKey();
   final GlobalKey globalKey10 = GlobalKey();
+  final GlobalKey globalKey11 = GlobalKey();
+  final GlobalKey globalKey12 = GlobalKey();
+  final GlobalKey globalKey13 = GlobalKey();
+  final GlobalKey globalKey14 = GlobalKey();
 
   //! Getting Firestore Collection
   final CollectionReference users = FirebaseFirestore.instance.collection("users");
@@ -64,11 +67,6 @@ class NotesPageState extends State<NotesPage> {
     prefs = await SharedPreferences.getInstance();
   }
 
-  //! Method to rebuild the UI based on selection of Notes.
-  void listener() {
-    setState(() {});
-  }
-
   @override
   void initState() {
     super.initState();
@@ -85,7 +83,7 @@ class NotesPageState extends State<NotesPage> {
 
   //! This Method get called when we come back from AddNote Page because we have to initlized the Global in perticular Sequence
   //! So after completing the showcasing of Add Note Page this method get fired for showing the next ShowCase Method.
-  void initlizationOfKeys() {
+  void initlizationOfKeys1() {
     //! Initlization of ShowcaseView widget with provided global keys.
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ShowCaseWidget.of(context).startShowCase([
@@ -95,9 +93,28 @@ class NotesPageState extends State<NotesPage> {
     });
   }
 
+  //! This Method get called when we come back from UpdateNote Page because we have to initlized the Global in perticular Sequence
+  //! So after completing the showcasing of Add Note Page this method get fired for showing the next ShowCase Method.
+  void initlizationOfKeys2() {
+    //! Initlization of ShowcaseView widget with provided global keys.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ShowCaseWidget.of(context).startShowCase([
+        globalKey11,
+        globalKey12,
+        globalKey13,
+        globalKey14,
+      ]);
+    });
+  }
+
+  //! Method to rebuild the UI based on selection of Notes.
+  void listener() {
+    setState(() {});
+  }
+
   @override
   void dispose() {
-    controller.addListener(listener);
+    controller.removeListener(listener);
     super.dispose();
   }
 
@@ -137,26 +154,43 @@ class NotesPageState extends State<NotesPage> {
                   : const SizedBox(),
               actions: [
                 isSelected
-                    ? IconButton(
-                        onPressed: () {
-                          //! Iterate through documentIdList and delete each note with docID
+                    ? Showcase(
+                        key: globalKey12,
+                        description: "Tap to delete note",
+                        targetShapeBorder: const CircleBorder(),
+                        disposeOnTap: true,
+                        onTargetClick: () {
                           for (var element in documentIdList) {
                             FireStoreCurdMethods.deleteNote(docID: element);
                           }
-
-                          //! Move list of deleted notes to Trash database
                           for (var element in deletedNotes) {
                             FireStoreCurdMethods.addNoteToTrash(deletedNotes: element);
                           }
-
-                          //! Clear the deletedNotes list after moving to Trash
                           deletedNotes.clear();
-                          //! Clear the documentIdList set after deletion
                           documentIdList.clear();
-                          //! Clear selected notes to remove the selection AppBar
                           controller.clear();
                         },
-                        icon: const Icon(Icons.delete))
+                        child: IconButton(
+                            onPressed: () {
+                              //! Iterate through documentIdList and delete each note with docID
+                              for (var element in documentIdList) {
+                                FireStoreCurdMethods.deleteNote(docID: element);
+                              }
+
+                              //! Move list of deleted notes to Trash database
+                              for (var element in deletedNotes) {
+                                FireStoreCurdMethods.addNoteToTrash(deletedNotes: element);
+                              }
+
+                              //! Clear the deletedNotes list after moving to Trash
+                              deletedNotes.clear();
+                              //! Clear the documentIdList set after deletion
+                              documentIdList.clear();
+                              //! Clear selected notes to remove the selection AppBar
+                              controller.clear();
+                            },
+                            icon: const Icon(Icons.delete)),
+                      )
                     : const SizedBox()
               ],
             )
@@ -333,51 +367,66 @@ class NotesPageState extends State<NotesPage> {
                       }
 
                       return index == 0
-                          //! Showcase for showing tap to update note
+                          //! Showcase for showing long Press to update note.
                           ? Showcase(
-                              key: globalKey7,
-                              description: "Tap to Update Note",
+                              key: globalKey11,
+                              description: "Long press to select note",
                               targetShapeBorder: const RoundedRectangleBorder(),
+                              targetBorderRadius: BorderRadius.circular(10),
                               disposeOnTap: true,
-                              onTargetClick: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) {
-                                      return ShowCaseWidget(builder: (context) {
-                                        return UpdateNotePage(
-                                          docID: docID,
-                                          title: title,
-                                          note: note,
-                                          globalKey8: globalKey8,
-                                          globalKey9: globalKey9,
-                                          globalKey10: globalKey10,
-                                        );
-                                      });
-                                    },
-                                  ),
-                                );
+                              onTargetClick: () {},
+                              onTargetLongPress: () {
+                                controller.value = Selection(const {0});
+                                ShowCaseWidget.of(context).next();
                               },
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) {
-                                      return ShowCaseWidget(builder: (context) {
-                                        return UpdateNotePage(
-                                          docID: docID,
-                                          title: title,
-                                          note: note,
-                                          globalKey8: globalKey8,
-                                          globalKey9: globalKey9,
-                                          globalKey10: globalKey10,
-                                        );
-                                      });
-                                    },
-                                  ));
+                              //! Showcase press to update note.
+                              child: Showcase(
+                                key: globalKey7,
+                                description: "Tap to Update Note",
+                                targetShapeBorder: const RoundedRectangleBorder(),
+                                disposeOnTap: true,
+                                onTargetClick: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        return ShowCaseWidget(builder: (context) {
+                                          return UpdateNotePage(
+                                            docID: docID,
+                                            title: title,
+                                            note: note,
+                                            globalKey8: globalKey8,
+                                            globalKey9: globalKey9,
+                                            globalKey10: globalKey10,
+                                            initlizationOfKeys2: initlizationOfKeys2,
+                                          );
+                                        });
+                                      },
+                                    ),
+                                  );
                                 },
-                                child: NoteContainer(
-                                  isSelected: isSelected,
-                                  title: title,
-                                  note: note,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) {
+                                        return ShowCaseWidget(builder: (context) {
+                                          return UpdateNotePage(
+                                            docID: docID,
+                                            title: title,
+                                            note: note,
+                                            globalKey8: globalKey8,
+                                            globalKey9: globalKey9,
+                                            globalKey10: globalKey10,
+                                            initlizationOfKeys2: initlizationOfKeys2,
+                                          );
+                                        });
+                                      },
+                                    ));
+                                  },
+                                  child: NoteContainer(
+                                    isSelected: isSelected,
+                                    title: title,
+                                    note: note,
+                                  ),
                                 ),
                               ),
                             )
@@ -393,6 +442,7 @@ class NotesPageState extends State<NotesPage> {
                                         globalKey8: globalKey8,
                                         globalKey9: globalKey9,
                                         globalKey10: globalKey10,
+                                        initlizationOfKeys2: initlizationOfKeys2,
                                       );
                                     });
                                   },
@@ -484,6 +534,7 @@ class NotesPageState extends State<NotesPage> {
                                   globalKey8: globalKey8,
                                   globalKey9: globalKey9,
                                   globalKey10: globalKey10,
+                                  initlizationOfKeys2: initlizationOfKeys2,
                                 );
                               });
                             },
@@ -539,7 +590,7 @@ class NotesPageState extends State<NotesPage> {
               //! Here it is ensential to wrap our AddNotePage() with ShowCaseWidget Builder becuase AddNotePage() does not have the context of ShowCase.
               return ShowCaseWidget(builder: (context) {
                 return AddNotePage(
-                  initlizationOfKeys: initlizationOfKeys,
+                  initlizationOfKeys1: initlizationOfKeys1,
                   globalKey3: globalKey3,
                   globalKey4: globalKey4,
                   globalKey5: globalKey5,
@@ -558,7 +609,7 @@ class NotesPageState extends State<NotesPage> {
                 builder: (context) {
                   return ShowCaseWidget(builder: (context) {
                     return AddNotePage(
-                      initlizationOfKeys: initlizationOfKeys,
+                      initlizationOfKeys1: initlizationOfKeys1,
                       globalKey3: globalKey3,
                       globalKey4: globalKey4,
                       globalKey5: globalKey5,
