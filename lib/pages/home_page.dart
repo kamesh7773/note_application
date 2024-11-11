@@ -6,7 +6,6 @@ import 'package:note_application/pages/notes%20pages/notes_pages.dart';
 import 'package:note_application/pages/notes%20pages/settings_page.dart';
 import 'package:note_application/pages/notes%20pages/trash_page.dart';
 import 'package:note_application/theme/Extensions/my_colors.dart';
-import 'package:showcaseview/showcaseview.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -43,36 +42,34 @@ class _HomePageState extends State<HomePage> {
       }
     }
 
-    return ShowCaseWidget(builder: (context) {
-      return Scaffold(
-        //! Zoom Drawer Menu.
-        body: ZoomDrawer(
-          controller: _drawerController,
-          menuScreen: DrawerMenu(
-            currentMenuItem: currentMenuItem,
-            // This method contains the selected ListTile property and assigns it to the currentMenuItem, so our drawer page gets updated.
-            onMenuItemSelected: (MenuItem item) {
-              setState(
-                () {
-                  currentMenuItem = item;
-                  // After selecting the item, close the drawer
-                  _drawerController.close!();
-                },
-              );
-            },
-          ),
-          mainScreen: getSelectedPage(),
-          closeCurve: Curves.easeInOut,
-          angle: 0,
-          mainScreenScale: 0.14,
-          borderRadius: 20,
-          slideHeight: 10,
-          slideWidth: 250,
-          menuScreenWidth: 240,
-          mainScreenTapClose: true,
-          menuBackgroundColor: myColors!.appBar!,
+    return Scaffold(
+      //! Zoom Drawer Menu.
+      body: ZoomDrawer(
+        controller: _drawerController,
+        menuScreen: DrawerMenu(
+          currentMenuItem: currentMenuItem,
+          // This method contains the selected ListTile property and assigns it to the currentMenuItem, so our drawer page gets updated.
+          onMenuItemSelected: (MenuItem item) {
+            setState(
+              () {
+                currentMenuItem = item;
+                // After selecting the item, close the drawer
+                _drawerController.close!();
+              },
+            );
+          },
         ),
-      );
-    });
+        mainScreen: getSelectedPage(),
+        closeCurve: Curves.easeInOut,
+        angle: 0,
+        mainScreenScale: 0.14,
+        borderRadius: 20,
+        slideHeight: 10,
+        slideWidth: 250,
+        menuScreenWidth: 240,
+        mainScreenTapClose: true,
+        menuBackgroundColor: myColors!.appBar!,
+      ),
+    );
   }
 }

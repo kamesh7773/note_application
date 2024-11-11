@@ -2,24 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:note_application/services/database/curd_methods.dart';
 import 'package:note_application/theme/Extensions/my_colors.dart';
-import 'package:showcaseview/showcaseview.dart';
+
 
 class AddNotePage extends StatefulWidget {
   final String? docID;
-  final GlobalKey globalKey3;
-  final GlobalKey globalKey4;
-  final GlobalKey globalKey5;
-  final GlobalKey globalKey6;
-  final VoidCallback initlizationOfKeys1;
+
 
   const AddNotePage({
     super.key,
     required this.docID,
-    required this.globalKey3,
-    required this.globalKey4,
-    required this.globalKey5,
-    required this.globalKey6,
-    required this.initlizationOfKeys1,
+
   });
 
   @override
@@ -30,20 +22,6 @@ class _AddNotePageState extends State<AddNotePage> {
   // TextField Controllers
   TextEditingController textEditingController1 = TextEditingController();
   TextEditingController textEditingController2 = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    //! Initlization of ShowcaseView widget with provided global keys.
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ShowCaseWidget.of(context).startShowCase([
-        widget.globalKey3,
-        widget.globalKey4,
-        widget.globalKey5,
-        widget.globalKey6,
-      ]);
-    });
-  }
 
   // Disposing TextEditingControllers
   @override
@@ -170,38 +148,17 @@ class _AddNotePageState extends State<AddNotePage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          //! Showcasing how to save note.
-          leading: Showcase(
-            key: widget.globalKey6,
-            description: "Tap to save note",
-            targetShapeBorder: const CircleBorder(),
-            disposeOnTap: true,
-            onTargetClick: () {
-              addingNote2();
-              widget.initlizationOfKeys1();
-            },
-            onBarrierClick: () {
-              addingNote2();
-              widget.initlizationOfKeys1();
-            },
-            child: IconButton(
-              // Method for adding note
-              onPressed: addingNote2,
-              icon: const Icon(Icons.arrow_back),
-            ),
+          leading: IconButton(
+            // Method for adding note
+            onPressed: addingNote2,
+            icon: const Icon(Icons.arrow_back),
           ),
           actions: [
-            //! Showcasing how to delete note.
-            Showcase(
-              key: widget.globalKey5,
-              description: "Tap to delete Note",
-              targetShapeBorder: const CircleBorder(),
-              child: IconButton(
-                onPressed: deletingNote,
-                icon: Icon(
-                  Icons.delete,
-                  color: Theme.of(context).colorScheme.inversePrimary,
-                ),
+            IconButton(
+              onPressed: deletingNote,
+              icon: Icon(
+                Icons.delete,
+                color: Theme.of(context).colorScheme.inversePrimary,
               ),
             )
           ],
@@ -210,28 +167,33 @@ class _AddNotePageState extends State<AddNotePage> {
           width: double.infinity,
           child: Column(
             children: [
-              //! Showcasing how to add note title.
-              Showcase(
-                key: widget.globalKey3,
-                blurValue: 0.1,
-                description: "Tap to add Title",
-                overlayOpacity: .75,
-                showArrow: true,
-                disposeOnTap: false,
-                onTargetClick: () {
-                  ShowCaseWidget.of(context).next();
-                  textEditingController1.text = "New Note.";
-                },
-                onBarrierClick: () {
-                  ShowCaseWidget.of(context).next();
-                  textEditingController1.text = "New Note.";
-                },
-                child: TextField(
-                  controller: textEditingController1,
-                  style: const TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
+              TextField(
+                controller: textEditingController1,
+                style: const TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+                cursorColor: Theme.of(context).colorScheme.inversePrimary,
+                decoration: const InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide.none,
                   ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                  ),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                  hintText: "Title",
+                  hintStyle: TextStyle(fontSize: 22),
+                ),
+              ),
+              Expanded(
+                child: TextField(
+                  controller: textEditingController2,
+                  style: const TextStyle(
+                    fontSize: 18,
+                  ),
+                  maxLines: 100,
+                  autofocus: true,
                   cursorColor: Theme.of(context).colorScheme.inversePrimary,
                   decoration: const InputDecoration(
                     enabledBorder: OutlineInputBorder(
@@ -240,48 +202,9 @@ class _AddNotePageState extends State<AddNotePage> {
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide.none,
                     ),
-                    contentPadding: EdgeInsets.symmetric(horizontal: 16),
-                    hintText: "Title",
-                    hintStyle: TextStyle(fontSize: 22),
-                  ),
-                ),
-              ),
-              Expanded(
-                //! Showcasing how to add note description.
-                child: Showcase(
-                  key: widget.globalKey4,
-                  blurValue: 0.1,
-                  description: "Tap to add note",
-                  overlayOpacity: .75,
-                  showArrow: true,
-                  disposeOnTap: false,
-                  onTargetClick: () {
-                    ShowCaseWidget.of(context).next();
-                    textEditingController2.text = "New Note created.";
-                  },
-                  onBarrierClick: () {
-                    ShowCaseWidget.of(context).next();
-                    textEditingController2.text = "New Note created.";
-                  },
-                  child: TextField(
-                    controller: textEditingController2,
-                    style: const TextStyle(
-                      fontSize: 18,
-                    ),
-                    maxLines: 100,
-                    autofocus: true,
-                    cursorColor: Theme.of(context).colorScheme.inversePrimary,
-                    decoration: const InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                      ),
-                      contentPadding: EdgeInsets.symmetric(horizontal: 18),
-                      hintText: "Note : ",
-                      hintStyle: TextStyle(fontSize: 18),
-                    ),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 18),
+                    hintText: "Note : ",
+                    hintStyle: TextStyle(fontSize: 18),
                   ),
                 ),
               )

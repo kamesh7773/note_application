@@ -11,7 +11,6 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:drag_select_grid_view/drag_select_grid_view.dart';
-import 'package:showcaseview/showcaseview.dart';
 
 class NotesPage extends StatefulWidget {
   const NotesPage({super.key});
@@ -21,22 +20,6 @@ class NotesPage extends StatefulWidget {
 }
 
 class NotesPageState extends State<NotesPage> {
-  // Declaration of Global Key's for showCaseView.
-  final GlobalKey globalKey1 = GlobalKey();
-  final GlobalKey globalKey2 = GlobalKey();
-  final GlobalKey globalKey3 = GlobalKey();
-  final GlobalKey globalKey4 = GlobalKey();
-  final GlobalKey globalKey5 = GlobalKey();
-  final GlobalKey globalKey6 = GlobalKey();
-  final GlobalKey globalKey7 = GlobalKey();
-  final GlobalKey globalKey8 = GlobalKey();
-  final GlobalKey globalKey9 = GlobalKey();
-  final GlobalKey globalKey10 = GlobalKey();
-  final GlobalKey globalKey11 = GlobalKey();
-  final GlobalKey globalKey12 = GlobalKey();
-  final GlobalKey globalKey13 = GlobalKey();
-  final GlobalKey globalKey14 = GlobalKey();
-
   //! Getting Firestore Collection
   final CollectionReference users = FirebaseFirestore.instance.collection("users");
 
@@ -72,39 +55,6 @@ class NotesPageState extends State<NotesPage> {
     super.initState();
     controller.addListener(listener);
     initSharePref();
-    //! Initlization of ShowcaseView widget with provided global keys.
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ShowCaseWidget.of(context).startShowCase([
-        globalKey1,
-        globalKey2,
-      ]);
-    });
-  }
-
-  //! This Method get called when we come back from AddNote Page because we have to initlized the Global in perticular Sequence
-  //! So after completing the showcasing of Add Note Page this method get fired for showing the next ShowCase Method.
-  void initlizationOfKeys1() {
-    //! Initlization of ShowcaseView widget with provided global keys.
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ShowCaseWidget.of(context).startShowCase([
-        globalKey7,
-        globalKey8,
-      ]);
-    });
-  }
-
-  //! This Method get called when we come back from UpdateNote Page because we have to initlized the Global in perticular Sequence
-  //! So after completing the showcasing of Add Note Page this method get fired for showing the next ShowCase Method.
-  void initlizationOfKeys2() {
-    //! Initlization of ShowcaseView widget with provided global keys.
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ShowCaseWidget.of(context).startShowCase([
-        globalKey11,
-        globalKey12,
-        globalKey13,
-        globalKey14,
-      ]);
-    });
   }
 
   //! Method to rebuild the UI based on selection of Notes.
@@ -154,43 +104,26 @@ class NotesPageState extends State<NotesPage> {
                   : const SizedBox(),
               actions: [
                 isSelected
-                    ? Showcase(
-                        key: globalKey12,
-                        description: "Tap to delete note",
-                        targetShapeBorder: const CircleBorder(),
-                        disposeOnTap: true,
-                        onTargetClick: () {
+                    ? IconButton(
+                        onPressed: () {
+                          //! Iterate through documentIdList and delete each note with docID
                           for (var element in documentIdList) {
                             FireStoreCurdMethods.deleteNote(docID: element);
                           }
+
+                          //! Move list of deleted notes to Trash database
                           for (var element in deletedNotes) {
                             FireStoreCurdMethods.addNoteToTrash(deletedNotes: element);
                           }
+
+                          //! Clear the deletedNotes list after moving to Trash
                           deletedNotes.clear();
+                          //! Clear the documentIdList set after deletion
                           documentIdList.clear();
+                          //! Clear selected notes to remove the selection AppBar
                           controller.clear();
                         },
-                        child: IconButton(
-                            onPressed: () {
-                              //! Iterate through documentIdList and delete each note with docID
-                              for (var element in documentIdList) {
-                                FireStoreCurdMethods.deleteNote(docID: element);
-                              }
-
-                              //! Move list of deleted notes to Trash database
-                              for (var element in deletedNotes) {
-                                FireStoreCurdMethods.addNoteToTrash(deletedNotes: element);
-                              }
-
-                              //! Clear the deletedNotes list after moving to Trash
-                              deletedNotes.clear();
-                              //! Clear the documentIdList set after deletion
-                              documentIdList.clear();
-                              //! Clear selected notes to remove the selection AppBar
-                              controller.clear();
-                            },
-                            icon: const Icon(Icons.delete)),
-                      )
+                        icon: const Icon(Icons.delete))
                     : const SizedBox()
               ],
             )
@@ -211,37 +144,17 @@ class NotesPageState extends State<NotesPage> {
                 Selector<LayoutChangeProvider, bool>(
                   selector: (context, isGridView) => isGridView.isGridView,
                   builder: (context, value, child) {
-                    //! ShowCase for Changing Layout (Grid View & List View)
-                    return Showcase(
-                      key: globalKey1,
-                      blurValue: 0.1,
-                      description: "Tap to change Layout",
-                      targetShapeBorder: const CircleBorder(),
-                      overlayOpacity: .75,
-                      showArrow: true,
-                      child: IconButton(
-                        onPressed: () {
-                          context.read<LayoutChangeProvider>().changeLayout();
-                        },
-                        icon: value
-                            ? Padding(
-                                padding: const EdgeInsets.only(top: 2),
-                                child: Transform.rotate(
-                                  angle: 20.42,
-                                  child: Image.asset(
-                                    "assets/images/ListView_logo.png",
-                                    fit: BoxFit.contain,
-                                    isAntiAlias: true,
-                                    width: 28,
-                                    cacheWidth: 100,
-                                    color: myColors!.commanColor,
-                                  ),
-                                ),
-                              )
-                            : Padding(
-                                padding: const EdgeInsets.only(top: 2),
+                    return IconButton(
+                      onPressed: () {
+                        context.read<LayoutChangeProvider>().changeLayout();
+                      },
+                      icon: value
+                          ? Padding(
+                              padding: const EdgeInsets.only(top: 2),
+                              child: Transform.rotate(
+                                angle: 20.42,
                                 child: Image.asset(
-                                  "assets/images/GridView_logo.png",
+                                  "assets/images/ListView_logo.png",
                                   fit: BoxFit.contain,
                                   isAntiAlias: true,
                                   width: 28,
@@ -249,7 +162,18 @@ class NotesPageState extends State<NotesPage> {
                                   color: myColors!.commanColor,
                                 ),
                               ),
-                      ),
+                            )
+                          : Padding(
+                              padding: const EdgeInsets.only(top: 2),
+                              child: Image.asset(
+                                "assets/images/GridView_logo.png",
+                                fit: BoxFit.contain,
+                                isAntiAlias: true,
+                                width: 28,
+                                cacheWidth: 100,
+                                color: myColors!.commanColor,
+                              ),
+                            ),
                     );
                   },
                 ),
@@ -366,94 +290,25 @@ class NotesPageState extends State<NotesPage> {
                         }
                       }
 
-                      return index == 0
-                          //! Showcase for showing long Press to update note.
-                          ? Showcase(
-                              key: globalKey11,
-                              description: "Long press to select note",
-                              targetShapeBorder: const RoundedRectangleBorder(),
-                              targetBorderRadius: BorderRadius.circular(10),
-                              disposeOnTap: true,
-                              onTargetClick: () {},
-                              onTargetLongPress: () {
-                                controller.value = Selection(const {0});
-                                ShowCaseWidget.of(context).next();
-                              },
-                              //! Showcase press to update note.
-                              child: Showcase(
-                                key: globalKey7,
-                                description: "Tap to Update Note",
-                                targetShapeBorder: const RoundedRectangleBorder(),
-                                disposeOnTap: true,
-                                onTargetClick: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) {
-                                        return ShowCaseWidget(builder: (context) {
-                                          return UpdateNotePage(
-                                            docID: docID,
-                                            title: title,
-                                            note: note,
-                                            globalKey8: globalKey8,
-                                            globalKey9: globalKey9,
-                                            globalKey10: globalKey10,
-                                            initlizationOfKeys2: initlizationOfKeys2,
-                                          );
-                                        });
-                                      },
-                                    ),
-                                  );
-                                },
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) {
-                                        return ShowCaseWidget(builder: (context) {
-                                          return UpdateNotePage(
-                                            docID: docID,
-                                            title: title,
-                                            note: note,
-                                            globalKey8: globalKey8,
-                                            globalKey9: globalKey9,
-                                            globalKey10: globalKey10,
-                                            initlizationOfKeys2: initlizationOfKeys2,
-                                          );
-                                        });
-                                      },
-                                    ));
-                                  },
-                                  child: NoteContainer(
-                                    isSelected: isSelected,
-                                    title: title,
-                                    note: note,
-                                  ),
-                                ),
-                              ),
-                            )
-                          : GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) {
-                                    return ShowCaseWidget(builder: (context) {
-                                      return UpdateNotePage(
-                                        docID: docID,
-                                        title: title,
-                                        note: note,
-                                        globalKey8: globalKey8,
-                                        globalKey9: globalKey9,
-                                        globalKey10: globalKey10,
-                                        initlizationOfKeys2: initlizationOfKeys2,
-                                      );
-                                    });
-                                  },
-                                ));
-                              },
-                              child: NoteContainer(
-                                isSelected: isSelected,
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) {
+                              return UpdateNotePage(
+                                docID: docID,
                                 title: title,
                                 note: note,
-                              ),
-                            );
+                       
+                              );
+                            },
+                          ));
+                        },
+                        child: NoteContainer(
+                          isSelected: isSelected,
+                          title: title,
+                          note: note,
+                        ),
+                      );
                     },
                   );
                 }
@@ -526,17 +381,11 @@ class NotesPageState extends State<NotesPage> {
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) {
-                              return ShowCaseWidget(builder: (context) {
-                                return UpdateNotePage(
-                                  docID: docID,
-                                  title: title,
-                                  note: note,
-                                  globalKey8: globalKey8,
-                                  globalKey9: globalKey9,
-                                  globalKey10: globalKey10,
-                                  initlizationOfKeys2: initlizationOfKeys2,
-                                );
-                              });
+                              return UpdateNotePage(
+                                docID: docID,
+                                title: title,
+                                note: note,
+                              );
                             },
                           ));
                         },
@@ -575,56 +424,23 @@ class NotesPageState extends State<NotesPage> {
           }
         },
       ),
-      //! Showcase widget for showing how to add a new note.
-      floatingActionButton: Showcase(
-        key: globalKey2,
-        description: "Tap to create new Note",
-        targetShapeBorder: const RoundedRectangleBorder(),
-        targetBorderRadius: BorderRadius.circular(16),
-        overlayOpacity: .75,
-        showArrow: true,
-        disposeOnTap: true,
-        onTargetClick: () {
-          Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) {
-              //! Here it is ensential to wrap our AddNotePage() with ShowCaseWidget Builder becuase AddNotePage() does not have the context of ShowCase.
-              return ShowCaseWidget(builder: (context) {
-                return AddNotePage(
-                  initlizationOfKeys1: initlizationOfKeys1,
-                  globalKey3: globalKey3,
-                  globalKey4: globalKey4,
-                  globalKey5: globalKey5,
-                  globalKey6: globalKey6,
+
+      floatingActionButton: FloatingActionButton(
+        tooltip: "ADD NOTE",
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) {
+                return const AddNotePage(
                   docID: null,
                 );
-              });
-            },
-          ));
+              },
+            ),
+          );
         },
-        child: FloatingActionButton(
-          tooltip: "ADD NOTE",
-          onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) {
-                  return ShowCaseWidget(builder: (context) {
-                    return AddNotePage(
-                      initlizationOfKeys1: initlizationOfKeys1,
-                      globalKey3: globalKey3,
-                      globalKey4: globalKey4,
-                      globalKey5: globalKey5,
-                      globalKey6: globalKey6,
-                      docID: null,
-                    );
-                  });
-                },
-              ),
-            );
-          },
-          child: Icon(
-            Icons.add,
-            color: Theme.of(context).iconTheme.color,
-          ),
+        child: Icon(
+          Icons.add,
+          color: Theme.of(context).iconTheme.color,
         ),
       ),
     );
