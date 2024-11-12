@@ -3,15 +3,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class FireStoreCurdMethods {
   // Getting FireStore Collection
-  static final CollectionReference users =
-      FirebaseFirestore.instance.collection("users");
+  static final CollectionReference users = FirebaseFirestore.instance.collection("users");
 
   //! CREATE: Create a new "Note" in FireStore
   static Future<void> addNote({String? title, String? note}) {
     try {
       // Reference to the current user's document in the main collection
-      DocumentReference currentUserID =
-          users.doc(FirebaseAuth.instance.currentUser!.uid.toString());
+      DocumentReference currentUserID = users.doc(FirebaseAuth.instance.currentUser!.uid.toString());
 
       // Creating reference to notes sub-collection inside current user's document
       CollectionReference notes = currentUserID.collection('notes');
@@ -29,12 +27,10 @@ class FireStoreCurdMethods {
   }
 
   //! CREATE: Move deleted Note to Trash in FireStore
-  static Future<void> addNoteToTrash(
-      {required Map<String, dynamic> deletedNotes}) {
+  static Future<void> addNoteToTrash({required Map<String, dynamic> deletedNotes}) {
     try {
       // Reference to the current user's document in the main collection
-      DocumentReference currentUserID =
-          users.doc(FirebaseAuth.instance.currentUser!.uid.toString());
+      DocumentReference currentUserID = users.doc(FirebaseAuth.instance.currentUser!.uid.toString());
 
       // Creating reference to trash sub-collection inside current user's document
       CollectionReference trash = currentUserID.collection('trash');
@@ -77,7 +73,7 @@ class FireStoreCurdMethods {
       // Creating reference to notes sub-collection inside current user's document
       CollectionReference notes = currentUserID.collection('notes');
 
-      final notesStream = notes.snapshots();
+      final notesStream = notes.orderBy("timestamp", descending: false).snapshots();
       return notesStream;
     } catch (error) {
       throw error.toString();
