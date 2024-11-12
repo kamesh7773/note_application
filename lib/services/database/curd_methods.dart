@@ -73,6 +73,7 @@ class FireStoreCurdMethods {
       // Creating reference to notes sub-collection inside current user's document
       CollectionReference notes = currentUserID.collection('notes');
 
+      // Sorting Notes by "timestamp"
       final notesStream = notes.orderBy("timestamp", descending: false).snapshots();
       return notesStream;
     } catch (error) {
