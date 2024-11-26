@@ -677,6 +677,7 @@ class FirebaseAuthMethod {
       }
     }
   }
+  
   // ------------------------------------
   // Method related Firebase Auth SingOut
   // ------------------------------------
