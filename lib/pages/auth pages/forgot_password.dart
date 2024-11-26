@@ -1,4 +1,3 @@
-import 'package:colored_print/colored_print.dart';
 import 'package:flutter/material.dart';
 import 'package:note_application/helper/snackbar.dart';
 import 'package:note_application/helper/form_validators.dart';
@@ -284,7 +283,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                       // If internet connection is available
                                       else if (!isInternet && context.mounted) {
                                         if (context.read<OtpTimerProvider>().forgotLinkBtbEnable) {
-                                          ColoredPrint.warning("running");
                                           resentOTP();
                                         }
                                         // Else return nothing

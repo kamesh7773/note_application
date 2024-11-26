@@ -1,4 +1,3 @@
-import 'package:colored_print/colored_print.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:async';
@@ -69,7 +68,6 @@ class FirebaseAuthMethod {
             }
           } catch (error) {
             if (context.mounted) {
-              ColoredPrint.warning(error.toString());
               Navigator.pop(context);
               SnackBars.normalSnackBar(context, error.toString());
             }
