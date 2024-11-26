@@ -80,7 +80,7 @@ class EmailOtpPageOtpPageState extends State<EmailOtpPage> {
         if (constraints.maxWidth >= 1024) {
           return PopScope(
             canPop: true,
-            onPopInvoked: (value) {
+            onPopInvokedWithResult: (value , result) {
               if (value) {
                 //! This method is called when the user presses the back button while filling the OTP on the OTP page. We need to cancel the current timer and disable
                 //! the resend button again. If we don't do that, the timer will overlap, run very fast, and the resend button will be enabled even though
